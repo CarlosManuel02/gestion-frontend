@@ -1,0 +1,67 @@
+.bg{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+
+.container-login{
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: #ebebeb;
+}
+
+.bg-custom{
+  background-color: #1e1e1c;
+}
+
+
+@media screen and (min-width: 768px) {
+  .form-login-width{
+    min-width: 450px;
+  }
+
+}
+
+.blur{
+  backdrop-filter: blur(10px);
+}
+
+@media only screen and (max-height: 600px) {
+  .py-md-4 {
+    padding-top: 0rem!important;
+    padding-bottom: 0rem!important;
+  }
+}
+
+i {
+  cursor: pointer;
+}
+/*
+input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0 1000px #212529 inset !important;
+  -webkit-text-fill-color: white !important;
+
+}
+*/
