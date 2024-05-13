@@ -5,6 +5,7 @@
     @for (tab of tabs; track tab.name) {
       <li nz-menu-item
           [nzSelected]="tab === selectedTab"
+          [routerLink]="tab.link"
           (click)="selectedTab = tab">
         <span nz-icon [nzType]="tab.icon"></span>
         {{ tab.name }}

@@ -13,6 +13,7 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NavbarComponent} from "../../../shared/components/navbar/navbar.component";
 import {NgIf} from "@angular/common";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -43,51 +44,36 @@ export class LoginComponent implements OnInit {
 
 
   validateForm!: FormGroup;
-  // isLoading$ = this.authFacade.isLoadingLogin$;
-  // showLoginError$ = this.authFacade.hasLoginError$;
   passwordVisible = false;
   loading: boolean = false;
 
   submitForm(): void {
-    // if (this.validateForm.valid) {
-    //   const {password, userName} = this.validateForm.value;
-    //   this.authFacade.login(userName, password)
-    //
-    // } else {
-    //   Object.values(this.validateForm.controls).forEach(control => {
-    //     if (control.invalid) {
-    //       control.markAsDirty();
-    //       control.updateValueAndValidity({ onlySelf: true });
-    //     }
-    //   });
-    // }
+    this.loading = true;
+    const {email, password} = this.validateForm.value;
+    if (email != null && password != null) {
+      this.authservice.login(email, password)
+        .subscribe(resp => {
+          if (resp.status == 200) {
+            this.loading = false;
+            this.message.success('Login successful');
+            this.router.navigateByUrl('/todos/dashboard');
+          } else {
+            this.loading = false;
+            this.message.error(resp.message);
+          }
+        }, (e) => {
+          console.log(e)
+
+        })
+    }
+
   }
 
-  createNotification(title:string, description:string){
-    this.notification.create(
-      'error',
-      title,
-      description
-    )
-  }
-
-  constructor(private fb: FormBuilder,private notification: NzNotificationService) {
-    //  this.showLoginError$.pipe().subscribe(console.log)
-    /*
-    this.showLoginError$.subscribe( data =>{
-      console.log(data)
-      if(data.error){
-        if(data.code == 401){
-          this.createNotification('Verifique datos ingresados', 'Usuario y/o contraseña son incorrectos');
-        }
-
-        if(data.code == 429){
-          this.createNotification('Inténtalo de nuevo mas tarde', 'Demasiados intentos de inicio de sesión');
-        }
-      }
-    });
-    */
-
+  constructor(private fb: FormBuilder,
+              private authservice: AuthService,
+              public router: Router,
+              public message: NzMessageService
+  ) {
   }
 
   ngOnInit(): void {

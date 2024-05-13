@@ -8,9 +8,10 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NgIf} from "@angular/common";
 import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NavbarComponent} from "../../../shared/components/navbar/navbar.component";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-registro',
@@ -41,8 +42,12 @@ export class RegistroComponent {
 
   validateForm!: FormGroup;
   passwordVisible = false;
+  loading: boolean = false
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,
+              private authService: AuthService,
+              public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -53,15 +58,19 @@ export class RegistroComponent {
   }
 
   submitForm(): void {
-    if (this.validateForm.valid) {
-      const { userName, email, password } = this.validateForm.value;
-      // Aquí puedes utilizar los datos del formulario para realizar el registro
-      console.log('Datos del registro:', { userName, email, password });
-    } else {
-      for (const i in this.validateForm.controls) {
-        this.validateForm.controls[i].markAsDirty();
-        this.validateForm.controls[i].updateValueAndValidity();
-      }
+    this.loading = true;
+    const {username, email, password} = this.validateForm.value;
+    if (username && email && password) {
+      this.authService.register(username, email, password).subscribe((res) => {
+        this.loading = false;
+        if (res) {
+          this.router.navigate(['/login']);
+        }
+      }, (error) => {
+        this.loading = false;
+      });
     }
+
   }
+
 }

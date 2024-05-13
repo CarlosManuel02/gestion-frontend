@@ -15,7 +15,7 @@
       </nz-card>
       <nz-card class="form-login-width py-md-4 px-2 bg-dark ">
         <div class="mx-auto">
-          <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+          <form nz-form [formGroup]="validateForm" class="login-form">
             <nz-form-item class="mb-0">
               <h3 nz-typography>Registro</h3>
             </nz-form-item>
@@ -64,7 +64,7 @@
             </nz-form-item>
             <div nz-row class="login-form-margin">
               <div nz-col [nzSpan]="null">
-                <button nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="submitForm()">Registrarse
+                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="submitForm()">Registrarse
                 </button>
               </div>
             </div>
