@@ -1,0 +1,28 @@
+<nz-header class="navbar-transparent">
+  <div class="logo"></div>
+
+  <ul nz-menu nzMode="horizontal">
+    @for (tab of tabs; track tab.name) {
+      <li nz-menu-item
+          [nzSelected]="tab === selectedTab"
+          (click)="selectedTab = tab">
+        <span nz-icon [nzType]="tab.icon"></span>
+        {{ tab.name }}
+      </li>
+    }
+    <button nz-button
+            class="float-end"
+            nzType="text"
+            nzSize="small"
+            (click)="toggleTheme()">
+       <span >
+<!--              <i *ngIf="theme === ThemeType.Default" class="fas fa-moon"></i>-->
+               <span nz-icon [nzType]="'moon'" *ngIf="chekTheme()"></span>
+<!--              <i *ngIf="theme === ThemeType.Dark" class="fas fa-sun"></i>-->
+                <span nz-icon [nzType]="'sun'" *ngIf="chekTheme()"></span>
+            </span>
+    </button>
+  </ul>
+
+
+</nz-header>
