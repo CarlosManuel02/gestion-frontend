@@ -1,5 +1,5 @@
 <nz-header class="navbar-transparent">
-  <div class="logo"></div>
+  <div class="light-logo"></div>
 
   <ul nz-menu nzMode="horizontal">
     @for (tab of tabs; track tab.name) {
@@ -15,11 +15,9 @@
             nzType="text"
             nzSize="small"
             (click)="toggleTheme()">
-       <span >
-<!--              <i *ngIf="theme === ThemeType.Default" class="fas fa-moon"></i>-->
-               <span nz-icon [nzType]="'moon'" *ngIf="chekTheme()"></span>
-<!--              <i *ngIf="theme === ThemeType.Dark" class="fas fa-sun"></i>-->
-                <span nz-icon [nzType]="'sun'" *ngIf="chekTheme()"></span>
+       <span nz-icon>
+         <i nz-icon nzType="arrow-up" *ngIf="chekTheme()" nzTheme="outline"></i>
+         <i nz-icon nzType="arrow-down" *ngIf="!chekTheme()" nzTheme="outline"></i>
             </span>
     </button>
   </ul>

@@ -4,7 +4,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject} from "rxjs";
 import {ThemeService} from "../../sevices/theme.service";
 import {Router, RouterModule} from "@angular/router";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {NzIconDirective, NzIconModule} from "ng-zorro-antd/icon";
 import {NzTabComponent, NzTabLinkTemplateDirective, NzTabSetComponent} from "ng-zorro-antd/tabs";
 import {NzHeaderComponent} from "ng-zorro-antd/layout";
@@ -39,7 +39,8 @@ interface Tabs {
     RouterModule,
     NzHeaderComponent,
     NzButtonComponent,
-    NzIconModule
+    NzIconModule,
+    NgClass
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -80,7 +81,11 @@ export class NavbarComponent {
   ]
   selectedTab: Tabs = this.tabs[0];
 
-  constructor(private router: Router, private themeService: ThemeService, private renderer: Renderer2, private el: ElementRef) {
+  constructor(private router: Router,
+              private themeService: ThemeService,
+              private renderer: Renderer2,
+              private el: ElementRef) {
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
