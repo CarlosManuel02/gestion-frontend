@@ -35,9 +35,6 @@
               }
             ],
             "styles": [
-              "node_modules/bootstrap/scss/bootstrap.scss",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "src/styles.scss",
               {
                 "input": "src/assets/styles/default.less",

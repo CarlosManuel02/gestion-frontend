@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzCardComponent} from "ng-zorro-antd/card";
@@ -12,6 +12,7 @@ import {Router, RouterLink} from "@angular/router";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NavbarComponent} from "../../../shared/components/navbar/navbar.component";
 import {AuthService} from "../../../shared/services/auth.service";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-registro',
@@ -46,12 +47,14 @@ export class RegistroComponent {
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
-              public router: Router
-  ) {}
+              public router: Router,
+              public message: NzMessageService
+  ) {
+  }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
+      username: [null, [Validators.required, Validators.minLength(3)]],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(16)]]
     });
@@ -65,9 +68,11 @@ export class RegistroComponent {
         this.loading = false;
         if (res) {
           this.router.navigate(['/login']);
+          this.message.success('User registered successfully');
         }
       }, (error) => {
         this.loading = false;
+        this.message.error(error.error.message);
       });
     }
 

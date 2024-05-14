@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, map, Observable, of, tap} from "rxjs";
 import {User} from "../interfaces/user.interface";
-import {UserResponse} from "../../shared/interfaces/userResponse.interface";
+import {UserResponse} from "../interfaces/userResponse.interface";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable({
@@ -25,6 +25,7 @@ export class AuthService {
   login(email: string, password: string): Observable<{status:number, message: string }> {
     const url = `${this.endpoint}login`;
     const body = { email, password };
+    console.log(body)
 
     return this.http.post<UserResponse>(url, body).pipe(
       tap((resp) => {

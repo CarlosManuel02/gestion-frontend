@@ -35,7 +35,8 @@ import {AuthService} from "../../../shared/services/auth.service";
     NzColDirective,
     NzRowDirective,
     NavbarComponent,
-    NgIf
+    NgIf,
+
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -47,7 +48,8 @@ export class LoginComponent implements OnInit {
   passwordVisible = false;
   loading: boolean = false;
 
-  submitForm(): void {
+  login() {
+    console.log(this.validateForm.value)
     this.loading = true;
     const {email, password} = this.validateForm.value;
     if (email != null && password != null) {
@@ -78,7 +80,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
+      email: [null, [Validators.required,Validators.minLength(3)]],
       password: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
     });
   }
