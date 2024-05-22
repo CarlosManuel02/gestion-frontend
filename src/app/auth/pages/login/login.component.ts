@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
   submitForm(): void {
     this.loading = true;
     const {email, password} = this.validateForm.value;
+    console.log(email, password)
     if (email != null && password != null) {
       this.authservice.login(email, password)
         .subscribe(resp => {
@@ -78,7 +79,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
+      email: [null, [Validators.required,Validators.minLength(3)]],
       password: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
     });
   }
