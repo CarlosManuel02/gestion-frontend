@@ -1,5 +1,5 @@
 import { APP_INITIALIZER } from '@angular/core';
-import {ThemeService} from "./shared/sevices/theme.service";
+import {ThemeService} from "./shared/services/theme.service";
 
 export const AppInitializerProvider = {
   provide: APP_INITIALIZER,
