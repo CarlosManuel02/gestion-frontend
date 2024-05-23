@@ -1,5 +1,4 @@
-<nz-list nzItemLayout="vertical" nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading">
-
+<nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading">
       @for (task of tasks; track task) {
           <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
             <nz-list-item-meta
@@ -12,7 +11,7 @@
             </nz-list-item-extra>
           </nz-list-item>
         <ng-template #avatarTemplate>
-          <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+          <span nz-icon nzType="book" nzTheme="outline"></span>
         </ng-template>
       }
 </nz-list>

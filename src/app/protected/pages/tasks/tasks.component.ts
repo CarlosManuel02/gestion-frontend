@@ -1,19 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../shared/services/auth.service";
 import {TaskService} from "../../../shared/services/task.service";
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, NgStyle} from "@angular/common";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {
-  NzListComponent,
+  NzListComponent, NzListHeaderComponent,
   NzListItemComponent,
   NzListItemExtraComponent,
   NzListItemMetaComponent
 } from "ng-zorro-antd/list";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
-import { Task } from '../../../shared/interfaces/task.interface';
+import {Task} from '../../../shared/interfaces/task.interface';
+import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzIconDirective} from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'app-tasks',
@@ -28,15 +31,18 @@ import { Task } from '../../../shared/interfaces/task.interface';
     NzAvatarComponent,
     NzListItemExtraComponent,
     NzBadgeComponent,
+    NzIconDirective,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
 })
 export class TasksComponent implements OnInit {
   loading: boolean = false;
+  selectedTask!: Task;
   get tasks() {
     return this.taskService.tasks;
   }
+
   get user() {
     return this.authService.user;
   }
@@ -64,5 +70,6 @@ export class TasksComponent implements OnInit {
 
   taskClick(task: Task) {
     console.log(task)
+    this.selectedTask = task;
   }
 }
