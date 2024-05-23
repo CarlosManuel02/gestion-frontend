@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output, Renderer2, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges} from '@angular/core';
 import {NzMenuDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject} from "rxjs";
@@ -9,6 +9,15 @@ import {NzIconDirective, NzIconModule} from "ng-zorro-antd/icon";
 import {NzTabComponent, NzTabLinkTemplateDirective, NzTabSetComponent} from "ng-zorro-antd/tabs";
 import {NzHeaderComponent} from "ng-zorro-antd/layout";
 import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzAvatarComponent} from "ng-zorro-antd/avatar";
+import {NzPopoverDirective} from "ng-zorro-antd/popover";
+import {
+  NzListComponent,
+  NzListItemComponent,
+  NzListItemMetaComponent,
+  NzListItemMetaTitleComponent
+} from "ng-zorro-antd/list";
+import {AuthService} from "../../services/auth.service";
 
 export enum ThemeType {
   Dark = 'dark',
@@ -22,6 +31,7 @@ interface Tabs {
   disabled: boolean;
 
 }
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -40,27 +50,24 @@ interface Tabs {
     NzHeaderComponent,
     NzButtonComponent,
     NzIconModule,
-    NgClass
+    NgClass,
+    NzAvatarComponent,
+    NzPopoverDirective,
+    NzListComponent,
+    NzListItemComponent,
+    NzListItemMetaTitleComponent,
+    NzListItemMetaComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
-  @Input() isCollapsed = false;
-  @Input() isMobile = false;
-  @Output() isCollapsedChanged = new EventEmitter<boolean>();
-  // menuItems = menuItems;
-  // submenuItems = submenuItems;
-  currentPath!: string;
-  public ThemeType = ThemeType;
-  nzSelected= false;
   theme = this.themeService.theme;
-  mode = false;
 
   public themeChanged$!: BehaviorSubject<ThemeType>;
   tabs: Tabs[] = [
-{
+    {
       name: 'Dashboard',
       link: 'dashboard',
       icon: 'dashboard',
@@ -81,21 +88,17 @@ export class NavbarComponent {
   ]
   selectedTab: Tabs = this.tabs[0];
 
+  get user() {
+    return this.authService.user;
+  }
+
   constructor(private router: Router,
               private themeService: ThemeService,
-              private renderer: Renderer2,
-              private el: ElementRef) {
+              private authService: AuthService
+  ) {
 
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isMobile']) {
-      const divGenerado = this.el.nativeElement.querySelector('.ant-affix');
-      if (divGenerado) {
-        this.renderer.addClass(divGenerado, 'collapsed-affix');
-      }
-    }
-  }
 
   ngOnInit(): void {
     this.themeChanged$ = this.themeService.getThemeChanged();
@@ -109,14 +112,9 @@ export class NavbarComponent {
         console.log(this.theme);
 
       }
-
     );
   }
 
-  close(): void {
-    this.isCollapsed = this.isCollapsed;
-    this.isCollapsedChanged.emit(!this.isCollapsed);
-  }
 
   logout() {
 
