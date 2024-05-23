@@ -2,7 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, Output, Renderer2, SimpleCha
 import {NzMenuDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject} from "rxjs";
-import {ThemeService} from "../../sevices/theme.service";
+import {ThemeService} from "../../services/theme.service";
 import {Router, RouterModule} from "@angular/router";
 import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {NzIconDirective, NzIconModule} from "ng-zorro-antd/icon";
