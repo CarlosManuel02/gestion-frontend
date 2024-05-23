@@ -27,29 +27,7 @@
 
     <div>
       <h3 nz-typography>My Assigned tasks</h3>
-      <nz-list nzGrid>
-        <div nz-row [nzGutter]="16">
-          @for (index of array; track index) {
-            <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24">
-              <nz-list-item>
-
-                <nz-card style="width: 300px;margin-top: 16px">
-                  <nz-skeleton [nzActive]="true" [nzLoading]="true" [nzAvatar]="{ size: 'large' }">
-                    <nz-card-meta
-                      [nzAvatar]="avatarTemplate"
-                      nzTitle="Card title"
-                      nzDescription="This is the description"
-                    ></nz-card-meta>
-                  </nz-skeleton>
-                </nz-card>
-              </nz-list-item>
-            </div>
-            <ng-template #avatarTemplate>
-              <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-            </ng-template>
-          }
-        </div>
-      </nz-list>
+      <app-tasks></app-tasks>
     </div>
 
   </nz-content>

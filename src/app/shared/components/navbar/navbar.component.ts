@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges} from '@angular/core';
-import {NzMenuDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
+import {NzMenuDirective, NzMenuDividerDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject} from "rxjs";
 import {ThemeService} from "../../services/theme.service";

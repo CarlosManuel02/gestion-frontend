@@ -12,6 +12,7 @@ import {NzPaginationComponent} from "ng-zorro-antd/pagination";
 import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzListComponent, NzListItemComponent} from "ng-zorro-antd/list";
+import {TasksComponent} from "../tasks/tasks.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -34,7 +35,8 @@ import {NzListComponent, NzListItemComponent} from "ng-zorro-antd/list";
     NzDividerComponent,
     NzSkeletonComponent,
     NzListComponent,
-    NzListItemComponent
+    NzListItemComponent,
+    TasksComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
