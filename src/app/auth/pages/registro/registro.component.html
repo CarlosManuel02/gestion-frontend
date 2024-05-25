@@ -4,11 +4,11 @@
       <nz-card style="background-color: #bd3a3a;" class="d-flex align-items-center justify-content-center">
         <div class="text-wrap p-4 text-center d-flex align-items-center order-md-last">
           <div class="text w-100">
-            <p>¿Ya tienes una cuenta?</p>
+            <p>¿Already have an account?</p>
             <button nz-button
                     nzType="dashed"
                     routerLink="../login"
-            >Iniciar Sesión
+            >Log in
             </button>
           </div>
         </div>
@@ -17,16 +17,16 @@
         <div class="mx-auto">
           <form nz-form [formGroup]="validateForm" class="login-form">
             <nz-form-item class="mb-0">
-              <h3 nz-typography>Registro</h3>
+              <h3 nz-typography>Sing Up</h3>
             </nz-form-item>
             <nz-form-item>
               <nz-form-control [nzErrorTip]="userErrorTp">
-                <nz-form-label [nzSpan]="5">Usuario</nz-form-label>
+                <nz-form-label [nzSpan]="5">User</nz-form-label>
                 <nz-input-group nzPrefixIcon="user">
                   <input type="text" nz-input formControlName="userName" maxlength="16"/>
                   <ng-template #userErrorTp let-control>
-                    <ng-container *ngIf="control.hasError('required')">Ingrese su usuario</ng-container>
-                    <ng-container *ngIf="control.hasError('minlength')">Su usuario tiene un minimo de 3 letras
+                    <ng-container *ngIf="control.hasError('required')">Enter your user</ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">Your user has a minimum of 3 letters
                     </ng-container>
                   </ng-template>
                 </nz-input-group>
@@ -38,8 +38,8 @@
                 <nz-input-group nzPrefixIcon="mail">
                   <input type="email" nz-input formControlName="email" maxlength="16"/>
                   <ng-template #emailErrorTp let-control>
-                    <ng-container *ngIf="control.hasError('required')">Ingrese su email</ng-container>
-                    <ng-container *ngIf="control.hasError('email')">Ingrese un email valido</ng-container>
+                    <ng-container *ngIf="control.hasError('required')">Enter your email</ng-container>
+                    <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
                   </ng-template>
                 </nz-input-group>
               </nz-form-control>
@@ -51,8 +51,8 @@
                   <input [type]="passwordVisible ? 'text' : 'password'" maxlength="16" nz-input
                          formControlName="password" autocomplete="off"/>
                   <ng-template #passwordErrorTp let-control>
-                    <ng-container *ngIf="control.hasError('required')">Ingrese su contraseña</ng-container>
-                    <ng-container *ngIf="control.hasError('minlength')">Su contraseña tiene un minimo de 3 letras
+                    <ng-container *ngIf="control.hasError('required')">Enter your password</ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">Should be at least 6 characters
                     </ng-container>
                   </ng-template>
                 </nz-input-group>
@@ -64,7 +64,8 @@
             </nz-form-item>
             <div nz-row class="login-form-margin">
               <div nz-col [nzSpan]="null">
-                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="submitForm()">Registrarse
+                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="submitForm()">
+                  Register
                 </button>
               </div>
             </div>
