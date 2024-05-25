@@ -1,0 +1,44 @@
+@if (task) {
+  <div class="container-fluid mt-3">
+    <nz-affix [nzOffsetTop]="0">
+      <nz-breadcrumb style="background-color: #1c1c1c; z-index: 1;">
+        <nz-breadcrumb-item>Project</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          <a>{{ task.project_name }}</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          <a>{{ task.task_name }}</a>
+        </nz-breadcrumb-item>
+      </nz-breadcrumb>
+    </nz-affix>
+
+    <h2>{{ task.task_name }}</h2>
+    <nz-button-group>
+      <button nz-button nzType="default" disabled>Attach</button>
+      <button nz-button nzType="default" disabled>M</button>
+      <button nz-button nzType="default" disabled>R</button>
+    </nz-button-group>
+    <nz-divider></nz-divider>
+
+    <p>Description</p>
+    <textarea nz-input [(ngModel)]="task.task_description" rows="10" readonly style="resize: none;"></textarea>
+
+    @if (task.attachments) {
+      <div class="mt-2">
+        <p>Attachments <nz-tag>{{task.attachments.length}}</nz-tag>
+          <button nz-button nzType="text" nzSize="small"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
+        </p>
+        <nz-list nzSplit="false" nzBordered>
+          @for (file of task?.attachments; track file) {
+            <nz-list-item>
+              <span>{{file.file_name}}</span>
+              <nz-button-group>
+                <button [nzLoading]="loading" nz-button nzType="primary" nzSize="small" (click)="download(file)">Download</button>
+              </nz-button-group>
+            </nz-list-item>
+          }
+        </nz-list>
+      </div>
+    }
+  </div>
+}

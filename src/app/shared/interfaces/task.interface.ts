@@ -1,3 +1,5 @@
+import {Files} from "./files.interface";
+
 export interface TaskResponse {
   tasks:  Task[];
   status: number;
@@ -14,4 +16,5 @@ export interface Task {
   task_assignment:    string;
   project_id:         string;
   project_name:       string;
+  attachments?:        Files[];
 }

@@ -17,6 +17,7 @@ import {Task} from '../../../shared/interfaces/task.interface';
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-tasks',
@@ -32,6 +33,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
     NzListItemExtraComponent,
     NzBadgeComponent,
     NzIconDirective,
+    RouterLink,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
@@ -48,7 +50,8 @@ export class TasksComponent implements OnInit {
   }
   constructor(
     private taskService: TaskService,
-    private authService: AuthService
+    private authService: AuthService,
+    public router: Router,
   ) { }
   ngOnInit(): void {
     this.getTasks();
@@ -69,7 +72,8 @@ export class TasksComponent implements OnInit {
   }
 
   taskClick(task: Task) {
-    console.log(task)
+    // console.log(task)
+    this.router.navigate(['/main/tasks', task.task_id]);
     this.selectedTask = task;
   }
 }

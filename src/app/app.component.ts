@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from "./shared/components/navbar/navbar.component";
-import {NzContentComponent, NzLayoutComponent} from "ng-zorro-antd/layout";
+import {NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent} from "ng-zorro-antd/layout";
 import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
