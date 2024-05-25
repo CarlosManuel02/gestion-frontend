@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../../shared/services/task.service";
 import {Router} from "@angular/router";
-import {DatePipe, JsonPipe} from "@angular/common";
+import {DatePipe, JsonPipe, NgForOf} from "@angular/common";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
 import {Files} from "../../../shared/interfaces/files.interface";
@@ -14,6 +14,10 @@ import {FormsModule} from "@angular/forms";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzTagComponent} from "ng-zorro-antd/tag";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {AuthService} from "../../../shared/services/auth.service";
+import {NzFormDirective} from "ng-zorro-antd/form";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-task-view',
@@ -36,7 +40,13 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
     FormsModule,
     NzInputDirective,
     NzTagComponent,
-    NzIconDirective
+    NzIconDirective,
+    NzRowDirective,
+    NzColDirective,
+    NzFormDirective,
+    NzSelectComponent,
+    NzOptionComponent,
+    NgForOf
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -44,6 +54,16 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 export class TaskViewComponent implements OnInit {
 
   loading = false
+  editMode = true
+  editModeDetails= true
+
+  priorities = [
+    {label: 'Low', value: 1},
+    {label: 'Medium', value: 2},
+    {label: 'High', value: 3},
+    {label: 'Urgent', value: 4},
+  ]
+
   get task() {
     return this.taskService.task
   }
@@ -69,7 +89,7 @@ export class TaskViewComponent implements OnInit {
       if (resp.status !== 200) {
         console.error('Error getting task')
       } else {
-        console.log('Task:', this.task)
+        this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label
         this.getAttachments(taskId)
       }
     })
@@ -101,5 +121,21 @@ export class TaskViewComponent implements OnInit {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
     this.loading = false
+  }
+
+  changeMode() {
+    this.editMode = false
+  }
+
+  changeModeDetails() {
+    this.editModeDetails = false
+  }
+
+  save() {
+
+  }
+
+  cancel() {
+    this.editMode = true
   }
 }

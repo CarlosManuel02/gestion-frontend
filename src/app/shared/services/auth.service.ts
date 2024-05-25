@@ -22,9 +22,9 @@ export class AuthService {
     return this._user;
   }
 
-  login(email: string, password: string): Observable<{status:number, message: string }> {
+  login(email: string, password: string): Observable<{ status: number, message: string }> {
     const url = `${this.endpoint}login`;
-    const body = { email, password };
+    const body = {email, password};
 
     return this.http.post<UserResponse>(url, body).pipe(
       tap((resp) => {
@@ -41,9 +41,9 @@ export class AuthService {
         }
 
       }),
-      map((resp) => ({ status: resp.status, message: 'Login successful' })),
+      map((resp) => ({status: resp.status, message: 'Login successful'})),
       catchError((err: any) => {
-        return of({ status: 400, message: err.message });
+        return of({status: 400, message: err.message});
       })
     );
   }
@@ -99,4 +99,21 @@ export class AuthService {
   isLogged() {
     return localStorage.getItem('token') !== null;
   }
+
+  getUser() {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    })
+    return new Promise((resolve, reject) => {
+      this.http.get<UserResponse>(`${this.endpoint}user`, {headers})
+        .subscribe((resp) => {
+          if (resp) {
+            resolve(resp)
+          } else {
+            reject('Error getting user')
+          }
+        })
+    });
+  }
+
 }
