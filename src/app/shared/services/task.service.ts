@@ -68,4 +68,22 @@ export class TaskService {
         });
     })
   }
+
+  uploadAttachment(file: File, task_id: string) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('task_id', task_id);
+
+    return new Promise((resolve, reject) => {
+      this.http.post(`http://localhost:8080/api/attachments`, formData)
+        .subscribe((resp: any) => {
+          if (resp.status === 200) {
+            resolve({status: resp.status});
+          } else {
+            reject({status: resp.status});
+          }
+        });
+    });
+
+  }
 }

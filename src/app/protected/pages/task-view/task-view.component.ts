@@ -18,6 +18,11 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {AuthService} from "../../../shared/services/auth.service";
 import {NzFormDirective} from "ng-zorro-antd/form";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {CdkVirtualForOf, ScrollingModule} from "@angular/cdk/scrolling";
+import {NzTableVirtualScrollDirective} from "ng-zorro-antd/table";
+import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
+import {Task} from "../../../shared/interfaces/task.interface";
 
 @Component({
   selector: 'app-task-view',
@@ -46,16 +51,19 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
     NzFormDirective,
     NzSelectComponent,
     NzOptionComponent,
-    NgForOf
+    NgForOf,
+    ScrollingModule,
+    NzDatePickerComponent
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
 })
 export class TaskViewComponent implements OnInit {
 
-  loading = false
-  editMode = true
-  editModeDetails= true
+  loading = false;
+  loadingAttachments = false;
+  editMode = true;
+  editModeDetails = true
 
   priorities = [
     {label: 'Low', value: 1},
@@ -68,9 +76,12 @@ export class TaskViewComponent implements OnInit {
     return this.taskService.task
   }
 
+  mockTask: Task = {} as Task;
+
   constructor(
     private taskService: TaskService,
-    private router: Router
+    private router: Router,
+    public message: NzMessageService,
   ) {
   }
 
@@ -91,19 +102,24 @@ export class TaskViewComponent implements OnInit {
       } else {
         this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label
         this.getAttachments(taskId)
+        this.mockTask = this.task
       }
     })
   }
 
-  private getAttachments(task_id: string | undefined) {
+  getAttachments(task_id: string | undefined) {
+    this.loadingAttachments = true
     if (!task_id) {
       return
     }
     this.taskService.getAttachments(task_id).then((resp) => {
+      this.loadingAttachments = false
       if (resp.status !== 200) {
-        console.error('Error getting attachments')
+        this.message.error('Error getting attachments')
       } else {
         console.log(resp)
+        this.task.attachments = this.task.attachments || []
+        console.log('Mock task', this.mockTask)
       }
     })
   }
@@ -111,7 +127,7 @@ export class TaskViewComponent implements OnInit {
   download(file: Files) {
     this.loading = true
     const uint8Array = new Uint8Array(file.data.data);
-    const blob = new Blob([uint8Array], { type: file.mime_type });
+    const blob = new Blob([uint8Array], {type: file.mime_type});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -137,5 +153,45 @@ export class TaskViewComponent implements OnInit {
 
   cancel() {
     this.editMode = true
+    this.mockTask = this.task
+  }
+
+  uploadFile() {
+    this.loadingAttachments = true
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '*';
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.item(0);
+      if (!file) {
+        return
+      }
+      this.taskService.uploadAttachment(file, this.task.task_id)
+        .then((resp: any) => {
+          console.log(resp)
+          this.loadingAttachments = false
+          if (resp.status === 200) {
+            this.getAttachments(this.task.task_id)
+            this.message.success('File uploaded successfully')
+          } else {
+            // console.error('Error uploading file')
+            this.message.error('Error uploading file')
+          }
+        })
+    };
+    input.click();
+  }
+
+  reload() {
+    this.getAttachments(this.task.task_id)
+  }
+
+  saveDetails() {
+
+  }
+
+  cancelDetails() {
+    this.editModeDetails = true;
+    this.mockTask = this.task;
   }
 }
