@@ -1,1 +1,35 @@
-<p>dashboard works!</p>
+<nz-layout>
+
+
+  <nz-content>
+
+    <div>
+      <h3 nz-typography>Recent Projects</h3>
+      <div nz-row>
+        @for (item of projects; track item) {
+          <nz-card style="width: 300px" nzBordered nz-col nzSpan="8">
+            <nz-card-meta
+              [nzTitle]="item.project_name"
+              [nzAvatar]="avatarTemplate"
+              [nzDescription]="item.project_description"
+            ></nz-card-meta>
+          </nz-card>
+          <ng-template #avatarTemplate>
+            <nz-avatar [nzSrc]="item.project_image_url"></nz-avatar>
+          </ng-template>
+
+        }
+      </div>
+      <!--    <nz-pagination [nzPageIndex]="1" [nzTotal]="projects.length" nzSimple></nz-pagination>-->
+    </div>
+
+    <nz-divider></nz-divider>
+
+    <div>
+      <h3 nz-typography>My Assigned tasks</h3>
+      <app-tasks></app-tasks>
+    </div>
+
+  </nz-content>
+
+</nz-layout>

@@ -1,5 +1,5 @@
 <nz-header class="navbar-transparent">
-  <div class="light-logo"></div>
+  <div class="light-logo"><p>TaskFusion</p></div>
 
   <ul nz-menu nzMode="horizontal">
     @for (tab of tabs; track tab.name) {
@@ -14,13 +14,54 @@
     <button nz-button
             class="float-end"
             nzType="text"
-            nzSize="small"
-            (click)="toggleTheme()">
+            nz-popover
+            nzPopoverPlacement="bottomRight"
+            nzPopoverTrigger="click"
+            [nzPopoverContent]="contentTemplate"
+            nzSize="small">
+      <nz-avatar nzIcon="user"  [nzSrc]="userImage">
+
+      </nz-avatar>
+    </button>
+    <ng-template #contentTemplate>
+      <nz-list nzSize="small">
+        <nz-list-item>
+          <nz-list-item-meta
+            [nzDescription]="user.username"
+          >
+            <nz-list-item-meta-title>
+              <a>{{ user.email }}</a>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+        </nz-list-item>
+        <nz-list-item>
+          <button nz-button
+                  nzType="text"
+                  nzSize="small"
+                  (click)="toggleTheme()">
        <span nz-icon>
          <i nz-icon nzType="arrow-up" *ngIf="chekTheme()" nzTheme="outline"></i>
          <i nz-icon nzType="arrow-down" *ngIf="!chekTheme()" nzTheme="outline"></i>
             </span>
-    </button>
+            <span>Toggle Theme</span>
+          </button>
+        </nz-list-item>
+        <nz-list-item>
+          <button nz-button
+                  nzType="text"
+                  nzSize="small"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Are you sure to you want to logout?"
+                  nzOkText="Yes"
+                  nzCancelText="No"
+                  (nzOnConfirm)="logout()"
+                  >
+            <span nz-icon nzType="logout"></span>
+            <span>Logout</span>
+          </button>
+        </nz-list-item>
+      </nz-list>
+    </ng-template>
   </ul>
 
 

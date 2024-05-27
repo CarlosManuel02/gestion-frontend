@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, map, Observable, of, tap} from "rxjs";
 import {User} from "../interfaces/user.interface";
-import {UserResponse} from "../interfaces/userResponse.interface";
+import {UserResponse} from "../../shared/interfaces/userResponse.interface";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class AuthService {
   private _user!: User;
 
   constructor(private http: HttpClient,
-              private message: NzMessageService
+              private message: NzMessageService,
+              public router: Router
   ) {
   }
 
@@ -22,10 +24,9 @@ export class AuthService {
     return this._user;
   }
 
-  login(email: string, password: string): Observable<{status:number, message: string }> {
+  login(email: string, password: string): Observable<{ status: number, message: string }> {
     const url = `${this.endpoint}login`;
-    const body = { email, password };
-    console.log(body)
+    const body = {email, password};
 
     return this.http.post<UserResponse>(url, body).pipe(
       tap((resp) => {
@@ -33,24 +34,27 @@ export class AuthService {
           throw new Error("Incorrect email or password");
         } else {
           this._user = {
+            image: resp.user?.image,
             id: resp.user?.id,
             email: resp.user?.email,
             username: resp.user?.username
           }
+          console.log(this._user)
           localStorage.setItem('token', resp.token);
           return {status: resp.status, message: resp.message}
         }
 
       }),
-      map((resp) => ({ status: resp.status, message: 'Login successful' })),
+      map((resp) => ({status: resp.status, message: 'Login successful'})),
       catchError((err: any) => {
-        return of({ status: 400, message: err.message });
+        return of({status: 400, message: err.message});
       })
     );
   }
 
   logout() {
     localStorage.removeItem('token');
+    this.router.navigateByUrl('/login');
   }
 
   register(username: string, email: string, password: string) {
@@ -67,7 +71,8 @@ export class AuthService {
           this._user = {
             id: resp.user?.id,
             email: resp.user?.email,
-            username: resp.user?.username
+            username: resp.user?.username,
+            image: resp.user?.image
           }
           localStorage.setItem('token', resp.token);
         }),
@@ -87,8 +92,10 @@ export class AuthService {
           this._user = {
             id: resp.user?.id,
             email: resp.user?.email,
-            username: resp.user?.username
+            username: resp.user?.username,
+            image: resp.user?.image
           }
+          console.log(this._user)
           localStorage.setItem('token', resp.token);
           return resp.status == 200;
         }),
@@ -96,4 +103,25 @@ export class AuthService {
       )
 
   }
+
+  isLogged() {
+    return localStorage.getItem('token') !== null;
+  }
+
+  getUser() {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    })
+    return new Promise((resolve, reject) => {
+      this.http.get<UserResponse>(`${this.endpoint}user`, {headers})
+        .subscribe((resp) => {
+          if (resp) {
+            resolve(resp)
+          } else {
+            reject('Error getting user')
+          }
+        })
+    });
+  }
+
 }

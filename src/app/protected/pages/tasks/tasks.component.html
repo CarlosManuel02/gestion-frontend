@@ -1,1 +1,17 @@
-<p>tasks works!</p>
+<nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading">
+      @for (task of tasks; track task) {
+          <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
+            <nz-list-item-meta
+              [nzTitle]="task.task_name"
+              [nzDescription]="task.task_description"
+              [nzAvatar]="avatarTemplate"
+            ></nz-list-item-meta>
+            <nz-list-item-extra>
+              <nz-badge [nzStatus]="'processing'" [nzText]="task.task_status"></nz-badge>
+            </nz-list-item-extra>
+          </nz-list-item>
+        <ng-template #avatarTemplate>
+          <span nz-icon nzType="book" nzTheme="outline"></span>
+        </ng-template>
+      }
+</nz-list>

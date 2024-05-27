@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ProtectedRoutingModule } from './protected-routing.module';
 import {IconModule} from "@ant-design/icons-angular";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {IconModule} from "@ant-design/icons-angular";
   imports: [
     CommonModule,
     ProtectedRoutingModule,
-    IconModule
+    IconModule,
+    NzModalModule
   ]
 })
 export class ProtectedModule { }

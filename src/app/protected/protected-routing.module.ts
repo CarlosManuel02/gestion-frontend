@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from "./pages/main/main.component";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {ValidarTokenGuard} from "../shared/guards/validar-token.guard";
+import {TaskViewComponent} from "./pages/task-view/task-view.component";
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
     children: [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'tasks', component: TasksComponent},
+      {path: 'tasks/:id', component: TaskViewComponent},
       {path: '**', redirectTo: 'dashboard'}
     ]
   }
@@ -22,4 +24,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProtectedRoutingModule { }
+export class ProtectedRoutingModule {
+}
