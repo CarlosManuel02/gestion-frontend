@@ -6,7 +6,7 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {
-  NzListComponent, NzListHeaderComponent,
+  NzListComponent, NzListEmptyComponent, NzListHeaderComponent,
   NzListItemComponent,
   NzListItemExtraComponent,
   NzListItemMetaComponent
@@ -18,6 +18,7 @@ import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {Router, RouterLink} from "@angular/router";
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
 
 @Component({
   selector: 'app-tasks',
@@ -34,6 +35,9 @@ import {Router, RouterLink} from "@angular/router";
     NzBadgeComponent,
     NzIconDirective,
     RouterLink,
+    NzListEmptyComponent,
+    NzEmptyComponent,
+    NzButtonComponent,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'

@@ -1,1 +1,38 @@
-<p>projects works!</p>
+<div class="container-fluid mt-3">
+  <nz-list nzSize="default" [nzDataSource]="projects" [nzLoading]="loading" [nzNoResult]="emptyTpl" nzGrid>
+    <div nz-row [nzGutter]="16">
+      @for (project of projects; track project) {
+        <nz-card style="width: 300px" nzBordered nz-col nzSpan="8" nzHoverable>
+          <nz-card-meta
+            [nzTitle]="project.project_name"
+            [nzAvatar]="avatarTemplate"
+            [nzDescription]="project.project_description"
+          ></nz-card-meta>
+        </nz-card>
+        <ng-template #avatarTemplate>
+          <nz-avatar [nzSrc]="project.project_image_url"></nz-avatar>
+        </ng-template>
+
+      }
+
+      <ng-template #emptyTpl>
+        <nz-empty
+          nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          [nzNotFoundContent]="contentTpl"
+          [nzNotFoundFooter]="footerTpl"
+        >
+          <ng-template #contentTpl>
+        <span>
+          There are no tasks available
+        </span>
+          </ng-template>
+          <ng-template #footerTpl>
+            <button nz-button nzType="primary">Create Now</button>
+          </ng-template>
+        </nz-empty>
+
+      </ng-template>
+    </div>
+  </nz-list>
+
+</div>

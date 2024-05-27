@@ -13,6 +13,9 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzListComponent, NzListItemComponent} from "ng-zorro-antd/list";
 import {TasksComponent} from "../tasks/tasks.component";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
+import {ProjectsComponent} from "../projects/projects.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +39,10 @@ import {TasksComponent} from "../tasks/tasks.component";
     NzSkeletonComponent,
     NzListComponent,
     NzListItemComponent,
-    TasksComponent
+    TasksComponent,
+    NzButtonComponent,
+    NzEmptyComponent,
+    ProjectsComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

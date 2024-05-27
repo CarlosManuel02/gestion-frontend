@@ -1,23 +1,39 @@
-<nz-layout>
-
+<nz-layout class="container-fluid mt-3">
 
   <nz-content>
 
     <div>
       <h3 nz-typography>Recent Projects</h3>
       <div nz-row>
-        @for (item of projects; track item) {
-          <nz-card style="width: 300px" nzBordered nz-col nzSpan="8">
-            <nz-card-meta
-              [nzTitle]="item.project_name"
-              [nzAvatar]="avatarTemplate"
-              [nzDescription]="item.project_description"
-            ></nz-card-meta>
-          </nz-card>
-          <ng-template #avatarTemplate>
-            <nz-avatar [nzSrc]="item.project_image_url"></nz-avatar>
-          </ng-template>
+        @if (projects.length > 0) {
+          @for (item of projects; track item) {
+            <nz-card style="width: 300px" nzBordered nz-col nzSpan="8">
+              <nz-card-meta
+                [nzTitle]="item.project_name"
+                [nzAvatar]="avatarTemplate"
+                [nzDescription]="item.project_description"
+              ></nz-card-meta>
+            </nz-card>
+            <ng-template #avatarTemplate>
+              <nz-avatar [nzSrc]="item.project_image_url"></nz-avatar>
+            </ng-template>
 
+          }
+        } @else {
+          <nz-empty
+            nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            [nzNotFoundContent]="contentTpl"
+            [nzNotFoundFooter]="footerTpl"
+          >
+            <ng-template #contentTpl>
+        <span>
+          There are no projects available at the moment.
+        </span>
+            </ng-template>
+            <ng-template #footerTpl>
+              <button nz-button nzType="primary">Create Now</button>
+            </ng-template>
+          </nz-empty>
         }
       </div>
       <!--    <nz-pagination [nzPageIndex]="1" [nzTotal]="projects.length" nzSimple></nz-pagination>-->
