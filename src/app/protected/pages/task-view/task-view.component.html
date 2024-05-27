@@ -2,7 +2,7 @@
   <div nz-row>
     <div class="container-fluid mt-3" nz-col nzSpan="18">
       <nz-affix [nzOffsetTop]="0">
-        <nz-breadcrumb style="background-color: #1c1c1c; z-index: 1;">
+        <nz-breadcrumb style=" z-index: 1;">
           <nz-breadcrumb-item>Projects</nz-breadcrumb-item>
           <nz-breadcrumb-item>
             <a>{{ mockTask.project_name }}</a>
@@ -52,7 +52,8 @@
             <nz-list nzSplit="false" *cdkVirtualFor="let file of mockTask.attachments"
                      [nzItemLayout]="'horizontal'">
               <nz-list-item>
-                <span>{{ file.file_name }}</span>
+                <span nz-typography>{{ file.file_name }}
+                  <nz-divider nzType="vertical"></nz-divider><code> {{ file.size | fileSize }}</code></span>
                 <nz-button-group>
                   <button [nzLoading]="loading" nz-button nzType="primary" nzSize="small" (click)="download(file)">
                     Download

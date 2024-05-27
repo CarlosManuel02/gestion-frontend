@@ -8,8 +8,9 @@
 .light-logo {
   width: 120px;
   height: 31px;
-  background: rgba(0, 0, 0, 0.2); /* Cambia el color de fondo para adaptarse al modo claro */
-  margin: 16px 28px 16px 0;
+
+  //background: rgba(0, 0, 0, 0.2); /* Cambia el color de fondo para adaptarse al modo claro */
+  //margin: 16px 28px 16px 0;
   float: left;
   align-content: center;
   text-align: center;
@@ -24,4 +25,14 @@ ul button {
   top: 20px;
   right: 0;
   position: absolute;
+}
+
+
+nz-header{
+  background-color: #1C1C1C;
+}
+
+nz-header *{
+  background-color: #1C1C1C;
+  color: white;
 }

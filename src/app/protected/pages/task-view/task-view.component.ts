@@ -23,6 +23,10 @@ import {CdkVirtualForOf, ScrollingModule} from "@angular/cdk/scrolling";
 import {NzTableVirtualScrollDirective} from "ng-zorro-antd/table";
 import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
 import {Task} from "../../../shared/interfaces/task.interface";
+import {FileSizePipe} from "../../../shared/pipes/file-size.pipe";
+import {NzTypographyComponent} from "ng-zorro-antd/typography";
+import {NzAvatarComponent} from "ng-zorro-antd/avatar";
+import {Data} from "../../../shared/interfaces/user.interface";
 
 @Component({
   selector: 'app-task-view',
@@ -53,7 +57,10 @@ import {Task} from "../../../shared/interfaces/task.interface";
     NzOptionComponent,
     NgForOf,
     ScrollingModule,
-    NzDatePickerComponent
+    NzDatePickerComponent,
+    FileSizePipe,
+    NzTypographyComponent,
+    NzAvatarComponent
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -117,9 +124,7 @@ export class TaskViewComponent implements OnInit {
       if (resp.status !== 200) {
         this.message.error('Error getting attachments')
       } else {
-        console.log(resp)
-        this.task.attachments = this.task.attachments || []
-        console.log('Mock task', this.mockTask)
+        this.mockTask.attachments = this.task.attachments || []
       }
     })
   }

@@ -1,5 +1,5 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges} from '@angular/core';
-import {NzMenuDirective, NzMenuDividerDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
+import {Component, OnInit} from '@angular/core';
+import {NzMenuDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject} from "rxjs";
 import {ThemeService} from "../../services/theme.service";
@@ -18,6 +18,8 @@ import {
   NzListItemMetaTitleComponent
 } from "ng-zorro-antd/list";
 import {AuthService} from "../../services/auth.service";
+import {Data} from "../../interfaces/user.interface";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 
 export enum ThemeType {
   Dark = 'dark',
@@ -57,6 +59,7 @@ interface Tabs {
     NzListItemComponent,
     NzListItemMetaTitleComponent,
     NzListItemMetaComponent,
+    NzPopconfirmDirective,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -87,6 +90,7 @@ export class NavbarComponent implements OnInit {
     }
   ]
   selectedTab: Tabs = this.tabs[0];
+  userImage!: string;
 
   get user() {
     return this.authService.user;
@@ -103,6 +107,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.themeChanged$ = this.themeService.getThemeChanged();
     this.theme = this.themeService.theme;
+    this.getUserImage(this.user?.image?.data);
   }
 
   toggleTheme(): void {
@@ -117,10 +122,30 @@ export class NavbarComponent implements OnInit {
 
 
   logout() {
+    this.authService.logout();
 
   }
 
   chekTheme() {
     return this.themeService.theme === ThemeType.Dark;
   }
+
+  private getUserImage(data: Data | undefined) {
+    if (!data) {
+      this.userImage = 'assets/images/user.png';
+      console.log(this.user)
+      return;
+    }
+
+    // Convert the number array to a Uint8Array
+    const byteArray = new Uint8Array(data.data);
+
+    // Create a Blob from the byteArray
+    const blob = new Blob([byteArray], { type: data.type });
+
+    const  url = URL.createObjectURL(blob);
+    console.log('url', url);
+    this.userImage = url;
+  }
+
 }

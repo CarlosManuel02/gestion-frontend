@@ -1,5 +1,5 @@
 <nz-header class="navbar-transparent">
-  <div class="light-logo">TaskFusion</div>
+  <div class="light-logo"><p>TaskFusion</p></div>
 
   <ul nz-menu nzMode="horizontal">
     @for (tab of tabs; track tab.name) {
@@ -19,7 +19,9 @@
             nzPopoverTrigger="click"
             [nzPopoverContent]="contentTemplate"
             nzSize="small">
-      <nz-avatar nzIcon="user"></nz-avatar>
+      <nz-avatar nzIcon="user"  [nzSrc]="userImage">
+
+      </nz-avatar>
     </button>
     <ng-template #contentTemplate>
       <nz-list nzSize="small">
@@ -48,7 +50,12 @@
           <button nz-button
                   nzType="text"
                   nzSize="small"
-                  (click)="logout()">
+                  nz-popconfirm
+                  nzPopconfirmTitle="Are you sure to you want to logout?"
+                  nzOkText="Yes"
+                  nzCancelText="No"
+                  (nzOnConfirm)="logout()"
+                  >
             <span nz-icon nzType="logout"></span>
             <span>Logout</span>
           </button>
