@@ -6,6 +6,7 @@ import {TasksComponent} from "./pages/tasks/tasks.component";
 import {ValidarTokenGuard} from "../shared/guards/validar-token.guard";
 import {TaskViewComponent} from "./pages/task-view/task-view.component";
 import {ProjectsComponent} from "./pages/projects/projects.component";
+import {ProjectViewComponent} from "./pages/project-view/project-view.component";
 
 const routes: Routes = [
   {
@@ -15,7 +16,7 @@ const routes: Routes = [
     children: [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'projects', component: ProjectsComponent},
-      {path: 'tasks', component: TasksComponent},
+      {path: 'projects/:id', component: ProjectViewComponent},
       {path: 'tasks/:id', component: TaskViewComponent},
       {path: '**', redirectTo: 'dashboard'}
     ]

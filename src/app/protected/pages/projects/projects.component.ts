@@ -13,6 +13,11 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
+import {NgForOf} from "@angular/common";
+import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
+import {FormsModule} from "@angular/forms";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-projects',
@@ -29,7 +34,14 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
     NzCardComponent,
     NzCardMetaComponent,
     NzAvatarComponent,
-    NzColDirective
+    NzColDirective,
+    NzTableComponent,
+    NzThMeasureDirective,
+    NgForOf,
+    NzInputGroupComponent,
+    FormsModule,
+    NzInputDirective,
+    RouterLink
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'

@@ -1,38 +1,34 @@
 <div class="container-fluid mt-3">
-  <nz-list nzSize="default" [nzDataSource]="projects" [nzLoading]="loading" [nzNoResult]="emptyTpl" nzGrid>
-    <div nz-row [nzGutter]="16">
-      @for (project of projects; track project) {
-        <nz-card style="width: 300px" nzBordered nz-col nzSpan="8" nzHoverable>
-          <nz-card-meta
-            [nzTitle]="project.project_name"
-            [nzAvatar]="avatarTemplate"
-            [nzDescription]="project.project_description"
-          ></nz-card-meta>
-        </nz-card>
-        <ng-template #avatarTemplate>
-          <nz-avatar [nzSrc]="project.project_image_url"></nz-avatar>
-        </ng-template>
 
-      }
+  <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
+    <input type="text" nz-input placeholder="input search text">
+  </nz-input-group>
+  <nz-table #basicTable
+            [nzData]="projects"
+            [nzBordered]="true"
+            [nzPaginationPosition]="'both'"
+            [nzSize]="'default'">
+    <thead>
+    <tr>
+      <th nzWidth="25%">Project Name</th>
+      <th nzWidth="25%">Status</th>
+      <th nzWidth="25%">Owner</th>
+      <th nzWidth="25%">Start Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let project of basicTable.data">
+      <td class="d-flex align-items-center">
+        <nz-avatar class="me-2" nzSize="default" [nzShape]="'square'" [nzSrc]="project.project_image_url"></nz-avatar>
+        <a routerLink="/main/projects/{{ project.project_id }}">{{ project.project_name }}</a>
+      </td>
+      <td>{{ project.project_status }}</td>
+      <td>{{ project.project_owner_email }}</td>
+      <td>{{ project.project_start_date }}</td>
 
-      <ng-template #emptyTpl>
-        <nz-empty
-          nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-          [nzNotFoundContent]="contentTpl"
-          [nzNotFoundFooter]="footerTpl"
-        >
-          <ng-template #contentTpl>
-        <span>
-          There are no tasks available
-        </span>
-          </ng-template>
-          <ng-template #footerTpl>
-            <button nz-button nzType="primary">Create Now</button>
-          </ng-template>
-        </nz-empty>
-
-      </ng-template>
-    </div>
-  </nz-list>
-
+      <td>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
 </div>
