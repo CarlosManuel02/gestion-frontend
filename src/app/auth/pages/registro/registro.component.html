@@ -23,7 +23,7 @@
               <nz-form-control [nzErrorTip]="userErrorTp">
                 <nz-form-label [nzSpan]="5">User</nz-form-label>
                 <nz-input-group nzPrefixIcon="user">
-                  <input type="text" nz-input formControlName="userName" maxlength="16"/>
+                  <input type="text" nz-input formControlName="username" />
                   <ng-template #userErrorTp let-control>
                     <ng-container *ngIf="control.hasError('required')">Enter your user</ng-container>
                     <ng-container *ngIf="control.hasError('minlength')">Your user has a minimum of 3 letters

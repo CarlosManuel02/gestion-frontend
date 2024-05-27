@@ -35,7 +35,8 @@ import {AuthService} from "../../../shared/services/auth.service";
     NzColDirective,
     NzRowDirective,
     NavbarComponent,
-    NgIf
+    NgIf,
+
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -47,7 +48,8 @@ export class LoginComponent implements OnInit {
   passwordVisible = false;
   loading: boolean = false;
 
-  submitForm(): void {
+  login() {
+    console.log(this.validateForm.value)
     this.loading = true;
     const {email, password} = this.validateForm.value;
     console.log(email, password)
