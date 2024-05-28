@@ -35,4 +35,7 @@ export class NotificationsService {
   }
 
 
+  markAllAsRead(notifications: Notification[]) {
+  //   TODO: Implement this method
+  }
 }

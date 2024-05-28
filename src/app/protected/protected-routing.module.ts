@@ -17,6 +17,7 @@ const routes: Routes = [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'projects', component: ProjectsComponent},
       {path: 'projects/:id', component: ProjectViewComponent},
+      {path: 'tasks', component: TasksComponent},
       {path: 'tasks/:id', component: TaskViewComponent},
       {path: '**', redirectTo: 'dashboard'}
     ]

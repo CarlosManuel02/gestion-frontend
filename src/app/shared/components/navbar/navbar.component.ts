@@ -178,4 +178,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return new Date(created_at).toLocaleDateString();
 
   }
+
+  onVisibleChange($event: boolean) {
+    if (!$event){
+      // TODO: Marcar todas las notificaciones como leídas
+      // this.notificationsService.markAllAsRead(this.notifications).subscribe(() => {
+      //   this.notifications.forEach(notification => notification.read = true);
+      //   this.notificationsCount = 0;
+      // });
+    }
+  }
 }

@@ -5,4 +5,5 @@ export interface Notification{
   to_user: string;
   message: string;
   created_at: Date;
+  read: boolean;
 }

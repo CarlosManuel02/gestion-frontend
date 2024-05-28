@@ -3,16 +3,21 @@
   <nz-content>
 
     <div>
-      <h3 nz-typography>Recent Projects</h3>
+      <h3 nz-typography>Recent Projects
+        <button routerLink="" nz-button nzType="text">Show more</button>
+      </h3>
       <div nz-row>
         @if (projects.length > 0) {
-          @for (item of projects; track item) {
-            <nz-card style="width: 300px" nzBordered nz-col nzSpan="8">
+          @for (item of projects.slice(0, 5); track item) {
+            <nz-card style="margin: 5px" nzBordered nz-col nzSpan="4">
               <nz-card-meta
                 [nzTitle]="item.project_name"
                 [nzAvatar]="avatarTemplate"
-                [nzDescription]="item.project_description"
+                [nzDescription]="item.project_key"
               ></nz-card-meta>
+              <div>
+
+              </div>
             </nz-card>
             <ng-template #avatarTemplate>
               <nz-avatar [nzSrc]="item.project_image_url"></nz-avatar>

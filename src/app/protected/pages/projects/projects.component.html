@@ -10,10 +10,11 @@
             [nzSize]="'default'">
     <thead>
     <tr>
-      <th nzWidth="25%">Project Name</th>
-      <th nzWidth="25%">Status</th>
-      <th nzWidth="25%">Owner</th>
-      <th nzWidth="25%">Start Date</th>
+      <th>Project Name</th>
+      <th>Project Key</th>
+      <th>Status</th>
+      <th>Owner</th>
+      <th>Start Date</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
         <a routerLink="/main/projects/{{ project.project_id }}">{{ project.project_name }}</a>
       </td>
       <td>{{ project.project_status }}</td>
+      <td>{{ project.project_key }}</td>
       <td>{{ project.project_owner_email }}</td>
       <td>{{ project.project_start_date }}</td>
 

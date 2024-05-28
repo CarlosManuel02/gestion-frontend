@@ -16,6 +16,9 @@ import {TasksComponent} from "../tasks/tasks.component";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {ProjectsComponent} from "../projects/projects.component";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {RouterLink} from "@angular/router";
+import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
 
 @Component({
   selector: 'app-dashboard',
@@ -42,7 +45,9 @@ import {ProjectsComponent} from "../projects/projects.component";
     TasksComponent,
     NzButtonComponent,
     NzEmptyComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    NzIconDirective,
+    RouterLink,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
