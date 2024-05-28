@@ -11,6 +11,31 @@
         {{ tab.name }}
       </li>
     }
+
+<!--    notifications-->
+    <nz-badge [nzCount]="notificationsCount">
+      <button nz-button
+              class="float-end"
+              nzType="text"
+              nz-popover
+              nzPopoverPlacement="bottomRight"
+              nzPopoverTrigger="click"
+              [nzPopoverContent]="notificationTemplate"
+              nzSize="small">
+        <nz-avatar nzIcon="bell"></nz-avatar>
+      </button>
+    </nz-badge>
+    <ng-template #notificationTemplate>
+      <nz-list nzSize="small" *ngIf="notifications.length > 0; else noNotifications">
+        <nz-list-item *ngFor="let notification of notifications">
+          <pre>{{ notification | json }}</pre>
+        </nz-list-item>
+      </nz-list>
+      <ng-template #noNotifications>
+        <p>No tienes notificaciones</p>
+      </ng-template>
+    </ng-template>
+
     <button nz-button
             class="float-end"
             nzType="text"
