@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NzMenuDirective, NzMenuGroupComponent, NzMenuItemComponent} from "ng-zorro-antd/menu";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 import {ThemeService} from "../../services/theme.service";
 import {Router, RouterModule} from "@angular/router";
-import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, JsonPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {NzIconDirective, NzIconModule} from "ng-zorro-antd/icon";
 import {NzTabComponent, NzTabLinkTemplateDirective, NzTabSetComponent} from "ng-zorro-antd/tabs";
 import {NzHeaderComponent} from "ng-zorro-antd/layout";
@@ -20,6 +20,13 @@ import {
 import {AuthService} from "../../services/auth.service";
 import {Data} from "../../interfaces/user.interface";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
+import {HttpClient} from "@angular/common/http";
+import {Notification} from '../../interfaces/notification.interface';
+import {NzBadgeComponent} from "ng-zorro-antd/badge";
+import {NzNotificationService} from "ng-zorro-antd/notification";
+import {NotificationsService} from "../../services/notifications.service";
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+
 
 export enum ThemeType {
   Dark = 'dark',
@@ -31,7 +38,6 @@ interface Tabs {
   link: string;
   icon: string;
   disabled: boolean;
-
 }
 
 @Component({
@@ -60,70 +66,71 @@ interface Tabs {
     NzListItemMetaTitleComponent,
     NzListItemMetaComponent,
     NzPopconfirmDirective,
+    NgForOf,
+    NzBadgeComponent,
+    JsonPipe,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualScrollViewport,
+    CdkVirtualForOf,
+    DatePipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   theme = this.themeService.theme;
-
   public themeChanged$!: BehaviorSubject<ThemeType>;
   tabs: Tabs[] = [
-    {
-      name: 'Dashboard',
-      link: 'dashboard',
-      icon: 'dashboard',
-      disabled: false
-    },
-    {
-      name: 'Mis tareas',
-      link: 'tasks',
-      icon: 'file-search',
-      disabled: false
-    },
-    {
-      name: "Mis proyectos",
-      link: 'projects',
-      icon: 'project',
-      disabled: false
-    }
-  ]
+    {name: 'Dashboard', link: 'dashboard', icon: 'dashboard', disabled: false},
+    {name: 'Mis tareas', link: 'tasks', icon: 'file-search', disabled: false},
+    {name: 'Mis proyectos', link: 'projects', icon: 'project', disabled: false}
+  ];
   selectedTab: Tabs = this.tabs[0];
   userImage!: string;
+  notifications: Notification[] = [];
+  private eventSource!: EventSource;
+  private notificationSubscription!: Subscription;
+  notificationsCount = 0;
 
   get user() {
     return this.authService.user;
   }
 
-  constructor(private router: Router,
-              private themeService: ThemeService,
-              private authService: AuthService
+  constructor(
+    private router: Router,
+    private themeService: ThemeService,
+    private authService: AuthService,
+    private notificationsService: NotificationsService,
+    private nzNotification: NzNotificationService
   ) {
-
   }
-
 
   ngOnInit(): void {
     this.themeChanged$ = this.themeService.getThemeChanged();
     this.theme = this.themeService.theme;
     this.getUserImage(this.user?.image?.data);
+    if (!this.eventSource) { // Verifica si eventSource ya está inicializado
+      this.getAllNotifications();
+      this.initNotifications();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+    }
   }
 
   toggleTheme(): void {
-    this.themeService.toggleTheme().then(
-      () => {
-        this.theme = this.themeService.theme;
-        console.log(this.theme);
-
-      }
-    );
+    this.themeService.toggleTheme().then(() => {
+      this.theme = this.themeService.theme;
+      console.log(this.theme);
+    });
   }
-
 
   logout() {
     this.authService.logout();
-
   }
 
   chekTheme() {
@@ -133,19 +140,52 @@ export class NavbarComponent implements OnInit {
   private getUserImage(data: Data | undefined) {
     if (!data) {
       this.userImage = 'assets/images/user.png';
-      console.log(this.user)
+      console.log(this.user);
       return;
     }
 
-    // Convert the number array to a Uint8Array
     const byteArray = new Uint8Array(data.data);
-
-    // Create a Blob from the byteArray
-    const blob = new Blob([byteArray], { type: data.type });
-
-    const  url = URL.createObjectURL(blob);
-    console.log('url', url);
+    const blob = new Blob([byteArray], {type: data.type});
+    const url = URL.createObjectURL(blob);
     this.userImage = url;
   }
 
+  private initNotifications() {
+    this.eventSource = new EventSource('http://localhost:8080/api/notifications/notify');
+    this.eventSource.onmessage = (event) => {
+      const notification: Notification = JSON.parse(event.data);
+      this.notifications.push(notification);
+      this.notificationsCount = this.notifications.length;
+      console.log('Notification:', notification);
+    };
+    this.eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+    };
+  }
+
+  private getAllNotifications() {
+    this.notificationsService.getAllMotifications()
+      .subscribe((notifications) => {
+        this.notifications = notifications;
+        console.log('Notifications:', this.notifications)
+        this.notificationsCount = this.notifications.length;
+      });
+  }
+
+  protected readonly Date = Date;
+
+  getDate(created_at: Date) {
+    return new Date(created_at).toLocaleDateString();
+
+  }
+
+  onVisibleChange($event: boolean) {
+    if (!$event){
+      // TODO: Marcar todas las notificaciones como leídas
+      // this.notificationsService.markAllAsRead(this.notifications).subscribe(() => {
+      //   this.notifications.forEach(notification => notification.read = true);
+      //   this.notificationsCount = 0;
+      // });
+    }
+  }
 }

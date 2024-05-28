@@ -11,6 +11,40 @@
         {{ tab.name }}
       </li>
     }
+
+    <!-- notifications -->
+    <button nz-button
+            class="float-end"
+            nzType="text"
+            nz-popover
+            nzPopoverPlacement="bottomRight"
+            nzPopoverTrigger="click"
+            style="right: 50px"
+            [nzPopoverContent]="notificationTemplate"
+            (nzPopoverVisibleChange)="onVisibleChange($event)"
+            nzSize="small">
+      <nz-badge [nzCount]="notificationsCount">
+        <nz-avatar nzIcon="bell"></nz-avatar>
+      </nz-badge>
+    </button>
+    <ng-template #notificationTemplate>
+      <div style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+        <nz-list nzSize="small" *ngIf="notifications.length > 0; else noNotifications">
+          <nz-list-item *ngFor="let notification of notifications" style="width: 300px;">
+            <nz-badge [nzStatus]="notification.read ? 'default' : 'processing'"></nz-badge>
+            <nz-list-item-meta
+              [nzTitle]="notification.title + ' - ' + getDate(notification.created_at)"
+              [nzDescription]="notification.message"
+            >
+            </nz-list-item-meta>
+          </nz-list-item>
+        </nz-list>
+      </div>
+      <ng-template #noNotifications>
+        <p>No tienes notificaciones</p>
+      </ng-template>
+    </ng-template>
+
     <button nz-button
             class="float-end"
             nzType="text"
@@ -19,9 +53,7 @@
             nzPopoverTrigger="click"
             [nzPopoverContent]="contentTemplate"
             nzSize="small">
-      <nz-avatar nzIcon="user"  [nzSrc]="userImage">
-
-      </nz-avatar>
+      <nz-avatar nzIcon="user" [nzSrc]="userImage"></nz-avatar>
     </button>
     <ng-template #contentTemplate>
       <nz-list nzSize="small">
@@ -39,9 +71,9 @@
                   nzType="text"
                   nzSize="small"
                   (click)="toggleTheme()">
-       <span nz-icon>
-         <i nz-icon nzType="arrow-up" *ngIf="chekTheme()" nzTheme="outline"></i>
-         <i nz-icon nzType="arrow-down" *ngIf="!chekTheme()" nzTheme="outline"></i>
+            <span nz-icon>
+              <i nz-icon nzType="arrow-up" *ngIf="chekTheme()" nzTheme="outline"></i>
+              <i nz-icon nzType="arrow-down" *ngIf="!chekTheme()" nzTheme="outline"></i>
             </span>
             <span>Toggle Theme</span>
           </button>
@@ -55,7 +87,7 @@
                   nzOkText="Yes"
                   nzCancelText="No"
                   (nzOnConfirm)="logout()"
-                  >
+          >
             <span nz-icon nzType="logout"></span>
             <span>Logout</span>
           </button>

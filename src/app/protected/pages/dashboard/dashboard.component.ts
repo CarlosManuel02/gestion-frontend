@@ -13,6 +13,12 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzListComponent, NzListItemComponent} from "ng-zorro-antd/list";
 import {TasksComponent} from "../tasks/tasks.component";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
+import {ProjectsComponent} from "../projects/projects.component";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {RouterLink} from "@angular/router";
+import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +42,12 @@ import {TasksComponent} from "../tasks/tasks.component";
     NzSkeletonComponent,
     NzListComponent,
     NzListItemComponent,
-    TasksComponent
+    TasksComponent,
+    NzButtonComponent,
+    NzEmptyComponent,
+    ProjectsComponent,
+    NzIconDirective,
+    RouterLink,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

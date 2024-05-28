@@ -1,17 +1,39 @@
-<nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading">
-      @for (task of tasks; track task) {
-          <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
-            <nz-list-item-meta
-              [nzTitle]="task.task_name"
-              [nzDescription]="task.task_description"
-              [nzAvatar]="avatarTemplate"
-            ></nz-list-item-meta>
-            <nz-list-item-extra>
-              <nz-badge [nzStatus]="'processing'" [nzText]="task.task_status"></nz-badge>
-            </nz-list-item-extra>
-          </nz-list-item>
-        <ng-template #avatarTemplate>
-          <span nz-icon nzType="book" nzTheme="outline"></span>
+<div class="container-fluid mt-3">
+
+  <nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading" [nzNoResult]="emptyTpl">
+    @for (task of tasks; track task) {
+      <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
+        <nz-list-item-meta
+          [nzTitle]="task.task_name"
+          [nzDescription]="task.task_description"
+          [nzAvatar]="avatarTemplate"
+        ></nz-list-item-meta>
+        <nz-list-item-extra>
+          <nz-badge [nzStatus]="'processing'" [nzText]="task.task_status"></nz-badge>
+        </nz-list-item-extra>
+      </nz-list-item>
+      <ng-template #avatarTemplate>
+        <span nz-icon nzType="book" nzTheme="outline"></span>
+      </ng-template>
+    }
+
+    <ng-template #emptyTpl>
+      <nz-empty
+        nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        [nzNotFoundContent]="contentTpl"
+        [nzNotFoundFooter]="footerTpl"
+      >
+        <ng-template #contentTpl>
+        <span>
+          There are no tasks available
+        </span>
         </ng-template>
-      }
-</nz-list>
+        <ng-template #footerTpl>
+          <button nz-button nzType="primary">Create Now</button>
+        </ng-template>
+      </nz-empty>
+
+    </ng-template>
+
+  </nz-list>
+</div>

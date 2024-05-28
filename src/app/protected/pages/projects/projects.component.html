@@ -1,1 +1,36 @@
-<p>projects works!</p>
+<div class="container-fluid mt-3">
+
+  <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
+    <input type="text" nz-input placeholder="input search text">
+  </nz-input-group>
+  <nz-table #basicTable
+            [nzData]="projects"
+            [nzBordered]="true"
+            [nzPaginationPosition]="'both'"
+            [nzSize]="'default'">
+    <thead>
+    <tr>
+      <th>Project Name</th>
+      <th>Project Key</th>
+      <th>Status</th>
+      <th>Owner</th>
+      <th>Start Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let project of basicTable.data">
+      <td class="d-flex align-items-center">
+        <nz-avatar class="me-2" nzSize="default" [nzShape]="'square'" [nzSrc]="project.project_image_url"></nz-avatar>
+        <a routerLink="/main/projects/{{ project.project_id }}">{{ project.project_name }}</a>
+      </td>
+      <td>{{ project.project_status }}</td>
+      <td>{{ project.project_key }}</td>
+      <td><app-user-display [userId]="project.project_owner_id"></app-user-display> </td>
+      <td>{{ project.project_start_date }}</td>
+
+      <td>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
