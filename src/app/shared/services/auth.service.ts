@@ -108,12 +108,12 @@ export class AuthService {
     return localStorage.getItem('token') !== null;
   }
 
-  getUser() {
+  getUser(userId: string): Promise<UserResponse[]> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
     return new Promise((resolve, reject) => {
-      this.http.get<UserResponse>(`${this.endpoint}user`, {headers})
+      this.http.get<UserResponse[]>(`${this.endpoint}${userId}`, {headers})
         .subscribe((resp) => {
           if (resp) {
             resolve(resp)

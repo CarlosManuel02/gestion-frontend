@@ -8,7 +8,7 @@ export interface User{
 }
 
 export interface Image {
-  id:        string;
+  image_id:        string;
   user_id:   string;
   data:      Data;
   mime_type: string;

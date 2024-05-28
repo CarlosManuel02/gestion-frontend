@@ -25,7 +25,7 @@
       </td>
       <td>{{ project.project_status }}</td>
       <td>{{ project.project_key }}</td>
-      <td>{{ project.project_owner_email }}</td>
+      <td><app-user-display [userId]="project.project_owner_id"></app-user-display> </td>
       <td>{{ project.project_start_date }}</td>
 
       <td>

@@ -18,6 +18,7 @@ import {NgForOf} from "@angular/common";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
+import {UserDisplayComponent} from "../../components/user-display/user-display.component";
 
 @Component({
   selector: 'app-projects',
@@ -41,7 +42,8 @@ import {RouterLink} from "@angular/router";
     NzInputGroupComponent,
     FormsModule,
     NzInputDirective,
-    RouterLink
+    RouterLink,
+    UserDisplayComponent
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
