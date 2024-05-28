@@ -4,7 +4,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {BehaviorSubject, Subscription} from "rxjs";
 import {ThemeService} from "../../services/theme.service";
 import {Router, RouterModule} from "@angular/router";
-import {AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, JsonPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {NzIconDirective, NzIconModule} from "ng-zorro-antd/icon";
 import {NzTabComponent, NzTabLinkTemplateDirective, NzTabSetComponent} from "ng-zorro-antd/tabs";
 import {NzHeaderComponent} from "ng-zorro-antd/layout";
@@ -23,6 +23,9 @@ import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {HttpClient} from "@angular/common/http";
 import {Notification} from '../../interfaces/notification.interface';
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
+import {NzNotificationService} from "ng-zorro-antd/notification";
+import {NotificationsService} from "../../services/notifications.service";
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 
 
 export enum ThemeType {
@@ -66,6 +69,10 @@ interface Tabs {
     NgForOf,
     NzBadgeComponent,
     JsonPipe,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualScrollViewport,
+    CdkVirtualForOf,
+    DatePipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -94,7 +101,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private themeService: ThemeService,
     private authService: AuthService,
-    public http: HttpClient
+    private notificationsService: NotificationsService,
+    private nzNotification: NzNotificationService
   ) {
   }
 
@@ -103,6 +111,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.theme = this.themeService.theme;
     this.getUserImage(this.user?.image?.data);
     if (!this.eventSource) { // Verifica si eventSource ya está inicializado
+      this.getAllNotifications();
       this.initNotifications();
     }
   }
@@ -152,5 +161,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.eventSource.onerror = (error) => {
       console.error('EventSource failed:', error);
     };
+  }
+
+  private getAllNotifications() {
+    this.notificationsService.getAllMotifications()
+      .subscribe((notifications) => {
+        this.notifications = notifications;
+        console.log('Notifications:', this.notifications)
+        this.notificationsCount = this.notifications.length;
+      });
+  }
+
+  protected readonly Date = Date;
+
+  getDate(created_at: Date) {
+    return new Date(created_at).toLocaleDateString();
+
   }
 }
