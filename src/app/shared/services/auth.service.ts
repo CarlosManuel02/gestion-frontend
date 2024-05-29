@@ -5,13 +5,14 @@ import {User} from "../interfaces/user.interface";
 import {UserResponse} from "../../shared/interfaces/userResponse.interface";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Router} from "@angular/router";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private endpoint = 'http://localhost:8080/api/auth/';
+  private endpoint = environment.ApiEndPoint + 'auth/';
   private _user!: User;
 
   constructor(private http: HttpClient,
