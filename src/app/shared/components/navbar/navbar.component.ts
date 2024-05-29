@@ -26,6 +26,7 @@ import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NotificationsService} from "../../services/notifications.service";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
+import {environment} from "../../../../environments/environment";
 
 
 export enum ThemeType {
@@ -151,7 +152,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initNotifications() {
-    this.eventSource = new EventSource('http://localhost:8080/api/notifications/notify');
+    const endpoint = environment.ApiEndPoint + 'notifications/notify';
+    this.eventSource = new EventSource(endpoint);
     this.eventSource.onmessage = (event) => {
       const notification: Notification = JSON.parse(event.data);
       this.notifications.push(notification);
