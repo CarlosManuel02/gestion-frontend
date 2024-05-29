@@ -1,9 +1,9 @@
 [build]
-  base="taskharmony"
-  command="npm run build:prod"
-  publish="dist/"
+  base = "taskharmony"
+  command = "npm run build:prod"
+  publish = "dist/browser"
 
   [[redirects]]
-  from="/*"
-  to="/index.html"
-  status=200
+  from = "/*"
+  to = "/index.html"
+  status = 200
