@@ -1,7 +1,7 @@
 [build]
-  publish = "taskharmony"
+  base = "/"
   command = "npm run build:prod"
-  base = "dist/frontend/browser"
+  publish = "dist/frontend/browser"
 
   [[redirects]]
   from = "/*"
