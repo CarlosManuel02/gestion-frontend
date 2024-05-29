@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Task, TaskResponse} from "../interfaces/task.interface";
 import {catchError, map, Observable, tap, throwError} from "rxjs";
@@ -8,7 +8,7 @@ import {catchError, map, Observable, tap, throwError} from "rxjs";
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly API_URL = `${environment.ApiEndPoint}/api/tasks/`
+  private readonly API_URL = `${environment.ApiEndPoint}tasks/`
   private _tasks: Task[] = [];
   private _task: Task = {} as Task;
 

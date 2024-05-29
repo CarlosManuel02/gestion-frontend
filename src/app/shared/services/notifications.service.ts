@@ -4,11 +4,13 @@ import {Notification} from "../interfaces/notification.interface";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {NotificationResponse} from "../interfaces/notificationResponse.interface";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
+  private endpoint = environment.ApiEndPoint + 'notifications/';
   private _notifications: Notification[] = [];
   get notifications(): Notification[] {
     return [...this._notifications]
@@ -23,7 +25,7 @@ export class NotificationsService {
 
   getAllMotifications() {
     console.log(this.authService.user.id)
-    return this.http.get<NotificationResponse>(`http://localhost:8080/api/notifications/all/${this.authService.user.id}`).pipe(
+    return this.http.get<NotificationResponse>(`${this.endpoint}all/${this.authService.user.id}`).pipe(
       tap((resp) => {
         if (resp.status !== 200) {
           throw new Error(resp.message);
