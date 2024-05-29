@@ -54,8 +54,10 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login').then(() => {
+      this.message.info('You have been logged out');
+    })
+    // localStorage.removeItem('token');
   }
 
   register(username: string, email: string, password: string) {
