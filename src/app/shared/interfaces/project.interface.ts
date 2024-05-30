@@ -1,3 +1,5 @@
+import {Member} from "./member.interface";
+
 export interface Project {
   project_id:          string;
   project_name:        string;
@@ -14,9 +16,3 @@ export interface Project {
   members:             Member[];
 }
 
-export interface Member {
-  member_id:       string;
-  member_role:     string;
-  member_email:    string;
-  member_username: string;
-}
