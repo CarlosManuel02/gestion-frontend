@@ -9,7 +9,7 @@ export interface Task {
   task_id:            string;
   task_name:          string;
   task_description:   string;
-  task_status:        string;
+  task_status:        string | undefined;
   task_creation_date: Date;
   task_deadline:      Date;
   task_priority:      number | string | undefined;

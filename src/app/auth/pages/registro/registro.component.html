@@ -5,17 +5,13 @@
         <div class="text-wrap p-4 text-center d-flex align-items-center order-md-last">
           <div class="text w-100">
             <p>¿Already have an account?</p>
-            <button nz-button
-                    nzType="dashed"
-                    routerLink="../login"
-            >Log in
-            </button>
+            <button nz-button nzType="dashed" routerLink="../login">Log in</button>
           </div>
         </div>
       </nz-card>
-      <nz-card class="form-login-width py-md-4 px-2 bg-dark ">
+      <nz-card class="form-login-width py-md-4 px-2 bg-dark">
         <div class="mx-auto">
-          <form nz-form [formGroup]="validateForm" class="login-form">
+          <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
             <nz-form-item class="mb-0">
               <h3 nz-typography>Sing Up</h3>
             </nz-form-item>
@@ -26,8 +22,7 @@
                   <input type="text" nz-input formControlName="username" />
                   <ng-template #userErrorTp let-control>
                     <ng-container *ngIf="control.hasError('required')">Enter your user</ng-container>
-                    <ng-container *ngIf="control.hasError('minlength')">Your user has a minimum of 3 letters
-                    </ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">Your user has a minimum of 3 letters</ng-container>
                   </ng-template>
                 </nz-input-group>
               </nz-form-control>
@@ -36,7 +31,7 @@
               <nz-form-control [nzErrorTip]="emailErrorTp">
                 <nz-form-label [nzSpan]="5">Email</nz-form-label>
                 <nz-input-group nzPrefixIcon="mail">
-                  <input type="email" nz-input formControlName="email" maxlength="16"/>
+                  <input type="email" nz-input formControlName="email" />
                   <ng-template #emailErrorTp let-control>
                     <ng-container *ngIf="control.hasError('required')">Enter your email</ng-container>
                     <ng-container *ngIf="control.hasError('email')">The input is not valid E-mail!</ng-container>
@@ -48,23 +43,26 @@
               <nz-form-control [nzErrorTip]="passwordErrorTp">
                 <nz-form-label [nzSpan]="5">Contraseña</nz-form-label>
                 <nz-input-group nzPrefixIcon="lock" [nzSuffix]="passw">
-                  <input [type]="passwordVisible ? 'text' : 'password'" maxlength="16" nz-input
-                         formControlName="password" autocomplete="off"/>
+                  <input [type]="passwordVisible ? 'text' : 'password'" maxlength="16" nz-input formControlName="password" autocomplete="off" />
                   <ng-template #passwordErrorTp let-control>
                     <ng-container *ngIf="control.hasError('required')">Enter your password</ng-container>
-                    <ng-container *ngIf="control.hasError('minlength')">Should be at least 6 characters
-                    </ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">Should be at least 6 characters</ng-container>
                   </ng-template>
                 </nz-input-group>
                 <ng-template #passw>
-                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
-                     (click)="passwordVisible = !passwordVisible"></i>
+                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
                 </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <nz-form-label [nzSpan]="8">Profile Picture</nz-form-label>
+                <input type="file" (change)="onFileChange($event)" />
               </nz-form-control>
             </nz-form-item>
             <div nz-row class="login-form-margin">
               <div nz-col [nzSpan]="null">
-                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="submitForm()">
+                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" >
                   Register
                 </button>
               </div>

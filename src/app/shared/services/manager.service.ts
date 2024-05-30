@@ -23,4 +23,16 @@ export class ManagerService {
         this._projects = projects;
       });
   }
+
+  getProjecMembers(projectId: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(`${this.API_URL}members/${projectId}`).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp.data)
+        }
+      })
+    });
+  }
 }

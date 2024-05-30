@@ -86,4 +86,19 @@ export class TaskService {
     });
 
   }
+
+  updateTask(taskId: string, data: any): Promise<{ status: number }> {
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(`http://localhost:8080/api/tasks/${taskId}`, data)
+        .subscribe((resp: any) => {
+          if (resp.status === 200) {
+            resolve({status: resp.status});
+          } else {
+            reject({status: resp.status});
+          }
+        });
+    })
+
+  }
 }

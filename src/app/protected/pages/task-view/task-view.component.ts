@@ -27,6 +27,9 @@ import {FileSizePipe} from "../../../shared/pipes/file-size.pipe";
 import {NzTypographyComponent} from "ng-zorro-antd/typography";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {Data} from "../../../shared/interfaces/user.interface";
+import {NzCollapseComponent, NzCollapsePanelComponent} from "ng-zorro-antd/collapse";
+import {ManagerService} from "../../../shared/services/manager.service";
+import {Member} from "../../../shared/interfaces";
 
 @Component({
   selector: 'app-task-view',
@@ -60,7 +63,9 @@ import {Data} from "../../../shared/interfaces/user.interface";
     NzDatePickerComponent,
     FileSizePipe,
     NzTypographyComponent,
-    NzAvatarComponent
+    NzAvatarComponent,
+    NzCollapseComponent,
+    NzCollapsePanelComponent
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -79,14 +84,23 @@ export class TaskViewComponent implements OnInit {
     {label: 'Urgent', value: 4},
   ]
 
+  projectMembers: Member[] = []
+
   get task() {
     return this.taskService.task
   }
 
   mockTask: Task = {} as Task;
+  statuses = [
+    {label: 'Open', value: 'open'},
+    {label: 'In Progress', value: 'in_progress'},
+    {label: 'Completed', value: 'completed'},
+    {label: 'Closed', value: 'closed'},
+  ]
 
   constructor(
     private taskService: TaskService,
+    private managerService: ManagerService,
     private router: Router,
     public message: NzMessageService,
   ) {
@@ -107,9 +121,11 @@ export class TaskViewComponent implements OnInit {
       if (resp.status !== 200) {
         console.error('Error getting task')
       } else {
-        this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label
+        this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label;
+        this.task.task_status = this.statuses.find(s => s.value === this.task.task_status)?.label;
         this.getAttachments(taskId)
         this.mockTask = this.task
+        this.getProjctMembers();
       }
     })
   }
@@ -152,9 +168,6 @@ export class TaskViewComponent implements OnInit {
     this.editModeDetails = false
   }
 
-  save() {
-
-  }
 
   cancel() {
     this.editMode = true
@@ -193,10 +206,51 @@ export class TaskViewComponent implements OnInit {
 
   saveDetails() {
 
+    // task_id?: string;
+    // name: string;
+    // description?: string;
+    // status: string;
+    // creation_date: string;
+    // deadline?: string;
+    // priority: number;
+    // assignment?: string;
+    // project_id?: string;
+    const data = {
+      task_id: this.mockTask.task_id,
+      name: this.mockTask.task_name,
+      description: this.mockTask.task_description,
+      status: this.mockTask.task_status,
+      creation_date: this.mockTask.task_creation_date,
+      deadline: this.mockTask.task_deadline,
+      priority: this.mockTask.task_priority,
+      assignment: this.mockTask.user_email,
+      project_id: this.mockTask.project_id,
+    }
+    this.loading = true;
+    this.taskService.updateTask(this.task.task_id, data)
+      .then((resp: any) => {
+        this.loading = false;
+        if (resp.status === 200) {
+          this.message.success('Task updated successfully')
+          this.editModeDetails = true;
+          this.getTask()
+        } else {
+          this.message.error('Error updating task')
+        }
+      });
   }
 
   cancelDetails() {
     this.editModeDetails = true;
     this.mockTask = this.task;
+  }
+
+  private getProjctMembers() {
+    // console.log(this.task)
+    this.managerService.getProjecMembers(this.task.project_id)
+      .then((resp: any) => {
+        this.projectMembers = resp
+        console.log(this.projectMembers)
+      })
   }
 }

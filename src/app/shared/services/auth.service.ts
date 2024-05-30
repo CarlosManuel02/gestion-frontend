@@ -54,19 +54,15 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login').then(() => {
+      this.message.info('You have been logged out');
+    })
+    // localStorage.removeItem('token');
   }
 
-  register(username: string, email: string, password: string) {
+  register(formData: FormData){
     const url = `${this.endpoint}new`;
-    const body = {
-      username: username,
-      email: email,
-      password: password
-    };
-
-    return this.http.post<UserResponse>(url, body)
+    return this.http.post<UserResponse>(url, formData)
       .pipe(
         tap((resp) => {
           this._user = {
