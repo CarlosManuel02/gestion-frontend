@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzCardComponent} from "ng-zorro-antd/card";
@@ -39,11 +39,12 @@ import {NzMessageService} from "ng-zorro-antd/message";
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.scss'
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit {
 
   validateForm!: FormGroup;
   passwordVisible = false;
-  loading: boolean = false
+  loading: boolean = false;
+  userImage: any;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -60,21 +61,35 @@ export class RegistroComponent {
     });
   }
 
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.userImage = file;
+    }
+  }
+
   submitForm(): void {
     this.loading = true;
+    let formData = new FormData();
     const {username, email, password} = this.validateForm.value;
-    if (username && email && password) {
-      this.authService.register(username, email, password).subscribe((res) => {
-        this.loading = false;
-        if (res) {
-          this.router.navigate(['/login']);
-          this.message.success('User registered successfully');
-        }
-      }, (error) => {
-        this.loading = false;
-        this.message.error(error.error.message);
-      });
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    if (this.userImage) {
+      formData.append('file', this.userImage);
     }
+
+    this.authService.register(formData).subscribe((res) => {
+      this.loading = false;
+      if (res) {
+        this.router.navigate(['/login']);
+        this.message.success('User registered successfully');
+      }
+    }, (error) => {
+      this.loading = false;
+      this.message.error(error.error.message);
+    });
+
 
   }
 
