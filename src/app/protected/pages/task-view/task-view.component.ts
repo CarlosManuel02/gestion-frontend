@@ -168,9 +168,6 @@ export class TaskViewComponent implements OnInit {
     this.editModeDetails = false
   }
 
-  save() {
-
-  }
 
   cancel() {
     this.editMode = true
@@ -209,6 +206,38 @@ export class TaskViewComponent implements OnInit {
 
   saveDetails() {
 
+    // task_id?: string;
+    // name: string;
+    // description?: string;
+    // status: string;
+    // creation_date: string;
+    // deadline?: string;
+    // priority: number;
+    // assignment?: string;
+    // project_id?: string;
+    const data = {
+      task_id: this.mockTask.task_id,
+      name: this.mockTask.task_name,
+      description: this.mockTask.task_description,
+      status: this.mockTask.task_status,
+      creation_date: this.mockTask.task_creation_date,
+      deadline: this.mockTask.task_deadline,
+      priority: this.mockTask.task_priority,
+      assignment: this.mockTask.user_email,
+      project_id: this.mockTask.project_id,
+    }
+    this.loading = true;
+    this.taskService.updateTask(this.task.task_id, data)
+      .then((resp: any) => {
+        this.loading = false;
+        if (resp.status === 200) {
+          this.message.success('Task updated successfully')
+          this.editModeDetails = true;
+          this.getTask()
+        } else {
+          this.message.error('Error updating task')
+        }
+      });
   }
 
   cancelDetails() {
