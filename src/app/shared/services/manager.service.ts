@@ -15,7 +15,27 @@ export class ManagerService {
   get projects() {
     return [...this._projects]
   }
+
+  private _project: Project = {} as Project;
+  get project() {
+    return {...this._project}
+  }
+
   constructor(private http: HttpClient,private authService: AuthService) { }
+
+
+  getProject(projectId: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(`${this.API_URL}${projectId}`).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject({message: resp.message})
+        } else {
+          this._project = resp.data
+          resolve(resp.status)
+        }
+      })
+    });
+  }
 
   getProjects() {
     return this.http.get<Project[]>(`${this.API_URL}all/${this.authService.user.id}`)

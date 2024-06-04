@@ -1,3 +1,37 @@
-<pre>{{
-  project | json
-  }}</pre>
+<nz-layout style="margin-top: 1px">
+  <nz-layout>
+    <nz-sider nzWidth="250px">
+      <nz-card>
+        <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="{ size: 'large' }">
+          <nz-card-meta
+            [nzAvatar]="avatarTemplate"
+            nzTitle="Card title"
+            nzDescription="This is the description"
+          ></nz-card-meta>
+          <nz-list [nzDataSource]="menuItems" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+            <ng-template #item let-item>
+              <nz-list-item>
+                <nz-list-item-meta
+                  [nzAvatar]="menuTemplate"
+                  [nzTitle]="item.title"
+                ></nz-list-item-meta>
+              </nz-list-item>
+
+              <ng-template #menuTemplate>
+                <span nz-icon [nzType]="item.icon"></span>
+              </ng-template>
+            </ng-template>
+          </nz-list>
+        </nz-skeleton>
+      </nz-card>
+      <ng-template #avatarTemplate>
+        <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+      </ng-template>
+
+    </nz-sider>
+
+    <nz-content style="margin-left: 40px">
+      Content
+    </nz-content>
+  </nz-layout>
+</nz-layout>
