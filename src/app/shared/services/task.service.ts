@@ -23,8 +23,24 @@ export class TaskService {
   constructor(private http: HttpClient) {
   }
 
-  getTasks(user: string | undefined): Observable<{ status: number }> {
-    return this.http.get<TaskResponse>(`${this.API_URL}all/${user}`).pipe(
+  getTasksFromUser(user: string | undefined): Observable<{ status: number }> {
+    return this.http.get<TaskResponse>(`${this.API_URL}all/user/${user}`).pipe(
+      tap((resp) => {
+        if (resp.status === 200) {
+          this._tasks = resp.tasks;
+        } else {
+          throw new Error('Error getting tasks');
+        }
+      }),
+      map((resp) => ({status: resp.status})),
+      catchError((err: any) => {
+        return throwError(() => new Error(err.message || 'Error getting tasks'));
+      })
+    );
+  }
+
+  getTasksFromProject(project: string | undefined): Observable<{ status: number }> {
+    return this.http.get<TaskResponse>(`${this.API_URL}all/${project}`).pipe(
       tap((resp) => {
         if (resp.status === 200) {
           this._tasks = resp.tasks;
