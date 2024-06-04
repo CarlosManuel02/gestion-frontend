@@ -1,5 +1,5 @@
-<nz-list nzSize="small" [nzDataSource]="filterTask" [nzLoading]="loading" [nzNoResult]="emptyTpl">
-  @for (task of filterTask; track task) {
+<nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading" [nzNoResult]="emptyTpl">
+  @for (task of tasks; track task) {
     <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
       <nz-list-item-meta
         [nzTitle]="task.task_name"
@@ -7,7 +7,7 @@
         [nzAvatar]="avatarTemplate"
       ></nz-list-item-meta>
       <nz-list-item-extra>
-        <nz-badge [nzStatus]="'processing'" [nzText]="task.task_status"></nz-badge>
+        <nz-badge [nzStatus]="getStatusType(task.task_status)" [nzText]="getStatus(task.task_status)"></nz-badge>
       </nz-list-item-extra>
     </nz-list-item>
     <ng-template #avatarTemplate>

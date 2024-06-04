@@ -2,8 +2,7 @@
 
   @if (projectId) {
     <app-task-list
-      [tasks]="tasks"
-      [loading]="loading"
+      [projectId]="projectId"
       (onTaskClick)="taskClick($event)"
     ></app-task-list>
   } @else {
@@ -22,32 +21,28 @@
 
     <div *ngIf="selectedView === 0">
       <app-task-list
-        [tasks]="tasks"
-        [loading]="loading"
+        [user]="user"
         (onTaskClick)="taskClick($event)"
       ></app-task-list>
     </div>
 
     <div *ngIf="selectedView === 1">
       <app-task-list
-        [tasks]="tasks"
-        [loading]="loading"
+        [user]="user"
         filter="open"
         (onTaskClick)="taskClick($event)"
       ></app-task-list>
     </div>
     <div *ngIf="selectedView === 2">
       <app-task-list
-        [tasks]="tasks"
-        [loading]="loading"
+        [user]="user"
         filter="in_progress"
         (onTaskClick)="taskClick($event)"
       ></app-task-list>
     </div>
     <div *ngIf="selectedView === 3">
       <app-task-list
-        [tasks]="tasks"
-        [loading]="loading"
+        [user]="user"
         filter="completed"
         (onTaskClick)="taskClick($event)"
       ></app-task-list>

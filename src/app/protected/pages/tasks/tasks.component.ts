@@ -55,9 +55,7 @@ export class TasksComponent implements OnInit {
   @Input() projectId: string = '';
   selectedView: number = 1;
 
-  get tasks() {
-    return this.taskService.tasks;
-  }
+  tasks: Task[] = [];
 
   get user() {
     return this.authService.user;
@@ -71,22 +69,6 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.init();
-  }
-
-  private getTasksFromUser() {
-    this.taskService.getTasksFromUser(this.user.email)
-      .subscribe((resp) => {
-        this.loading = true;
-        if (resp.status === 200) {
-          this.loading = false;
-          // console.log('Tasks', this.tasks)
-        } else {
-          console.log('Error getting tasks')
-          this.loading = false;
-        }
-      })
-
   }
 
   taskClick(task: Task) {
@@ -94,29 +76,11 @@ export class TasksComponent implements OnInit {
     this.router.navigate(['/main/tasks', task.task_id]);
     this.selectedTask = task;
   }
+
   ChangeView(id: number) {
 
     this.selectedView = id;
   }
 
-  private getTasksFromProject() {
-    this.taskService.getTasksFromProject(this.projectId)
-      .subscribe((resp) => {
-        this.loading = true;
-        if (resp.status === 200) {
-          this.loading = false;
-        } else {
-          console.log('Error getting tasks')
-          this.loading = false;
-        }
-      })
-  }
 
-  private init() {
-    if (this.projectId) {
-      this.getTasksFromProject();
-    } else {
-      this.getTasksFromUser();
-    }
-  }
 }
