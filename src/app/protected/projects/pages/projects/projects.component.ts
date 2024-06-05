@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {ManagerService} from "../../../shared/services/manager.service";
+import {ManagerService} from "../../../../shared/services/manager.service";
 import {
   NzListComponent, NzListItemActionComponent,
   NzListItemComponent,
@@ -18,7 +18,8 @@ import {NgForOf} from "@angular/common";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
-import {UserDisplayComponent} from "../../components/user-display/user-display.component";
+import {UserDisplayComponent} from "../../../components/user-display/user-display.component";
+import {Image} from "../../../../shared/interfaces/project.interface";
 
 @Component({
   selector: 'app-projects',
@@ -65,4 +66,5 @@ export class ProjectsComponent {
     this.managerService.getProjects();
     this.loading = false;
   }
+
 }

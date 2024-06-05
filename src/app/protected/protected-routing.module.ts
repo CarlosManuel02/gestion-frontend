@@ -5,18 +5,15 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {ValidarTokenGuard} from "../shared/guards/validar-token.guard";
 import {TaskViewComponent} from "./pages/task-view/task-view.component";
-import {ProjectsComponent} from "./pages/projects/projects.component";
-import {ProjectViewComponent} from "./pages/project-view/project-view.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     canActivate: [ValidarTokenGuard],
     children: [
+      {path: 'projects',  loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule)},
       {path: 'dashboard', component: DashboardComponent},
-      {path: 'projects', component: ProjectsComponent},
-      {path: 'projects/:id', component: ProjectViewComponent},
       {path: 'tasks', component: TasksComponent},
       {path: 'tasks/:id', component: TaskViewComponent},
       {path: '**', redirectTo: 'dashboard'}

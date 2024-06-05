@@ -23,20 +23,31 @@ export class TaskService {
   constructor(private http: HttpClient) {
   }
 
-  getTasks(user: string | undefined): Observable<{ status: number }> {
-    return this.http.get<TaskResponse>(`${this.API_URL}all/${user}`).pipe(
-      tap((resp) => {
+  async getTasksFromUser(user: string | undefined): Promise<{ status: number, tasks: Task[] }> {
+    return new Promise((resolve, reject) => {
+        this.http.get<TaskResponse>(`${this.API_URL}all/user/${user}`).subscribe((resp) => {
+          if (resp.status === 200) {
+            this._tasks = resp.tasks;
+            resolve({status: resp.status, tasks: resp.tasks});
+          } else {
+            reject({status: resp.status, tasks: []});
+          }
+        })
+      }
+    );
+  }
+
+  async getTasksFromProject(project: string | undefined): Promise<{ status: number, tasks: Task[] }> {
+    return new Promise((resolve, reject) => {
+      this.http.get<TaskResponse>(`${this.API_URL}all/${project}`).subscribe((resp) => {
         if (resp.status === 200) {
           this._tasks = resp.tasks;
+          resolve({status: resp.status, tasks: resp.tasks});
         } else {
-          throw new Error('Error getting tasks');
+          reject({status: resp.status, tasks: []});
         }
-      }),
-      map((resp) => ({status: resp.status})),
-      catchError((err: any) => {
-        return throwError(() => new Error(err.message || 'Error getting tasks'));
       })
-    );
+    });
   }
 
   getTask(taskId: string): Observable<{ status: number }> {

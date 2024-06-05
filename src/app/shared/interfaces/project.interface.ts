@@ -11,8 +11,13 @@ export interface Project {
   project_start_date:  Date;
   project_end_date:    Date;
   project_status:      string;
-  project_image_url:   string;
   project_repository:  string;
+  image:               Image;
   members:             Member[];
 }
 
+export interface Image {
+  data:      number[];
+  image_id:  number;
+  mime_type: string;
+}

@@ -1,39 +1,52 @@
 <div class="container-fluid mt-3">
 
-  <nz-list nzSize="small" [nzDataSource]="tasks" [nzLoading]="loading" [nzNoResult]="emptyTpl">
-    @for (task of tasks; track task) {
-      <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
-        <nz-list-item-meta
-          [nzTitle]="task.task_name"
-          [nzDescription]="task.task_description"
-          [nzAvatar]="avatarTemplate"
-        ></nz-list-item-meta>
-        <nz-list-item-extra>
-          <nz-badge [nzStatus]="'processing'" [nzText]="task.task_status"></nz-badge>
-        </nz-list-item-extra>
-      </nz-list-item>
-      <ng-template #avatarTemplate>
-        <span nz-icon nzType="book" nzTheme="outline"></span>
-      </ng-template>
-    }
+  @if (projectId) {
+    <app-task-list
+      [projectId]="projectId"
+      (onTaskClick)="taskClick($event)"
+    ></app-task-list>
+  } @else {
+    <nz-tabset
+      [(nzSelectedIndex)]="selectedView"
+      (nzSelectedIndexChange)="ChangeView($event)"
+    >
 
-    <ng-template #emptyTpl>
-      <nz-empty
-        nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-        [nzNotFoundContent]="contentTpl"
-        [nzNotFoundFooter]="footerTpl"
-      >
-        <ng-template #contentTpl>
-        <span>
-          There are no tasks available
-        </span>
-        </ng-template>
-        <ng-template #footerTpl>
-          <button nz-button nzType="primary">Create Now</button>
-        </ng-template>
-      </nz-empty>
+      <nz-tab nzTitle="All"></nz-tab>
+      <nz-tab nzTitle="Open"></nz-tab>
+      <nz-tab nzTitle="In Progress"></nz-tab>
+      <nz-tab nzTitle="Done"></nz-tab>
 
-    </ng-template>
+    </nz-tabset>
 
-  </nz-list>
+
+    <div *ngIf="selectedView === 0">
+      <app-task-list
+        [user]="user"
+        (onTaskClick)="taskClick($event)"
+      ></app-task-list>
+    </div>
+
+    <div *ngIf="selectedView === 1">
+      <app-task-list
+        [user]="user"
+        filter="open"
+        (onTaskClick)="taskClick($event)"
+      ></app-task-list>
+    </div>
+    <div *ngIf="selectedView === 2">
+      <app-task-list
+        [user]="user"
+        filter="in_progress"
+        (onTaskClick)="taskClick($event)"
+      ></app-task-list>
+    </div>
+    <div *ngIf="selectedView === 3">
+      <app-task-list
+        [user]="user"
+        filter="completed"
+        (onTaskClick)="taskClick($event)"
+      ></app-task-list>
+    </div>
+  }
+
 </div>

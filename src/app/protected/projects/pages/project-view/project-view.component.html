@@ -1,0 +1,39 @@
+<nz-layout style="margin-top: 2px">
+  <nz-layout>
+    <nz-sider nzWidth="250px">
+      <nz-card>
+        <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="{ size: 'large' }">
+          <nz-card-meta
+            [nzAvatar]="avatarTemplate"
+            [nzTitle]="project.project_name"
+            [nzDescription]="project.project_key"
+          ></nz-card-meta>
+          <nz-list [nzDataSource]="menuItems" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+            <ng-template #item let-item>
+              <nz-list-item>
+                <nz-list-item-meta
+                  [nzAvatar]="menuTemplate"
+                  [nzTitle]="item.title"
+                ></nz-list-item-meta>
+              </nz-list-item>
+
+              <ng-template #menuTemplate>
+                <span nz-icon [nzType]="item.icon"></span>
+              </ng-template>
+            </ng-template>
+          </nz-list>
+        </nz-skeleton>
+      </nz-card>
+      <ng-template #avatarTemplate>
+        <nz-avatar [nzText]="project.project_key" style="color:#f56a00; background-color:#fde3cf;"></nz-avatar>
+      </ng-template>
+
+    </nz-sider>
+
+    <nz-content style="margin-left: 40px">
+      <pre>{{
+        project | json
+        }}</pre>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
