@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {JsonPipe} from "@angular/common";
 import {Router} from "@angular/router";
-import {ManagerService} from "../../../shared/services/manager.service";
-import {Project} from "../../../shared/interfaces";
+import {ManagerService} from "../../../../shared/services/manager.service";
+import {Project} from "../../../../shared/interfaces";
 import {
   NzContentComponent,
   NzFooterComponent,
@@ -82,4 +82,18 @@ export class ProjectViewComponent implements OnInit {
     this.fetchProject()
     this.fetchProjectTasks()
   }
+
+  getImage() {
+    const data = this.project.image;
+    if (!data) {
+      return;
+    }
+
+    // Create a data URL from the image data
+    const byteArray = new Uint8Array(data.data);
+    const blob = new Blob([byteArray], {type: data.mime_type});
+    const url = URL.createObjectURL(blob);
+    return 'url';
+  }
+
 }

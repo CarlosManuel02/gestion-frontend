@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ManagerService} from "../../../shared/services/manager.service";
 import {DatePipe, JsonPipe} from "@angular/common";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
@@ -15,10 +15,11 @@ import {NzListComponent, NzListItemComponent} from "ng-zorro-antd/list";
 import {TasksComponent} from "../tasks/tasks.component";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
-import {ProjectsComponent} from "../projects/projects.component";
+import {ProjectsComponent} from "../../projects/pages/projects/projects.component";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {RouterLink} from "@angular/router";
 import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
+import {Image} from "../../../shared/interfaces/project.interface";
 
 @Component({
   selector: 'app-dashboard',
@@ -53,18 +54,32 @@ import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/tr
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  array = [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
   get projects() {
     return this.managerService.projects;
 
   }
+
   constructor(
     private managerService: ManagerService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.managerService.getProjects();
   }
 
+  getImage(data: Image) {
+    if (!data) {
+      return;
+    }
+
+    // Create a data URL from the image data
+    const byteArray = new Uint8Array(data.data);
+    const blob = new Blob([byteArray], {type: data.mime_type});
+    const url = URL.createObjectURL(blob);
+    return ';'
+
+  }
 }

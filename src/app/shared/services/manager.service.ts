@@ -30,7 +30,7 @@ export class ManagerService {
         if (resp.status !== 200) {
           reject({message: resp.message})
         } else {
-          this._project = resp.data
+          this._project = resp.data[0]
           resolve(resp.status)
         }
       })

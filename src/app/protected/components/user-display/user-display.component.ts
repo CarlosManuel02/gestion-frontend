@@ -2,6 +2,7 @@ import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {Data, User} from "../../../shared/interfaces/user.interface";
 import {AuthService} from "../../../shared/services/auth.service";
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user-display',
@@ -16,7 +17,7 @@ import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-
     <nz-list nzSize="small">
       <nz-list-item>
         <nz-list-item-meta
-          [nzAvatar]="userImage"
+          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
           [nzTitle]="usr?.username"
         >
         </nz-list-item-meta>
@@ -36,6 +37,7 @@ export class UserDisplayComponent implements OnInit {
   userImage: string = '';
 
   constructor(
+    private sanitizer: DomSanitizer,
     private authService: AuthService,
   ) {
   }
@@ -45,21 +47,7 @@ export class UserDisplayComponent implements OnInit {
     this.authService.getUser(this.userId)
       .then((resp) => {
         this.usr = resp[0];
-        this.getUserImage(this.usr?.image);
       })
-  }
-
-  getUserImage(data: Data | undefined) {
-    if (!data) {
-      this.userImage = 'assets/images/user.png';
-      return;
-    }
-
-    const byteArray = new Uint8Array(data.data);
-    const blob = new Blob([byteArray], {type: data.type});
-    const url = URL.createObjectURL(blob);
-    this.userImage = url;
-    console.log('userImage', this.userImage)
   }
 
 
