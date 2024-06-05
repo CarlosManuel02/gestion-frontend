@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {JsonPipe} from "@angular/common";
-import {Router} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {Project} from "../../../../shared/interfaces";
 import {
@@ -37,7 +37,8 @@ import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-
     CdkFixedSizeVirtualScroll,
     NzListItemComponent,
     NzListItemMetaComponent,
-    CdkVirtualForOf
+    CdkVirtualForOf,
+    RouterOutlet
   ],
   templateUrl: './project-view.component.html',
   styleUrl: './project-view.component.scss'
@@ -96,4 +97,7 @@ export class ProjectViewComponent implements OnInit {
     return 'url';
   }
 
+  goToTasks(item: any) {
+
+  }
 }

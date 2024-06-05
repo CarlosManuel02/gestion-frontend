@@ -1,0 +1,114 @@
+<div nz-row>
+  <div nz-col nzSpan="8">
+    <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Open</h3>
+    <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+      <nz-list nzItemLayout="horizontal">
+        <div
+          style="height: 100%; padding: 20px"
+          cdkDropList
+          #openList="cdkDropList"
+          [cdkDropListData]="open"
+          [cdkDropListConnectedTo]="connectedTo"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of open; track item) {
+            <nz-card cdkDrag
+                     style="margin-bottom: 8px; cursor: move; background-color: #434343"
+                     [nzActions]="[extraTemplate]"
+            >
+              <nz-card-meta
+                [nzTitle]="item.task_name"
+              ></nz-card-meta>
+            </nz-card>
+
+            <!--            allgin to the right-->
+            <ng-template #extraTemplate
+            >
+              <nz-tag>Due: {{ item.task_deadline | date: 'shortDate' }}</nz-tag>
+              <nz-tag
+                nzColor="blue" style="margin-right: 8px"
+                nz-tooltip nzTooltipTitle="Priority"
+              >{{ item.task_priority }}</nz-tag>
+              <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
+            </ng-template>
+          }
+        </div>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <div nz-col nzSpan="8">
+    <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">In Progress</h3>
+    <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+      <nz-list nzItemLayout="horizontal">
+        <div
+          style="height: 100%; padding: 20px"
+          cdkDropList
+          #inProgresList="cdkDropList"
+          [cdkDropListData]="inProgress"
+          [cdkDropListConnectedTo]="connectedTo"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of inProgress; track item) {
+            <nz-card cdkDrag
+                     style="margin-bottom: 8px; cursor: move; background-color: #434343"
+                      [nzActions]="[extraTemplate]"
+            >
+              <nz-card-meta
+                [nzTitle]="item.task_name"
+              ></nz-card-meta>
+            </nz-card>
+
+<!--            allgin to the right-->
+            <ng-template #extraTemplate
+                         >
+              <nz-tag>Due: {{ item.task_deadline | date: 'shortDate' }}</nz-tag>
+              <nz-tag
+                nzColor="blue" style="margin-right: 8px"
+                nz-tooltip nzTooltipTitle="Priority"
+              >{{ item.task_priority }}</nz-tag>
+              <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
+            </ng-template>
+          }
+        </div>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <div nz-col nzSpan="8">
+    <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Completed</h3>
+    <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
+      <nz-list nzItemLayout="horizontal">
+        <div
+          style="height: 100%; padding: 20px"
+          cdkDropList
+          #completedList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="connectedTo"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          @for (item of done; track item) {
+            <nz-card cdkDrag
+                     style="margin-bottom: 8px; cursor: move; background-color: #434343"
+                     [nzActions]="[extraTemplate]"
+            >
+              <nz-card-meta
+                [nzTitle]="item.task_name"
+              ></nz-card-meta>
+            </nz-card>
+
+            <!--            allgin to the right-->
+            <ng-template #extraTemplate
+            >
+              <nz-tag>Due: {{ item.task_deadline | date: 'shortDate' }}</nz-tag>
+              <nz-tag
+                nzColor="blue" style="margin-right: 8px"
+                nz-tooltip nzTooltipTitle="Priority"
+              >{{ item.task_priority }}</nz-tag>
+              <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
+            </ng-template>
+          }
+        </div>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>
