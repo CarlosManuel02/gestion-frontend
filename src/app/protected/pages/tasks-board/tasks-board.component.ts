@@ -180,4 +180,9 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     });
 
   }
+
+  openTaskDetails(item: Task) {
+    console.log(item);
+    this.router.navigate(['./main/tasks', item.task_id]);
+  }
 }

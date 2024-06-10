@@ -17,7 +17,7 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
   template: `
 
     @if (imageOnly){
-      <nz-avatar [nzText]="usr.username" nzSize="small"></nz-avatar>
+      <nz-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
     } @else {
       <nz-list nzSize="small">
         <nz-list-item>
@@ -47,13 +47,19 @@ export class UserDisplayComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private authService: AuthService,
   ) {
+    // authService.getUser(this.userId)
+    //   .subscribe((resp) => {
+    //     console.log('resp', resp);
+    //     this.usr = resp;
+    //   })
   }
 
 
   ngOnInit(): void {
     this.authService.getUser(this.userId)
-      .then((resp) => {
-        this.usr = resp[0];
+      .subscribe((resp) => {
+        // console.log('resp', resp);
+        this.usr = resp;
       })
   }
 
