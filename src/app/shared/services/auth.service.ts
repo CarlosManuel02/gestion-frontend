@@ -92,7 +92,7 @@ export class AuthService {
             username: resp.user?.username,
             image: resp.user?.image
           }
-          console.log(this._user)
+          // console.log(this._user)
           localStorage.setItem('token', resp.token);
           return resp.status == 200;
         }),
@@ -105,20 +105,23 @@ export class AuthService {
     return localStorage.getItem('token') !== null;
   }
 
-  getUser(userId: string): Promise<UserResponse[]> {
+  getUser(userId: string): Observable<User> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
-    return new Promise((resolve, reject) => {
-      this.http.get<UserResponse[]>(`${this.endpoint}${userId}`, {headers})
-        .subscribe((resp) => {
-          if (resp) {
-            resolve(resp)
-          } else {
-            reject('Error getting user')
-          }
-        })
-    });
+    return this.http.get(`${this.endpoint}${userId}`).pipe(
+      tap((resp: any) => {
+        if (resp.status === 200) {
+          return resp.user[0]
+        } else {
+          throw new Error(resp.message);
+        }
+      }
+    ), map((resp: any) => resp.user[0]),
+      catchError((err: any) => {
+        return of(err.message);
+      })
+    )
   }
 
 }
