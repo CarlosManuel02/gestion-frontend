@@ -1,0 +1,22 @@
+<nz-list nzSize="small" *ngIf="notifications.length > 0; else noNotifications">
+  <nz-list-item *ngFor="let notification of notifications" style="width: 300px;">
+    <nz-badge [nzStatus]="notification.read ? 'default' : 'processing'"></nz-badge>
+    <button nz-button
+            nzType="text"
+            nzSize="small"
+            nz-tooltip
+            nzTooltipTitle="Mark as read"
+            (click)="markAsRead(notification)">
+      <span nz-icon nzType="check"></span>
+    </button>
+    <nz-list-item-meta
+      [nzTitle]="notification.title + ' - ' + getDate(notification.created_at)"
+      [nzDescription]="notification.message"
+    >
+    </nz-list-item-meta>
+  </nz-list-item>
+</nz-list>
+
+<ng-template #noNotifications>
+  <p>No tienes notificaciones</p>
+</ng-template>

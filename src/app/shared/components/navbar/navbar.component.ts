@@ -12,7 +12,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzPopoverDirective} from "ng-zorro-antd/popover";
 import {
-  NzListComponent,
+  NzListComponent, NzListItemActionComponent,
   NzListItemComponent,
   NzListItemMetaComponent,
   NzListItemMetaTitleComponent
@@ -27,6 +27,7 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NotificationsService} from "../../services/notifications.service";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {environment} from "../../../../environments/environment";
+import {NotificationComponent} from "../notification/notification.component";
 
 
 export enum ThemeType {
@@ -74,6 +75,8 @@ interface Tabs {
     CdkVirtualScrollViewport,
     CdkVirtualForOf,
     DatePipe,
+    NotificationComponent,
+    NzListItemActionComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -169,8 +172,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationsService.getAllMotifications()
       .subscribe((notifications) => {
         this.notifications = notifications;
-        console.log('Notifications:', this.notifications)
-        this.notificationsCount = this.notifications.length;
       });
   }
 
@@ -182,12 +183,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onVisibleChange($event: boolean) {
-    if (!$event){
+    if (!$event) {
       // TODO: Marcar todas las notificaciones como leídas
-      // this.notificationsService.markAllAsRead(this.notifications).subscribe(() => {
-      //   this.notifications.forEach(notification => notification.read = true);
-      //   this.notificationsCount = 0;
-      // });
     }
+  }
+
+
+
+  onNotifyChanges($event: Notification[]) {
+    this.notifications = $event;
   }
 }

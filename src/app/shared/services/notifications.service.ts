@@ -37,7 +37,14 @@ export class NotificationsService {
   }
 
 
-  markAllAsRead(notifications: Notification[]) {
-  //   TODO: Implement this method
+  markAllAsRead(notification: string) {
+    return this.http.post<NotificationResponse>(`${this.endpoint}read/${notification}`, {}).pipe(
+      tap((resp) => {
+          console.log(notification)
+        if (resp.status !== 200) {
+          throw new Error(resp.message);
+        }
+      }
+      ), map(() => this.notifications));
   }
 }
