@@ -29,20 +29,12 @@
     </button>
     <ng-template #notificationTemplate>
       <div style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
-        <nz-list nzSize="small" *ngIf="notifications.length > 0; else noNotifications">
-          <nz-list-item *ngFor="let notification of notifications" style="width: 300px;">
-            <nz-badge [nzStatus]="notification.read ? 'default' : 'processing'"></nz-badge>
-            <nz-list-item-meta
-              [nzTitle]="notification.title + ' - ' + getDate(notification.created_at)"
-              [nzDescription]="notification.message"
-            >
-            </nz-list-item-meta>
-          </nz-list-item>
-        </nz-list>
+       <app-notification
+         [notifications]="notifications"
+         (notifyChanges)="onNotifyChanges($event)"
+       ></app-notification>
       </div>
-      <ng-template #noNotifications>
-        <p>No tienes notificaciones</p>
-      </ng-template>
+
     </ng-template>
 
     <button nz-button
