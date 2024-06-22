@@ -4,6 +4,7 @@ import {AuthService} from "../../../shared/services/auth.service";
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
 import {DomSanitizer} from "@angular/platform-browser";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
+import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
 
 @Component({
   selector: 'app-user-display',
@@ -12,12 +13,13 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
     NzListComponent,
     NzListItemComponent,
     NzListItemMetaComponent,
-    NzAvatarComponent
+    NzAvatarComponent,
+    NzCommentAvatarDirective
   ],
   template: `
 
     @if (imageOnly){
-      <nz-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+      <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
     } @else {
       <nz-list nzSize="small">
         <nz-list-item>

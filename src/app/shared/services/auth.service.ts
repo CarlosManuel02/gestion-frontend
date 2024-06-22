@@ -36,7 +36,7 @@ export class AuthService {
         } else {
           this._user = {
             image: resp.user?.image,
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username
           }
@@ -66,7 +66,7 @@ export class AuthService {
       .pipe(
         tap((resp) => {
           this._user = {
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
             image: resp.user?.image
@@ -87,7 +87,7 @@ export class AuthService {
       .pipe(
         map((resp) => {
           this._user = {
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
             image: resp.user?.image

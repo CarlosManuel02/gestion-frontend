@@ -81,9 +81,30 @@
 
       <nz-divider></nz-divider>
 
-      <p>Comments
-        <nz-tag>{{ 0 }}</nz-tag>
-      </p>
+
+      <nz-collapse class="mt-2">
+        <nz-collapse-panel [nzHeader]="commentsHeader"
+                           [nzActive]="false"
+                           [nzExtra]="commentsExtra"
+                           (nzActiveChange)="onActiveChange($event)">
+          <ng-template #commentsHeader>
+            <p>Comments
+              <nz-tag>{{ 0 }}</nz-tag>
+            </p>
+          </ng-template>
+          <ng-template #commentsExtra>
+            <nz-button-group>
+              <button nz-button nzType="text" nzSize="small">
+                <span (click)="reload()" nz-icon nzType="reload" nzTheme="outline"></span>
+              </button>
+            </nz-button-group>
+          </ng-template>
+          <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
+        </nz-collapse-panel>
+      </nz-collapse>
+
+
+
     </div>
 
     <div nz-col nzSpan="6">
