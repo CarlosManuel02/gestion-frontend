@@ -1,13 +1,21 @@
 import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzCommentAvatarDirective, NzCommentComponent, NzCommentContentDirective} from "ng-zorro-antd/comment";
+import {
+  NzCommentActionComponent,
+  NzCommentAvatarDirective,
+  NzCommentComponent,
+  NzCommentContentDirective
+} from "ng-zorro-antd/comment";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzListComponent} from "ng-zorro-antd/list";
 import {NzRowDirective} from "ng-zorro-antd/grid";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommentsService} from "../../services/comments.service";
 import {UserDisplayComponent} from "../../../protected/components/user-display/user-display.component";
+import {AuthService} from "../../services/auth.service";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzIconDirective} from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'app-comments',
@@ -23,7 +31,10 @@ import {UserDisplayComponent} from "../../../protected/components/user-display/u
     NzRowDirective,
     ReactiveFormsModule,
     FormsModule,
-    UserDisplayComponent
+    UserDisplayComponent,
+    NzTooltipDirective,
+    NzIconDirective,
+    NzCommentActionComponent
   ],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss'
@@ -36,11 +47,17 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() taskId: string = '';
   @Input() active: boolean = false;
 
+  get user() {
+    return this.authService.user;
+  }
+
   get comments() {
     return this.commentService.comments;
   }
 
-  constructor(private commentService: CommentsService) {}
+  constructor(private commentService: CommentsService,
+              private authService: AuthService
+              ) {}
 
   ngAfterViewInit(): void {
     // Aquí puedes verificar si el taskId ya está disponible después de la vista se inicializa
@@ -59,7 +76,20 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   handleSubmit() {
-    console.log(this.active);
+    const data = {
+      task_id: this.taskId,
+      user_id: this.user.id,
+      comment: this.inputValue
+    }
+
+    this.commentService.addComment(data)
+      .then(() => {
+        this.inputValue = '';
+        this.getComments()
+      })
+      .catch(error => {
+        console.error('Error adding comment:', error);
+      });
   }
 
   private async getComments() {
@@ -83,5 +113,15 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     // HH:mm dd/MM/yyyy
     return new Date(created_at).toLocaleString();
 
+  }
+
+  handleDelete(id: string) {
+    this.commentService.deleteComment(id)
+      .then(() => {
+        this.getComments();
+      })
+      .catch(error => {
+        console.error('Error deleting comment:', error);
+      });
   }
 }

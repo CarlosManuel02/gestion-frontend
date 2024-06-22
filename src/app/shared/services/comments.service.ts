@@ -34,4 +34,25 @@ export class CommentsService {
     })
 
   }
+
+  addComment(data: any) {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}/new`, data).subscribe((data: any) => {
+        resolve(data);
+      }, error => {
+        reject(error);
+      });
+    })
+
+  }
+
+  deleteComment(id: string) {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.API_URL}/delete/${id}`).subscribe((data: any) => {
+        resolve(data);
+      }, error => {
+        reject(error);
+      });
+    })
+  }
 }
