@@ -1,0 +1,114 @@
+<h4>Create new Project</h4>
+<form nz-form [formGroup]="form" (ngSubmit)="submitForm()"
+      nzLayout="inline"
+>
+  <div nz-row>
+
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="14" nzRequired>Project Name</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <input nz-input formControlName="name" placeholder="Project Name">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12">
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="10" nzRequired>Project Key</nz-form-label>
+        <nz-form-control [nzSpan]="10">
+          <input nz-input formControlName="project_key" placeholder="Project Key">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24">
+      <nz-form-item class="mt-3">
+        <nz-form-label [nzSpan]="10">Project Description</nz-form-label>
+        <nz-form-control>
+          <textarea nz-input formControlName="description" placeholder="Description"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24" class="mt-3">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="10">Project URL</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="repository_url" placeholder="Project URL">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="24" class="mt-3">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="10">Project End Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker formControlName="end_date" nzFormat="yyyy-MM-dd" nzPlaceHolder="Select Date"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+
+    <nz-divider [nzText]="'Project Members'"
+    ></nz-divider>
+
+
+    <div nz-col class="mt-3">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="default" nzSize="default" (click)="openModal()">Search</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12" class="mt-3">
+      <nz-table #basicTable [nzData]="members" [nzBordered]="true" nzSize="small">
+        <thead>
+        <tr>
+          <th nzWidth="25%">Name</th>
+          <th nzWidth="25%">Email</th>
+          <th nzWidth="25%">Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{ data.username }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.role }}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+
+    <div nz-col nzSpan="24" class="mt-3">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button
+                  nzType="primary"
+                  nzSize="default"
+                  [disabled]="!form.valid"
+                  (click)="submitForm()"
+                  type="submit">Create Project</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+  </div>
+</form>
+
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Search Members"
+  [nzWidth]="800"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-template nzModalContent>
+    <app-search-member (selectedMembers)="getSelectedMembers($event)"></app-search-member>
+  </ng-template>
+</nz-modal>
+
+

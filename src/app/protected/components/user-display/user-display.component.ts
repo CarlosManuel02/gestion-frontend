@@ -24,12 +24,16 @@ import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
       <nz-list nzSize="small">
         <nz-list-item>
           <nz-list-item-meta
-            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            [nzTitle]="usr?.username"
+            [nzAvatar]="userImage"
+            [nzTitle]="usr?.email"
           >
           </nz-list-item-meta>
         </nz-list-item>
       </nz-list>
+
+      <ng-template #userImage>
+        <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+      </ng-template>
     }
 
   `,
@@ -40,7 +44,7 @@ import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
 })
 export class UserDisplayComponent implements OnInit {
 
-  @Input() userId: string = '';
+  @Input({transform: (value: string | undefined): string => value || ''}) userId: string = '';
   usr!: any;
   userImage: string = '';
   @Input() imageOnly: boolean = false;

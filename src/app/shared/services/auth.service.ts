@@ -112,12 +112,12 @@ export class AuthService {
     return this.http.get(`${this.endpoint}${userId}`).pipe(
       tap((resp: any) => {
         if (resp.status === 200) {
-          return resp.user[0]
+          return resp.user
         } else {
           throw new Error(resp.message);
         }
       }
-    ), map((resp: any) => resp.user[0]),
+    ), map((resp: any) => resp.user),
       catchError((err: any) => {
         return of(err.message);
       })
