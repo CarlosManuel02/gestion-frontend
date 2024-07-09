@@ -13,6 +13,8 @@ import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NzModalComponent, NzModalContentDirective, NzModalService} from "ng-zorro-antd/modal";
 import {SearchMemberComponent} from "../../../../shared/component/search-member/search-member.component";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {ManagerService} from "../../../../shared/services/manager.service";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-create-project',
@@ -49,6 +51,9 @@ export class CreateProjectComponent implements OnInit {
 
   form!: FormGroup
   members: any[] = []
+  get user() {
+    return this.authService.user
+  }
   isVisible: boolean = false;
 
 
@@ -74,28 +79,36 @@ export class CreateProjectComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public authService: AuthService
+    public authService: AuthService,
+    public managerService: ManagerService,
+    public message: NzMessageService
   ) {
   }
 
   submitForm() {
     const data = {
       ...this.form.value,
-      members: [
-        ...this.members.map(member => {
+      owner: this.user.id,
+      end_date: this.form.value.end_date ? this.form.value.end_date.toISOString() : null,
+    }
+    if (this.members.length > 0) {
+      data.members = JSON.stringify(
+        this.members.map((member: any) => {
           return {
             id: member.id,
-            role: member.role
+            role: 'admin'
           }
-        }),
-        {
-          id: this.authService.user.id,
-          role: 'owner'
-        }
-      ]
+        })
+      )
     }
 
+
     console.log(data)
+    this.managerService.createProject(data)
+      .then((resp: any) => {
+        console.log(resp)
+      })
+
 
   }
 
@@ -113,7 +126,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   getSelectedMembers($event: any) {
-    console.log($event)
+    // console.log($event)
     this.members = $event
   }
 }

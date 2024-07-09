@@ -58,11 +58,12 @@ export class SearchMemberComponent {
 
   addMember() {
     this.users.push({
+      id: this.user.id,
       username: this.user.username,
       email: this.user.email,
       role: this.role
     });
-    this.user = {} as User;
+    this.user = null as any;
     this.email = '';
     this.selectedMembers.emit(this.users);
   }

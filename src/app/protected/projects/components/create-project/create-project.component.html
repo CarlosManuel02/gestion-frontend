@@ -58,7 +58,7 @@
     <div nz-col class="mt-3">
       <nz-form-item>
         <nz-form-control>
-          <button nz-button nzType="default" nzSize="default" (click)="openModal()">Search</button>
+          <a nz-button nzType="default" nzSize="default" (click)="openModal()">Search</a>
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -89,8 +89,7 @@
                   nzType="primary"
                   nzSize="default"
                   [disabled]="!form.valid"
-                  (click)="submitForm()"
-                  type="submit">Create Project</button>
+                  >Create Project</button>
         </nz-form-control>
       </nz-form-item>
     </div>
