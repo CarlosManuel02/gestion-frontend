@@ -1,12 +1,24 @@
 <div class="container-fluid mt-3">
 
-  <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
-    <input type="text" nz-input placeholder="input search text">
-  </nz-input-group>
+  <div class="d-flex justify-content-between">
+    <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
+      <input type="text" nz-input placeholder="input search text">
+    </nz-input-group>
+
+    <button
+      nz-button
+      nzType="primary"
+      nzSize="default"
+      (click)="createProject()"
+      class="mt-2 mb-1"
+    >Create Project</button>
+  </div>
+
+
   <nz-table #basicTable
             [nzData]="projects"
             [nzBordered]="true"
-            [nzPaginationPosition]="'both'"
+            [nzPaginationPosition]="'bottom'"
             [nzSize]="'default'">
     <thead>
     <tr>

@@ -36,7 +36,7 @@ export class AuthService {
         } else {
           this._user = {
             image: resp.user?.image,
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username
           }
@@ -66,7 +66,7 @@ export class AuthService {
       .pipe(
         tap((resp) => {
           this._user = {
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
             image: resp.user?.image
@@ -87,7 +87,7 @@ export class AuthService {
       .pipe(
         map((resp) => {
           this._user = {
-            id: resp.user?.id,
+            id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
             image: resp.user?.image
@@ -112,12 +112,12 @@ export class AuthService {
     return this.http.get(`${this.endpoint}${userId}`).pipe(
       tap((resp: any) => {
         if (resp.status === 200) {
-          return resp.user[0]
+          return resp.user
         } else {
           throw new Error(resp.message);
         }
       }
-    ), map((resp: any) => resp.user[0]),
+    ), map((resp: any) => resp.user),
       catchError((err: any) => {
         return of(err.message);
       })

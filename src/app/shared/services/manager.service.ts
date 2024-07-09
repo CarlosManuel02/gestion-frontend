@@ -55,4 +55,16 @@ export class ManagerService {
       })
     });
   }
+
+  createProject(data: any) {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}create`, data).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp)
+        }
+      })
+    });
+  }
 }

@@ -1,0 +1,33 @@
+@if (comments.length) {
+  <nz-list [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <ng-template #item let-item>
+      <nz-comment [nzAuthor]="item.username" [nzDatetime]="getDate(item.created_at)">
+        <nz-avatar nz-comment-avatar [nzText]="item.username.charAt(0).toUpperCase()"></nz-avatar>
+        <nz-comment-content>
+          <p>{{ item.comment }}</p>
+        </nz-comment-content>
+
+        @if (item.user_id === user.id) {
+          <nz-comment-action>
+            <a (click)="handleDelete(item.id)">Delete</a>
+          </nz-comment-action>
+        }
+      </nz-comment>
+    </ng-template>
+  </nz-list>
+}
+
+
+
+<nz-comment>
+  <nz-comment-content>
+    <nz-form-item>
+      <textarea [(ngModel)]="inputValue" nz-input rows="2"></textarea>
+    </nz-form-item>
+    <nz-form-item>
+      <button nz-button nzType="primary" [nzLoading]="false" [disabled]="!inputValue" (click)="handleSubmit()">
+        Add Comment
+      </button>
+    </nz-form-item>
+  </nz-comment-content>
+</nz-comment>

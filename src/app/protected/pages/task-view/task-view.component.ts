@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../../shared/services/task.service";
 import {Router} from "@angular/router";
-import {DatePipe, JsonPipe, NgForOf} from "@angular/common";
+import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
 import {Files} from "../../../shared/interfaces/files.interface";
@@ -30,6 +30,9 @@ import {Data} from "../../../shared/interfaces/user.interface";
 import {NzCollapseComponent, NzCollapsePanelComponent} from "ng-zorro-antd/collapse";
 import {ManagerService} from "../../../shared/services/manager.service";
 import {Member} from "../../../shared/interfaces";
+import {NzCommentAvatarDirective, NzCommentComponent, NzCommentContentDirective} from "ng-zorro-antd/comment";
+import {UserDisplayComponent} from "../../components/user-display/user-display.component";
+import {CommentsComponent} from "../../../shared/components/comments/comments.component";
 
 @Component({
   selector: 'app-task-view',
@@ -65,7 +68,13 @@ import {Member} from "../../../shared/interfaces";
     NzTypographyComponent,
     NzAvatarComponent,
     NzCollapseComponent,
-    NzCollapsePanelComponent
+    NzCollapsePanelComponent,
+    NzCommentContentDirective,
+    NzCommentComponent,
+    NzCommentAvatarDirective,
+    UserDisplayComponent,
+    CommentsComponent,
+    NgIf,
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -90,6 +99,9 @@ export class TaskViewComponent implements OnInit {
     return this.taskService.task
   }
 
+  get user() {
+    return this.authService.user
+  }
   mockTask: Task = {} as Task;
   statuses = [
     {label: 'Open', value: 'open'},
@@ -97,10 +109,13 @@ export class TaskViewComponent implements OnInit {
     {label: 'Completed', value: 'completed'},
     {label: 'Closed', value: 'closed'},
   ]
+  inputValue: any;
+  active: boolean = false
 
   constructor(
     private taskService: TaskService,
     private managerService: ManagerService,
+    private authService: AuthService,
     private router: Router,
     public message: NzMessageService,
   ) {
@@ -250,7 +265,12 @@ export class TaskViewComponent implements OnInit {
     this.managerService.getProjecMembers(this.task.project_id)
       .then((resp: any) => {
         this.projectMembers = resp
-        console.log(this.projectMembers)
+        // console.log(this.projectMembers)
       })
+  }
+
+  onActiveChange($event: boolean) {
+    this.active = $event
+
   }
 }

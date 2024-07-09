@@ -20,6 +20,8 @@ import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import {UserDisplayComponent} from "../../../components/user-display/user-display.component";
 import {Image} from "../../../../shared/interfaces/project.interface";
+import {NzDrawerService} from "ng-zorro-antd/drawer";
+import {CreateProjectComponent} from "../../components/create-project/create-project.component";
 
 @Component({
   selector: 'app-projects',
@@ -58,6 +60,7 @@ export class ProjectsComponent {
 
   constructor(
     private managerService: ManagerService,
+    public drawer: NzDrawerService
   ) {
   }
 
@@ -67,4 +70,12 @@ export class ProjectsComponent {
     this.loading = false;
   }
 
+  createProject() {
+    this.drawer.create({
+      nzTitle: 'Create a new project',
+      nzContent: CreateProjectComponent,
+      nzWidth: 600
+    });
+
+  }
 }

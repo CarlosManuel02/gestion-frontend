@@ -4,6 +4,7 @@ import {AuthService} from "../../../shared/services/auth.service";
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
 import {DomSanitizer} from "@angular/platform-browser";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
+import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
 
 @Component({
   selector: 'app-user-display',
@@ -12,22 +13,27 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
     NzListComponent,
     NzListItemComponent,
     NzListItemMetaComponent,
-    NzAvatarComponent
+    NzAvatarComponent,
+    NzCommentAvatarDirective
   ],
   template: `
 
     @if (imageOnly){
-      <nz-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+      <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
     } @else {
       <nz-list nzSize="small">
         <nz-list-item>
           <nz-list-item-meta
-            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            [nzTitle]="usr?.username"
+            [nzAvatar]="userImage"
+            [nzTitle]="usr?.email"
           >
           </nz-list-item-meta>
         </nz-list-item>
       </nz-list>
+
+      <ng-template #userImage>
+        <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+      </ng-template>
     }
 
   `,
@@ -38,7 +44,7 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 })
 export class UserDisplayComponent implements OnInit {
 
-  @Input() userId: string = '';
+  @Input({transform: (value: string | undefined): string => value || ''}) userId: string = '';
   usr!: any;
   userImage: string = '';
   @Input() imageOnly: boolean = false;
