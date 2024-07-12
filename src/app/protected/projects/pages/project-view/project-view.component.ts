@@ -97,7 +97,9 @@ export class ProjectViewComponent implements OnInit {
     return 'url';
   }
 
-  goToTasks(item: any) {
 
+  goTo(item: any) {
+    this.router.navigate([`/main/projects/${this.projectId}/${item.link}`])
+    console.log('go to: /main/projects/' + this.project.project_id + '/' + item.link)
   }
 }
