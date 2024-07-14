@@ -41,11 +41,27 @@
       </nz-form-item>
     </div>
 
-    <div nz-col nzSpan="24" class="mt-3">
+    <div nz-col nzSpan="12" class="mt-3">
       <nz-form-item>
         <nz-form-label [nzSpan]="10">Project End Date</nz-form-label>
         <nz-form-control>
           <nz-date-picker formControlName="end_date" nzFormat="yyyy-MM-dd" nzPlaceHolder="Select Date"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12" class="mt-3">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="10">Project Visibility</nz-form-label>
+        <nz-form-control>
+          <nz-switch
+            formControlName="visibility"
+            [nzCheckedChildren]="checkedTemplate"
+            [nzUnCheckedChildren]="unCheckedTemplate"
+          ></nz-switch>
+          <ng-template #checkedTemplate><span nz-icon nzType="check"></span></ng-template>
+          <ng-template #unCheckedTemplate><span nz-icon nzType="close"></span></ng-template>
+
         </nz-form-control>
       </nz-form-item>
     </div>

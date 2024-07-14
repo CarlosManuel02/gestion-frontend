@@ -17,7 +17,6 @@
 
   <nz-table #basicTable
             [nzData]="projects"
-            [nzBordered]="true"
             [nzPaginationPosition]="'bottom'"
             [nzSize]="'default'">
     <thead>
@@ -37,7 +36,10 @@
       </td>
       <td>{{ project.project_status }}</td>
       <td>{{ project.project_key }}</td>
-      <td><app-user-display [userId]="project.project_owner_id"></app-user-display> </td>
+      <td>
+        <app-user-display [imageOnly]="true" [userId]="project.project_owner_id"></app-user-display>
+        {{ project.project_owner_email }}
+      </td>
       <td>{{ project.project_start_date }}</td>
 
       <td>

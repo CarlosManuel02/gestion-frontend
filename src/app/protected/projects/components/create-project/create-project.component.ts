@@ -15,6 +15,7 @@ import {SearchMemberComponent} from "../../../../shared/component/search-member/
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-create-project',
@@ -40,7 +41,8 @@ import {NzMessageService} from "ng-zorro-antd/message";
     NzThMeasureDirective,
     NzModalComponent,
     SearchMemberComponent,
-    NzModalContentDirective
+    NzModalContentDirective,
+    NzSwitchComponent
   ],
   providers: [NzModalService],
   templateUrl: './create-project.component.html',
@@ -72,6 +74,7 @@ export class CreateProjectComponent implements OnInit {
       project_key: ['', [Validators.required, Validators.minLength(3)]],
       repository_url: [''],
       end_date: [''],
+      visibility: [''],
     })
 
   }

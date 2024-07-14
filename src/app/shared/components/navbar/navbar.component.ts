@@ -28,6 +28,7 @@ import {NotificationsService} from "../../services/notifications.service";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {environment} from "../../../../environments/environment";
 import {NotificationComponent} from "../notification/notification.component";
+import {UserDisplayComponent} from "../../../protected/components/user-display/user-display.component";
 
 
 export enum ThemeType {
@@ -77,6 +78,7 @@ interface Tabs {
     DatePipe,
     NotificationComponent,
     NzListItemActionComponent,
+    UserDisplayComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'

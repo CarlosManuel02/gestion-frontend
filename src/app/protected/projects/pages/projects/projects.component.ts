@@ -9,7 +9,7 @@ import {
   NzListItemExtraComponent,
   NzListItemMetaComponent, NzListItemMetaDescriptionComponent, NzListItemMetaTitleComponent
 } from "ng-zorro-antd/list";
-import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -46,7 +46,8 @@ import {CreateProjectComponent} from "../../components/create-project/create-pro
     FormsModule,
     NzInputDirective,
     RouterLink,
-    UserDisplayComponent
+    UserDisplayComponent,
+    NzButtonGroupComponent
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
