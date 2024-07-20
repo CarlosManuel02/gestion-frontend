@@ -54,13 +54,11 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="10">Project Visibility</nz-form-label>
         <nz-form-control>
-          <nz-switch
-            formControlName="visibility"
-            [nzCheckedChildren]="checkedTemplate"
-            [nzUnCheckedChildren]="unCheckedTemplate"
-          ></nz-switch>
-          <ng-template #checkedTemplate><span nz-icon nzType="check"></span></ng-template>
-          <ng-template #unCheckedTemplate><span nz-icon nzType="close"></span></ng-template>
+          <nz-radio-group [(ngModel)]="projectVisibility" [ngModelOptions]="{standalone: true}">
+            <label nz-radio nzValue="private">Private</label>
+            <label nz-radio nzValue="public">Public</label>
+
+          </nz-radio-group>
 
         </nz-form-control>
       </nz-form-item>

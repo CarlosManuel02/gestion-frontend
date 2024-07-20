@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Project} from "../interfaces/project.interface";
 import {AuthService} from "./auth.service";
+import {Member} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class ManagerService {
       });
   }
 
-  getProjecMembers(projectId: string) {
+  getProjecMembers(projectId: string): Promise<Member[]> {
     return new Promise((resolve, reject) => {
       this.http.get(`${this.API_URL}members/${projectId}`).subscribe((resp: any) => {
         if (resp.status !== 200) {
@@ -59,6 +60,18 @@ export class ManagerService {
   createProject(data: any) {
     return new Promise((resolve, reject) => {
       this.http.post(`${this.API_URL}create`, data).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp)
+        }
+      })
+    });
+  }
+
+  upodatemember(member: Member) {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}updateMember`, member).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {

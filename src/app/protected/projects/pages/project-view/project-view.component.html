@@ -12,6 +12,7 @@
             <ng-template #item let-item>
               <nz-list-item (click)="goTo(item)">
                 <nz-list-item-meta
+                  style="cursor: pointer"
                   [nzAvatar]="menuTemplate"
                   [nzTitle]="item.title"
                 ></nz-list-item-meta>

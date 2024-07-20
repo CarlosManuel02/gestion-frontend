@@ -25,7 +25,7 @@ import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
         <nz-list-item>
           <nz-list-item-meta
             [nzAvatar]="userImage"
-            [nzTitle]="usr?.email"
+            [nzTitle]="usr[0]?.email"
           >
           </nz-list-item-meta>
         </nz-list-item>
@@ -68,7 +68,7 @@ export class UserDisplayComponent implements OnInit {
         // console.log('resp', resp);
         this.usr = resp;
         // get the first letter of the username
-        this.username = String(this.usr.email).charAt(0).toUpperCase();
+        this.username = String(this.usr[0].email).charAt(0).toUpperCase();
       })
   }
 
