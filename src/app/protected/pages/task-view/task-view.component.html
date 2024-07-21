@@ -4,7 +4,7 @@
       <nz-affix [nzOffsetTop]="0">
         <nz-breadcrumb style=" z-index: 1;">
           <nz-breadcrumb-item>Projects</nz-breadcrumb-item>
-          <nz-breadcrumb-item>
+          <nz-breadcrumb-item routerLink="/main/projects/{{ mockTask.project_id }}">
             <a>{{ mockTask.project_name }}</a>
           </nz-breadcrumb-item>
           <nz-breadcrumb-item>
@@ -78,31 +78,6 @@
           }
         </nz-collapse-panel>
       </nz-collapse>
-
-      <nz-divider></nz-divider>
-
-
-      <nz-collapse class="mt-2">
-        <nz-collapse-panel [nzHeader]="commentsHeader"
-                           [nzActive]="true"
-                           [nzExtra]="commentsExtra"
-                           (nzActiveChange)="onActiveChange($event)">
-          <ng-template #commentsHeader>
-            <p>Comments
-              <nz-tag>{{ 0 }}</nz-tag>
-            </p>
-          </ng-template>
-          <ng-template #commentsExtra>
-            <nz-button-group>
-              <button nz-button nzType="text" nzSize="small">
-                <span (click)="reload()" nz-icon nzType="reload" nzTheme="outline"></span>
-              </button>
-            </nz-button-group>
-          </ng-template>
-          <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
-        </nz-collapse-panel>
-      </nz-collapse>
-
 
 
     </div>
@@ -185,6 +160,29 @@
           }
         </form>
       </nz-card>
+
+<!--      COMMENT SECTION-->
+
+      <nz-collapse class="mt-4">
+        <nz-collapse-panel [nzHeader]="commentsHeader"
+                           [nzActive]="true"
+                           [nzExtra]="commentsExtra"
+                           (nzActiveChange)="onActiveChange($event)">
+          <ng-template #commentsHeader>
+            <p>Comments
+              <nz-tag>{{ 0 }}</nz-tag>
+            </p>
+          </ng-template>
+          <ng-template #commentsExtra>
+            <nz-button-group>
+              <button nz-button nzType="text" nzSize="small">
+                <span (click)="reload()" nz-icon nzType="reload" nzTheme="outline"></span>
+              </button>
+            </nz-button-group>
+          </ng-template>
+          <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
+        </nz-collapse-panel>
+      </nz-collapse>
     </div>
 
   </div>

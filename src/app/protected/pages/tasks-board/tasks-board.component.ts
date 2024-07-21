@@ -13,6 +13,9 @@ import {NzTagComponent} from "ng-zorro-antd/tag";
 import {UserDisplayComponent} from "../../components/user-display/user-display.component";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {CreateTaskComponent} from "../../projects/components/create-task/create-task.component";
 
 @Component({
   selector: 'app-tasks-board',
@@ -36,7 +39,11 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     UserDisplayComponent,
     NzBadgeComponent,
     DatePipe,
-    NzTooltipDirective
+    NzTooltipDirective,
+    NzButtonComponent,
+    NzModalComponent,
+    CreateTaskComponent,
+    NzModalContentDirective
   ],
   styleUrls: ['./tasks-board.component.scss']
 })
@@ -49,6 +56,8 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   done: Task[] = [];
   inProgress: Task[] = [];
   open: Task[] = [];
+  isModalVisible: boolean = false;
+
 
 
   get tasks() {
@@ -130,9 +139,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
-  // done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
 
   drop(event: CdkDragDrop<Task[], any>) {
     if (event.previousContainer === event.container) {
@@ -184,5 +191,17 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   openTaskDetails(item: Task) {
     console.log(item);
     this.router.navigate(['./main/tasks', item.task_id]);
+  }
+
+  openCreateTaskModal() {
+    this.isModalVisible = true;
+  }
+
+  handleCancel() {
+    this.isModalVisible = false;
+  }
+
+  handleTaskCreated($event: any) {
+
   }
 }

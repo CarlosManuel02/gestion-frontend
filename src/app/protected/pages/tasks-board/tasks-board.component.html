@@ -1,3 +1,4 @@
+<button nz-button nzType="primary" (click)="openCreateTaskModal()">Create Task</button>
 <div nz-row>
   <div nz-col nzSpan="8">
     <h4 [ngStyle]="{ 'margin-bottom.px': 16 }">Open</h4>
@@ -28,7 +29,8 @@
               <nz-tag
                 nzColor="blue" style="margin-right: 8px"
                 nz-tooltip nzTooltipTitle="Priority"
-              >{{ item.task_priority }}</nz-tag>
+              >{{ item.task_priority }}
+              </nz-tag>
               <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
             </ng-template>
           }
@@ -53,21 +55,22 @@
             <nz-card cdkDrag
                      (click)="openTaskDetails(item)"
                      style="margin-bottom: 8px; cursor: move; background-color: #434343"
-                      [nzActions]="[extraTemplate]"
+                     [nzActions]="[extraTemplate]"
             >
               <nz-card-meta
                 [nzTitle]="item.task_name"
               ></nz-card-meta>
             </nz-card>
 
-<!--            allgin to the right-->
+            <!--            allgin to the right-->
             <ng-template #extraTemplate
-                         >
+            >
               <nz-tag>Due: {{ item.task_deadline | date: 'shortDate' }}</nz-tag>
               <nz-tag
                 nzColor="blue" style="margin-right: 8px"
                 nz-tooltip nzTooltipTitle="Priority"
-              >{{ item.task_priority }}</nz-tag>
+              >{{ item.task_priority }}
+              </nz-tag>
               <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
             </ng-template>
           }
@@ -106,7 +109,8 @@
               <nz-tag
                 nzColor="blue" style="margin-right: 8px"
                 nz-tooltip nzTooltipTitle="Priority"
-              >{{ item.task_priority }}</nz-tag>
+              >{{ item.task_priority }}
+              </nz-tag>
               <app-user-display [userId]="item.task_assignment" [imageOnly]="true"></app-user-display>
             </ng-template>
           }
@@ -115,3 +119,15 @@
     </cdk-virtual-scroll-viewport>
   </div>
 </div>
+
+
+<nz-modal [(nzVisible)]="isModalVisible"
+          [nzTitle]="'Create Task'"
+          [nzFooter]="null"
+          (nzOnCancel)="handleCancel()">
+  <ng-template nzModalContent>
+    <app-create-task (taskCreated)="handleTaskCreated($event)"
+                      [projectId]="projectId"
+    ></app-create-task>
+  </ng-template>
+</nz-modal>
