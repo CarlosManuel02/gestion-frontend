@@ -72,7 +72,7 @@ export class ManagerService {
 
   upodatemember(member: Member) {
     return new Promise((resolve, reject) => {
-      this.http.post(`${this.API_URL}updateMember`, member).subscribe((resp: any) => {
+      this.http.patch(`${this.API_URL}updateMember`, member).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {
@@ -94,7 +94,21 @@ export class ManagerService {
 
   removeMember(data: { project_id: string; id: string }) {
     return new Promise((resolve, reject) => {
-      this.http.post(`${this.API_URL}removeMember`, data).subscribe((resp: any) => {
+      this.http.delete(`${this.API_URL}removeMember`,
+        {body: data}
+        ).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp.status)
+        }
+      })
+    });
+  }
+
+  addMember(data: { role: string; project_id: string; id: string }) {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}addMember`, data).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {

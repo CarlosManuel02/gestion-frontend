@@ -1,6 +1,10 @@
 <h3>Project Members</h3>
 <p>Members can be added by project Admins or Owners</p>
 
+<button nz-button
+        nzType="primary"
+        (click)="addMember()"
+  >Add Member</button>
 <nz-table #table nzSize="middle" [nzTitle]="'Members'" [nzData]="members">
   <thead>
   <tr>
@@ -22,14 +26,24 @@
     </td>
     <td>{{member.join_date | date: 'short'}}</td>
     <td>
-        <button nz-button nzType="text" nzDanger (click)="removeMember(member)" *ngIf="member.isEditing">
+        <button nz-button nzType="text"
+                nzDanger
+                *ngIf="member.isEditing && member.member_role !== 'owner'"
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure to delete this member?"
+                nzCancelText="No"
+                nzOkText="Yes"
+                (nzOnCancel)="cancelEditMember(member)"
+                (nzOnConfirm)="removeMember(member)"
+
+            >
           <span nz-icon nzType="delete" nzTheme="outline"></span>
         </button>
 
       <nz-divider nzType="vertical"></nz-divider>
 
 
-      <nz-button-group nzSize="small">
+      <nz-button-group nzSize="small" *ngIf="!member.isEditing">
         <button nz-button nzType="text" (click)="editMemberRole(member)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
         </button>
@@ -37,7 +51,30 @@
           <span nz-icon nzType="info-circle" nzTheme="outline"></span>
         </button>
       </nz-button-group>
+
+      <nz-button-group nzSize="small" *ngIf="member.isEditing">
+        <button nz-button nzType="text" (click)="saveMember(member)">
+          <span nz-icon nzType="check" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="text" (click)="cancelEditMember(member)">
+          <span nz-icon nzType="close" nzTheme="outline"></span>
+        </button>
+      </nz-button-group>
     </td>
   </tr>
   </tbody>
 </nz-table>
+
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Search Members"
+  [nzWidth]="800"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-template nzModalContent>
+    <app-search-member (selectedMembers)="getSelectedMembers($event)"></app-search-member>
+  </ng-template>
+</nz-modal>
+

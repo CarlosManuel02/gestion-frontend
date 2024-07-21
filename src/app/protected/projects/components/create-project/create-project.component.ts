@@ -112,11 +112,10 @@ export class CreateProjectComponent implements OnInit {
 
 
     console.log(data)
-    // this.managerService.createProject(data)
-    //   .then((resp: any) => {
-    //     console.log(resp)
-    //   })
-
+    this.managerService.createProject(data)
+      .then((resp: any) => {
+        console.log(resp)
+      })
 
   }
 
