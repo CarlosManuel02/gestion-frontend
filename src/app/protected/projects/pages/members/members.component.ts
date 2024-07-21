@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ManagerService } from "../../../../shared/services/manager.service";
 import { Router } from "@angular/router";
-import {JsonPipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {NzTableComponent, NzTbodyComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import { UserDisplayComponent } from "../../../components/user-display/user-display.component";
 import { Member } from "../../../../shared/interfaces";
@@ -12,6 +12,7 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { NzOptionComponent, NzSelectComponent } from "ng-zorro-antd/select";
 import { FormsModule } from "@angular/forms";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
 
 @Component({
   selector: 'app-members',
@@ -30,7 +31,9 @@ import {NzMessageService} from "ng-zorro-antd/message";
     FormsModule,
     NgForOf,
     NgIf,
-    NzThMeasureDirective
+    NzThMeasureDirective,
+    DatePipe,
+    NzDividerComponent
   ],
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
@@ -95,4 +98,19 @@ export class MembersComponent implements OnInit {
   }
 
   protected readonly Date = Date;
+
+  removeMember(member: Member) {
+    const data = {
+      project_id: this.projectId,
+      id: member.member_id
+    }
+    this.manager.removeMember(data)
+      .then((resp) => {
+        if (resp === 200) {
+          this.members = this.members.filter(m => m.member_id !== member.member_id);
+        } else {
+          this.message.error("Something went wrong");
+        }
+      });
+  }
 }

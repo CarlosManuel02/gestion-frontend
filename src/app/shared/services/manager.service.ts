@@ -4,6 +4,7 @@ import {environment} from "../../../environments/environment";
 import {Project} from "../interfaces/project.interface";
 import {AuthService} from "./auth.service";
 import {Member} from "../interfaces";
+import {catchError, map, Observable, of, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,28 @@ export class ManagerService {
           reject(resp)
         } else {
           resolve(resp)
+        }
+      })
+    });
+  }
+
+  checkMember(param: { project_id: string; id: string }) {
+      return this.http.post(`${this.API_URL}members/check/`, param).pipe(
+        map((resp: any) => {
+          console.log(resp)
+          return resp.status == 200;
+        }
+      ), catchError((err: any) => of(false)));
+
+  }
+
+  removeMember(data: { project_id: string; id: string }) {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}removeMember`, data).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp.status)
         }
       })
     });
