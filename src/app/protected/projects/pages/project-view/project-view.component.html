@@ -10,8 +10,9 @@
           ></nz-card-meta>
           <nz-list [nzDataSource]="menuItems" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
             <ng-template #item let-item>
-              <nz-list-item (click)="goToTasks(item)">
+              <nz-list-item (click)="goTo(item)">
                 <nz-list-item-meta
+                  style="cursor: pointer"
                   [nzAvatar]="menuTemplate"
                   [nzTitle]="item.title"
                 ></nz-list-item-meta>
@@ -30,7 +31,7 @@
 
     </nz-sider>
 
-    <nz-content style="margin-left: 40px">
+    <nz-content style="margin-left: 40px; margin-top: 20px">
       <router-outlet></router-outlet>
     </nz-content>
   </nz-layout>

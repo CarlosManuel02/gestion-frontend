@@ -4,6 +4,8 @@ import {ProjectViewComponent} from "./pages/project-view/project-view.component"
 import {MainComponent} from "./pages/main/main.component";
 import {ProjectsComponent} from "./pages/projects/projects.component";
 import {TasksBoardComponent} from "../pages/tasks-board/tasks-board.component";
+import {MembersComponent} from "./pages/members/members.component";
+import {ProjectValidatorGuard} from "../../shared/guards/project-validator.guard";
 
 const routes: Routes = [
   {
@@ -14,10 +16,13 @@ const routes: Routes = [
       {
         path: ':id',
         component: ProjectViewComponent,
+        canActivate: [ProjectValidatorGuard],
         children: [
           {path: '', redirectTo: 'board', pathMatch: 'full'},
           {path: 'board', component: TasksBoardComponent},
-          // {path: 'members', component: MembersComponent},
+          {path: 'members', component: MembersComponent},
+          // {path: 'tasks', component: TasksListomponent},
+          // {path: 'settings', component: SettingsComponent},
         ]
       },
       {path: '**', redirectTo: 'projects'}

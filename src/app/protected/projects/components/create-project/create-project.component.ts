@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
@@ -15,6 +15,8 @@ import {SearchMemberComponent} from "../../../../shared/component/search-member/
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 
 @Component({
   selector: 'app-create-project',
@@ -40,7 +42,11 @@ import {NzMessageService} from "ng-zorro-antd/message";
     NzThMeasureDirective,
     NzModalComponent,
     SearchMemberComponent,
-    NzModalContentDirective
+    NzModalContentDirective,
+    NzSwitchComponent,
+    NzRadioGroupComponent,
+    NzRadioComponent,
+    FormsModule
   ],
   providers: [NzModalService],
   templateUrl: './create-project.component.html',
@@ -55,6 +61,7 @@ export class CreateProjectComponent implements OnInit {
     return this.authService.user
   }
   isVisible: boolean = false;
+  projectVisibility: any;
 
 
   ngOnInit() {
@@ -91,6 +98,7 @@ export class CreateProjectComponent implements OnInit {
       owner: this.user.id,
       end_date: this.form.value.end_date ? this.form.value.end_date.toISOString() : null,
     }
+    data["visibility"] = this.projectVisibility !== 'private';
     if (this.members.length > 0) {
       data.members = JSON.stringify(
         this.members.map((member: any) => {
@@ -104,10 +112,10 @@ export class CreateProjectComponent implements OnInit {
 
 
     console.log(data)
-    this.managerService.createProject(data)
-      .then((resp: any) => {
-        console.log(resp)
-      })
+    // this.managerService.createProject(data)
+    //   .then((resp: any) => {
+    //     console.log(resp)
+    //   })
 
 
   }

@@ -1,0 +1,43 @@
+<h3>Project Members</h3>
+<p>Members can be added by project Admins or Owners</p>
+
+<nz-table #table nzSize="middle" [nzTitle]="'Members'" [nzData]="members">
+  <thead>
+  <tr>
+    <th>Account</th>
+    <th>Role</th>
+    <th>Joined At</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let member of members; trackBy: trackByMemberId">
+    <td><app-user-display [userId]="member.member_id" [imageOnly]="false"></app-user-display></td>
+    <td>
+      <nz-select *ngIf="member.isEditing" style="width: 100px" nzShowSearch nzAllowClear [(ngModel)]="member.member_role">
+        <nz-option nzValue="admin" nzLabel="Admin"></nz-option>
+        <nz-option nzValue="member" nzLabel="Member"></nz-option>
+        <nz-option nzValue="owner" nzLabel="Owner"></nz-option>
+      </nz-select>
+      <span *ngIf="!member.isEditing">{{member.member_role}}</span>
+    </td>
+    <td>{{member.join_date | date: 'short'}}</td>
+    <td>
+        <button nz-button nzType="text" nzDanger (click)="removeMember(member)" *ngIf="member.isEditing">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+
+      <nz-divider nzType="vertical"></nz-divider>
+
+
+      <nz-button-group nzSize="small">
+        <button nz-button nzType="text" (click)="editMemberRole(member)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button nz-button nz-popover nzType="text" nzPopoverTitle="Title" nzPopoverContent="Content">
+          <span nz-icon nzType="info-circle" nzTheme="outline"></span>
+        </button>
+      </nz-button-group>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

@@ -45,7 +45,7 @@
             nzPopoverTrigger="click"
             [nzPopoverContent]="contentTemplate"
             nzSize="small">
-      <nz-avatar nzIcon="user" [nzSrc]="userImage"></nz-avatar>
+      <app-user-display [imageOnly]="true" [userId]="user.id"></app-user-display>
     </button>
     <ng-template #contentTemplate>
       <nz-list nzSize="small">

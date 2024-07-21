@@ -19,20 +19,20 @@ import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
   template: `
 
     @if (imageOnly){
-      <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+      <nz-avatar nz-comment-avatar [nzText]="username" nzSize="default"></nz-avatar>
     } @else {
       <nz-list nzSize="small">
         <nz-list-item>
           <nz-list-item-meta
             [nzAvatar]="userImage"
-            [nzTitle]="usr?.email"
+            [nzTitle]="usr[0]?.email"
           >
           </nz-list-item-meta>
         </nz-list-item>
       </nz-list>
 
       <ng-template #userImage>
-        <nz-avatar nz-comment-avatar [nzText]="usr?.username" nzSize="small"></nz-avatar>
+        <nz-avatar nz-comment-avatar [nzText]="username" nzSize="small"></nz-avatar>
       </ng-template>
     }
 
@@ -48,6 +48,7 @@ export class UserDisplayComponent implements OnInit {
   usr!: any;
   userImage: string = '';
   @Input() imageOnly: boolean = false;
+  username: string = '';
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -66,6 +67,8 @@ export class UserDisplayComponent implements OnInit {
       .subscribe((resp) => {
         // console.log('resp', resp);
         this.usr = resp;
+        // get the first letter of the username
+        this.username = String(this.usr[0].email).charAt(0).toUpperCase();
       })
   }
 

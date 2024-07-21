@@ -17,9 +17,9 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {ProjectsComponent} from "../../projects/pages/projects/projects.component";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
-import {Image} from "../../../shared/interfaces/project.interface";
+import {Image, Project} from "../../../shared/interfaces/project.interface";
 
 @Component({
   selector: 'app-dashboard',
@@ -63,6 +63,7 @@ export class DashboardComponent {
 
   constructor(
     private managerService: ManagerService,
+    private router: Router
   ) {
   }
 
@@ -81,5 +82,10 @@ export class DashboardComponent {
     const url = URL.createObjectURL(blob);
     return ';'
 
+  }
+
+  navigateToProject(project: Project) {
+    this.managerService.getProject(project.project_id);
+    this.router.navigateByUrl(`/main/projects/${ project.project_id }`)
   }
 }

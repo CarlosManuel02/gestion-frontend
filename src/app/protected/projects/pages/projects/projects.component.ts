@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
@@ -9,7 +9,7 @@ import {
   NzListItemExtraComponent,
   NzListItemMetaComponent, NzListItemMetaDescriptionComponent, NzListItemMetaTitleComponent
 } from "ng-zorro-antd/list";
-import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -17,9 +17,9 @@ import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NgForOf} from "@angular/common";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {FormsModule} from "@angular/forms";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {UserDisplayComponent} from "../../../components/user-display/user-display.component";
-import {Image} from "../../../../shared/interfaces/project.interface";
+import {Image, Project} from "../../../../shared/interfaces/project.interface";
 import {NzDrawerService} from "ng-zorro-antd/drawer";
 import {CreateProjectComponent} from "../../components/create-project/create-project.component";
 
@@ -46,13 +46,15 @@ import {CreateProjectComponent} from "../../components/create-project/create-pro
     FormsModule,
     NzInputDirective,
     RouterLink,
-    UserDisplayComponent
+    UserDisplayComponent,
+    NzButtonGroupComponent
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
 export class ProjectsComponent {
   loading: boolean = false
+
   get projects() {
     return this.managerService.projects;
 
@@ -60,7 +62,8 @@ export class ProjectsComponent {
 
   constructor(
     private managerService: ManagerService,
-    public drawer: NzDrawerService
+    public drawer: NzDrawerService,
+    private router: Router
   ) {
   }
 
@@ -77,5 +80,11 @@ export class ProjectsComponent {
       nzWidth: 600
     });
 
+  }
+
+  setProject(project: Project) {
+    this.managerService.getProject(project.project_id)
+    // console.log('setProject', )
+    this.router.navigateByUrl(`/main/projects/${project.project_id}`)
   }
 }
