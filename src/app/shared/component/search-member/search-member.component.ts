@@ -40,7 +40,7 @@ export class SearchMemberComponent {
   email = '';
   user!: User;
   users: any[] = [];
-  role = 'member';
+  role!: string;
 
 
   constructor(

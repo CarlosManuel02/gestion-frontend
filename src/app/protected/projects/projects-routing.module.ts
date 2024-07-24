@@ -16,7 +16,7 @@ const routes: Routes = [
       {
         path: ':id',
         component: ProjectViewComponent,
-        canActivate: [ProjectValidatorGuard],
+        // canActivate: [ProjectValidatorGuard],
         children: [
           {path: '', redirectTo: 'board', pathMatch: 'full'},
           {path: 'board', component: TasksBoardComponent},

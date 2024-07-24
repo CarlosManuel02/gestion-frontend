@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ManagerService } from "../../../../shared/services/manager.service";
-import { Router } from "@angular/router";
+import {Component, OnInit, signal} from '@angular/core';
+import {ManagerService} from "../../../../shared/services/manager.service";
+import {Router} from "@angular/router";
 import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {NzTableComponent, NzTbodyComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
-import { UserDisplayComponent } from "../../../components/user-display/user-display.component";
-import { Member } from "../../../../shared/interfaces";
-import { AuthService } from "../../../../shared/services/auth.service";
-import { NzButtonComponent, NzButtonGroupComponent } from "ng-zorro-antd/button";
-import { NzPopoverDirective } from "ng-zorro-antd/popover";
-import { NzIconDirective } from "ng-zorro-antd/icon";
-import { NzOptionComponent, NzSelectComponent } from "ng-zorro-antd/select";
-import { FormsModule } from "@angular/forms";
+import {UserDisplayComponent} from "../../../components/user-display/user-display.component";
+import {Member} from "../../../../shared/interfaces";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
+import {NzPopoverDirective} from "ng-zorro-antd/popover";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {FormsModule} from "@angular/forms";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {SearchMemberComponent} from "../../../../shared/component/search-member/search-member.component";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 
 @Component({
   selector: 'app-members',
@@ -33,7 +36,11 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
     NgIf,
     NzThMeasureDirective,
     DatePipe,
-    NzDividerComponent
+    NzDividerComponent,
+    NzModalComponent,
+    NzModalContentDirective,
+    SearchMemberComponent,
+    NzPopconfirmDirective
   ],
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
@@ -49,16 +56,11 @@ export class MembersComponent implements OnInit {
     public router: Router,
     private authService: AuthService,
     public message: NzMessageService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.projectId = this.router.url.split('/')[3];
-    this.checkIfOwner();
-    this.manager.getProjecMembers(this.projectId)
-      .then((resp) => {
-        console.log(resp);
-        this.members = resp.map(member => ({...member, isEditing: false}));
-      });
+    this.fetchMembers();
   }
 
   private checkIfOwner() {
@@ -77,12 +79,7 @@ export class MembersComponent implements OnInit {
 
   editMemberRole(member: Member) {
     member.isEditing = !member.isEditing;
-    this.manager.upodatemember(member)
-      .then((resp) =>{
-        if (resp !== 200){
-          this.message.error("Something went wrong")
-        }
-      })
+
   }
 
   trackByMemberId(index: number, member: Member): string {
@@ -98,6 +95,7 @@ export class MembersComponent implements OnInit {
   }
 
   protected readonly Date = Date;
+  isVisible: boolean = false;
 
   removeMember(member: Member) {
     const data = {
@@ -111,6 +109,61 @@ export class MembersComponent implements OnInit {
         } else {
           this.message.error("Something went wrong");
         }
+      });
+  }
+
+  addMember() {
+    this.isVisible = true;
+  }
+
+  handleCancel() {
+    this.isVisible = false;
+  }
+
+  handleOk() {
+    this.isVisible = false;
+  }
+
+  getSelectedMembers($event: any) {
+    let data = {
+      project_id: this.projectId,
+      id: $event[0].id,
+      role: $event[0].role
+    }
+
+    this.manager.addMember(data)
+      .then((resp) => {
+        if (resp === 200) {
+          this.fetchMembers();
+        } else {
+          this.message.error("Something went wrong");
+        }
+      });
+
+    // console.log(data);
+
+  }
+
+  saveMember(member: Member) {
+    this.manager.upodatemember(member)
+      .then((resp) => {
+        if (resp !== 200) {
+          this.message.error("Something went wrong")
+        }
+      })
+  }
+
+  cancelEditMember(member: Member) {
+    member.isEditing = false;
+  }
+
+  private fetchMembers() {
+    this.projectId = this.router.url.split('/')[3];
+    this.checkIfOwner();
+    this.manager.getProjecMembers(this.projectId)
+      .then((resp) => {
+        console.log(resp);
+        this.members = resp.map(member => ({...member, isEditing: false}));
       });
   }
 }

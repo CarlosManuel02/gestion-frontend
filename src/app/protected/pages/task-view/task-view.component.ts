@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../../shared/services/task.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
@@ -75,6 +75,7 @@ import {CommentsComponent} from "../../../shared/components/comments/comments.co
     UserDisplayComponent,
     CommentsComponent,
     NgIf,
+    RouterLink,
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
