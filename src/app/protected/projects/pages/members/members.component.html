@@ -5,7 +5,8 @@
         nzType="primary"
         (click)="addMember()"
   >Add Member</button>
-<nz-table #table nzSize="middle" [nzTitle]="'Members'" [nzData]="members">
+<nz-divider nzText="Members"></nz-divider>
+<nz-table #table nzSize="middle" [nzData]="members">
   <thead>
   <tr>
     <th>Account</th>
