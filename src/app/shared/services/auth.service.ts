@@ -60,9 +60,9 @@ export class AuthService {
     // localStorage.removeItem('token');
   }
 
-  register(formData: FormData){
+  register(data: any){
     const url = `${this.endpoint}new`;
-    return this.http.post<UserResponse>(url, formData)
+    return this.http.post<UserResponse>(url, data)
       .pipe(
         tap((resp) => {
           this._user = {
@@ -124,4 +124,14 @@ export class AuthService {
     )
   }
 
+  isLogin() {
+    // retornar un observable que emita true o false dependiendo si el usuario esta en la pagina de login o registro o no
+    return new Observable<boolean>(subscriber => {
+      if (this.router.url === '/auth/login' || this.router.url === '/auth/register') {
+        subscriber.next(false);
+      } else {
+        subscriber.next(true);
+      }
+    });
+  }
 }

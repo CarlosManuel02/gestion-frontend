@@ -2,13 +2,35 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TaskService} from "../../../../shared/services/task.service";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ManagerService} from "../../../../shared/services/manager.service";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Member} from "../../../../shared/interfaces";
+import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
+import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NgForOf} from "@angular/common";
+import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
 
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule,
+    NzFormDirective,
+    ReactiveFormsModule,
+    NzRowDirective,
+    NzColDirective,
+    NzFormControlComponent,
+    NzFormItemComponent,
+    NzFormLabelComponent,
+    NzInputDirective,
+    NzDividerComponent,
+    NzSelectComponent,
+    NzOptionComponent,
+    NgForOf,
+    NzDatePickerComponent
+  ],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.scss'
 })
@@ -16,12 +38,37 @@ export class CreateTaskComponent implements OnInit {
   @Output() taskCreated = new EventEmitter();
   @Input() projectId!: string;
 
+  // task_key: string;
+  // name: string;
+  // description?: string;
+  // status: string;
+  // creation_date: string;
+  // deadline?: string;
+  // priority: number;
+  // assignment?: string;
+  // project_id?: string;
   taskForm = this.fb.group({
+    task_key: [''],
+    name: [''],
+    description: [''],
+    status: [''],
+    creation_date: [''],
+    deadline: [''],
+    priority: [''],
+    assignment: [''],
+    project_id: ['']
 
   })
 
-  members: Member[] = [];
-
+  projectMembers: Member[] = []
+  statuses = [
+    {label: 'Open', value: 'open'},
+    {label: 'In Progress', value: 'in_progress'},
+    {label: 'Completed', value: 'completed'},
+    {label: 'Closed', value: 'closed'},
+  ]
+  loading: boolean = false;
+  assignedTo!: string;
   constructor(
    public taskService: TaskService,
    public authService: AuthService,
@@ -37,7 +84,15 @@ export class CreateTaskComponent implements OnInit {
 
   private getProjectMembers() {
     this.managerService.getProjecMembers(this.projectId).then((members: any) => {
-      this.members = members;
+      this.projectMembers = members;
     });
+  }
+
+  submitForm() {
+
+  }
+
+  onAssignedToChange($event: any) {
+    this.assignedTo = $event;
   }
 }

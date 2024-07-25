@@ -1,1 +1,85 @@
-<p>create-task works!</p>
+<h4>Create a new Task</h4>
+<form nz-form [formGroup]="taskForm" (ngSubmit)="submitForm()"
+>
+  <!--  // task_key: string;-->
+  <!--  // name: string;-->
+  <!--  // description?: string;-->
+  <!--  // status: string;-->
+  <!--  // deadline?: string;-->
+  <!--  // priority: number;-->
+  <!--  // assignment?: string;-->
+  <!--  // project_id?: string;-->
+
+  <div nz-row>
+
+    <div nz-col nzSpan="14">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzRequired>Task Name</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input formControlName="name" placeholder="Task Name">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="10">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="10" nzRequired>Task Key</nz-form-label>
+        <nz-form-control [nzSpan]="10">
+          <input nz-input formControlName="task_key" placeholder="Task Key">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <nz-divider nzText="Task Details"></nz-divider>
+
+    <div nz-col nzSpan="24">
+      <nz-form-item class="mt-3">
+        <nz-form-label>Description</nz-form-label>
+        <nz-form-control>
+          <textarea nz-input formControlName="description" placeholder="Description"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzRequired>Priority</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-select class="float-right" [(ngModel)]="taskForm.value.priority" formControlName="priority">
+            <nz-option *ngFor="let status of statuses" [nzLabel]="status.label" [nzValue]="status.value"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label nzSpan="8">End Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker class="float-right"
+                          [(ngModel)]="taskForm.value.deadline"
+                          [ngModelOptions]="{standalone: true}"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label nzSpan="8">Assigned To</nz-form-label>
+        <nz-form-control>
+          <nz-select class="float-right" [(ngModel)]="assignedTo" (ngModelChange)="onAssignedToChange($event)"
+                     [nzLoading]="loading"
+                     [ngModelOptions]="{standalone: true}">
+            <nz-option *ngFor="let user of projectMembers" [nzLabel]="user.member_email" [nzValue]="user.member_email">
+
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+
+
+  </div>
+
+</form>
