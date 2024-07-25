@@ -44,7 +44,6 @@ export class RegistroComponent implements OnInit {
   validateForm!: FormGroup;
   passwordVisible = false;
   loading: boolean = false;
-  userImage: any;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -61,25 +60,16 @@ export class RegistroComponent implements OnInit {
     });
   }
 
-  onFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.userImage = file;
-    }
-  }
 
   submitForm(): void {
     this.loading = true;
-    let formData = new FormData();
-    const {username, email, password} = this.validateForm.value;
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (this.userImage) {
-      formData.append('file', this.userImage);
+    const data = {
+      "username": this.validateForm.value.username,
+      "email": this.validateForm.value.email,
+      "password": this.validateForm.value.password
     }
 
-    this.authService.register(formData).subscribe((res) => {
+    this.authService.register(data).subscribe((res) => {
       this.loading = false;
       if (res) {
         this.router.navigate(['/login']);
