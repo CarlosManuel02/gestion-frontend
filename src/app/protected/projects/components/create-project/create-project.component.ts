@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
@@ -62,6 +62,7 @@ export class CreateProjectComponent implements OnInit {
   }
   isVisible: boolean = false;
   projectVisibility: any;
+  @Output() projectCreated = new EventEmitter();
 
 
   ngOnInit() {
@@ -114,7 +115,11 @@ export class CreateProjectComponent implements OnInit {
     console.log(data)
     this.managerService.createProject(data)
       .then((resp: any) => {
-        console.log(resp)
+        if (resp.status === 200) {
+          this.projectCreated.emit('Project created successfully')
+        } else {
+          this.projectCreated.emit('Error creating project')
+        }
       })
 
   }

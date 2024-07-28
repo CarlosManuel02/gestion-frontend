@@ -11,6 +11,10 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {NgForOf} from "@angular/common";
 import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
+import {NzUploadChangeParam, NzUploadComponent, NzUploadFile} from "ng-zorro-antd/upload";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzFlexDirective} from "ng-zorro-antd/flex";
 
 @Component({
   selector: 'app-create-task',
@@ -29,7 +33,11 @@ import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
     NzSelectComponent,
     NzOptionComponent,
     NgForOf,
-    NzDatePickerComponent
+    NzDatePickerComponent,
+    NzUploadComponent,
+    NzIconDirective,
+    NzButtonComponent,
+    NzFlexDirective
   ],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.scss'
@@ -69,6 +77,7 @@ export class CreateTaskComponent implements OnInit {
   ]
   loading: boolean = false;
   assignedTo!: string;
+  fileList: NzUploadFile[] = [];
   constructor(
    public taskService: TaskService,
    public authService: AuthService,
@@ -94,5 +103,10 @@ export class CreateTaskComponent implements OnInit {
 
   onAssignedToChange($event: any) {
     this.assignedTo = $event;
+  }
+
+  handleChange($event: NzUploadChangeParam) {
+    this.fileList = $event.fileList;
+    console.log(this.fileList);
   }
 }
