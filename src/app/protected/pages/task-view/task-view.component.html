@@ -1,190 +1,196 @@
-@if (task) {
-  <div nz-row>
-    <div class="container-fluid mt-3" nz-col nzSpan="18">
-      <nz-affix [nzOffsetTop]="0">
-        <nz-breadcrumb style=" z-index: 1;">
-          <nz-breadcrumb-item>Projects</nz-breadcrumb-item>
-          <nz-breadcrumb-item routerLink="/main/projects/{{ mockTask.project_id }}">
-            <a>{{ mockTask.project_name }}</a>
-          </nz-breadcrumb-item>
-          <nz-breadcrumb-item>
-            <a>{{ mockTask.task_name }}</a>
-          </nz-breadcrumb-item>
-        </nz-breadcrumb>
-      </nz-affix>
+<nz-spin [nzSpinning]="loading">
 
-      <h3>{{ mockTask.task_name }}</h3>
-      <nz-button-group>
-        <button nz-button
-                nzType="default"
-                (click)="uploadFile()"
-        >Attach
-        </button>
+  @if (task) {
+    <div nz-row>
+      <div class="container-fluid mt-3" nz-col nzSpan="18">
+        <nz-affix [nzOffsetTop]="0">
+          <nz-breadcrumb style=" z-index: 1;">
+            <nz-breadcrumb-item>Projects</nz-breadcrumb-item>
+            <nz-breadcrumb-item routerLink="/main/projects/{{ mockTask.project_id }}">
+              <a>{{ mockTask.project_name }}</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+              <a>{{ mockTask.task_name }}</a>
+            </nz-breadcrumb-item>
+          </nz-breadcrumb>
+        </nz-affix>
 
-      </nz-button-group>
-      <nz-divider></nz-divider>
+        <h3>{{ mockTask.task_name }}</h3>
+        <nz-button-group>
+          <button nz-button
+                  nzType="default"
+                  (click)="uploadFile()"
+          >Attach
+          </button>
 
-      <p>Description</p>
-      <div>
+        </nz-button-group>
+        <nz-divider></nz-divider>
+
+        <p>Description</p>
+        <div>
       <textarea nz-input
                 [(ngModel)]="mockTask.task_description"
                 rows="10" [readonly]="editMode"
                 (dblclick)="changeMode()"
                 style="resize: none;"></textarea>
-        @if (!editMode) {
-          <nz-button-group>
-            <button nz-button nzType="default" (click)="saveDetails()">Save</button>
-            <button nz-button nzDanger nzType="default" (click)="cancel()">Cancel</button>
-          </nz-button-group>
-        }
-      </div>
-
-      <nz-collapse class="mt-2">
-        <nz-collapse-panel [nzHeader]="attachmentHeader" [nzActive]="true" [nzExtra]="attachmentExtra">
-          <ng-template #attachmentHeader>
-            <p>Attachments
-              <nz-tag>{{ mockTask.attachments?.length }}</nz-tag>
-            </p>
-          </ng-template>
-          <ng-template #attachmentExtra>
-            <nz-button-group>
-              <button nz-button nzType="text" nzSize="small"><span (click)="reload()" nz-icon nzType="reload"
-                                                                   nzTheme="outline"></span>
-              </button>
-            </nz-button-group>
-          </ng-template>
-          @if (task.attachments) {
-            <div style="margin:0;">
-
-              <cdk-virtual-scroll-viewport [itemSize]="mockTask.attachments?.length" class="scroll-container"
-                                           style=" height: 150px;">
-                <nz-list nzSplit="false" *cdkVirtualFor="let file of mockTask.attachments"
-                         [nzItemLayout]="'horizontal'">
-                  <nz-list-item>
-                <span nz-typography>{{ file.file_name }}
-                  <nz-divider nzType="vertical"></nz-divider><code> {{ file.size | fileSize }}</code></span>
-                    <nz-button-group>
-                      <button [nzLoading]="loading" nz-button nzType="primary" nzSize="small" (click)="download(file)">
-                        Download
-                      </button>
-                    </nz-button-group>
-                  </nz-list-item>
-
-                </nz-list>
-              </cdk-virtual-scroll-viewport>
-            </div>
-
-
-          }
-        </nz-collapse-panel>
-      </nz-collapse>
-
-
-    </div>
-
-    <div nz-col nzSpan="6">
-      <nz-card nzTitle="Task Details">
-        <form nz-form>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Project</nz-form-label>
-            <nz-form-control>
-              <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.project_name"
-                     [ngModelOptions]="{standalone: true}"
-                     [readonly]="editModeDetails" (click)="changeModeDetails()">
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Task</nz-form-label>
-            <nz-form-control>
-              <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.task_name"
-                     [ngModelOptions]="{standalone: true}"
-                     [readonly]="editModeDetails" (click)="changeModeDetails()">
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Status</nz-form-label>
-            <nz-form-control>
-              <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_status"
-                         [disabled]="editModeDetails"
-                         [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
-                <nz-option *ngFor="let status of statuses" [nzLabel]="status.label" [nzValue]="status.value"></nz-option>
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Priority</nz-form-label>
-            <nz-form-control>
-              <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_priority"
-                         [disabled]="editModeDetails"
-                         [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
-                <nz-option *ngFor="let priority of priorities" [nzLabel]="priority.label"
-                           [nzValue]="priority.value"></nz-option>
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Start Date</nz-form-label>
-            <nz-form-control>
-              <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
-                              [(ngModel)]="mockTask.task_creation_date" [nzInputReadOnly]="editModeDetails"
-                              (click)="changeModeDetails()" [ngModelOptions]="{standalone: true}"></nz-date-picker>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">End Date</nz-form-label>
-            <nz-form-control>
-              <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
-                              [(ngModel)]="mockTask.task_deadline" [nzInputReadOnly]="editModeDetails"
-                              (click)="changeModeDetails()" [ngModelOptions]="{standalone: true}"></nz-date-picker>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-label nzSpan="8">Assigned To</nz-form-label>
-            <nz-form-control>
-              <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.user_email"
-                         [disabled]="editModeDetails"
-                         [nzLoading]="loading"
-                         [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
-                <nz-option *ngFor="let user of projectMembers" [nzLabel]="user.member_email" [nzValue]="user.member_email">
-
-                </nz-option>
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-
-          @if (!editModeDetails) {
+          @if (!editMode) {
             <nz-button-group>
               <button nz-button nzType="default" (click)="saveDetails()">Save</button>
-              <button nz-button nzDanger nzType="default" (click)="cancelDetails()">Cancel</button>
+              <button nz-button nzDanger nzType="default" (click)="cancel()">Cancel</button>
             </nz-button-group>
           }
-        </form>
-      </nz-card>
+        </div>
 
-<!--      COMMENT SECTION-->
+        <nz-collapse class="mt-2">
+          <nz-collapse-panel [nzHeader]="attachmentHeader" [nzActive]="true" [nzExtra]="attachmentExtra">
+            <ng-template #attachmentHeader>
+              <p>Attachments
+                <nz-tag>{{ mockTask.attachments?.length }}</nz-tag>
+              </p>
+            </ng-template>
+            <ng-template #attachmentExtra>
+              <nz-button-group>
+                <button nz-button nzType="text" nzSize="small"><span (click)="reload()" nz-icon nzType="reload"
+                                                                     nzTheme="outline"></span>
+                </button>
+              </nz-button-group>
+            </ng-template>
+            @if (task.attachments) {
+              <div style="margin:0;">
 
-      <nz-collapse class="mt-4">
-        <nz-collapse-panel [nzHeader]="commentsHeader"
-                           [nzActive]="true"
-                           [nzExtra]="commentsExtra"
-                           (nzActiveChange)="onActiveChange($event)">
-          <ng-template #commentsHeader>
-            <p>Comments
-              <nz-tag>{{ 0 }}</nz-tag>
-            </p>
-          </ng-template>
-          <ng-template #commentsExtra>
-            <nz-button-group>
-              <button nz-button nzType="text" nzSize="small">
-                <span (click)="reload()" nz-icon nzType="reload" nzTheme="outline"></span>
-              </button>
-            </nz-button-group>
-          </ng-template>
-          <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
-        </nz-collapse-panel>
-      </nz-collapse>
+                <cdk-virtual-scroll-viewport [itemSize]="mockTask.attachments?.length" class="scroll-container"
+                                             style=" height: 150px;">
+                  <nz-list nzSplit="false" *cdkVirtualFor="let file of mockTask.attachments"
+                           [nzItemLayout]="'horizontal'">
+                    <nz-list-item>
+                <span nz-typography>{{ file.file_name }}
+                  <nz-divider nzType="vertical"></nz-divider><code> {{ file.size | fileSize }}</code></span>
+                      <nz-button-group>
+                        <button [nzLoading]="loading" nz-button nzType="primary" nzSize="small"
+                                (click)="download(file)">
+                          Download
+                        </button>
+                      </nz-button-group>
+                    </nz-list-item>
+
+                  </nz-list>
+                </cdk-virtual-scroll-viewport>
+              </div>
+
+
+            }
+          </nz-collapse-panel>
+        </nz-collapse>
+
+
+      </div>
+
+      <div nz-col nzSpan="6">
+        <nz-card nzTitle="Task Details">
+          <form nz-form>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Project</nz-form-label>
+              <nz-form-control>
+                <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.project_name"
+                       [ngModelOptions]="{standalone: true}"
+                       [readonly]="editModeDetails" (click)="changeModeDetails()">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Task</nz-form-label>
+              <nz-form-control>
+                <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.task_name"
+                       [ngModelOptions]="{standalone: true}"
+                       [readonly]="editModeDetails" (click)="changeModeDetails()">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Status</nz-form-label>
+              <nz-form-control>
+                <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_status"
+                           [disabled]="editModeDetails"
+                           [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
+                  <nz-option *ngFor="let status of statuses" [nzLabel]="status.label"
+                             [nzValue]="status.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Priority</nz-form-label>
+              <nz-form-control>
+                <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_priority"
+                           [disabled]="editModeDetails"
+                           [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
+                  <nz-option *ngFor="let priority of priorities" [nzLabel]="priority.label"
+                             [nzValue]="priority.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Start Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
+                                [(ngModel)]="mockTask.task_creation_date" [nzInputReadOnly]="editModeDetails"
+                                (click)="changeModeDetails()" [ngModelOptions]="{standalone: true}"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">End Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
+                                [(ngModel)]="mockTask.task_deadline" [nzInputReadOnly]="editModeDetails"
+                                (click)="changeModeDetails()" [ngModelOptions]="{standalone: true}"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzSpan="8">Assigned To</nz-form-label>
+              <nz-form-control>
+                <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.user_email"
+                           [disabled]="editModeDetails"
+                           [nzLoading]="loading"
+                           [ngModelOptions]="{standalone: true}" (click)="changeModeDetails()">
+                  <nz-option *ngFor="let user of projectMembers" [nzLabel]="user.member_email"
+                             [nzValue]="user.member_email">
+
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            @if (!editModeDetails) {
+              <nz-button-group>
+                <button nz-button nzType="default" (click)="saveDetails()">Save</button>
+                <button nz-button nzDanger nzType="default" (click)="cancelDetails()">Cancel</button>
+              </nz-button-group>
+            }
+          </form>
+        </nz-card>
+
+        <!--      COMMENT SECTION-->
+
+        <nz-collapse class="mt-4">
+          <nz-collapse-panel [nzHeader]="commentsHeader"
+                             [nzActive]="true"
+                             [nzExtra]="commentsExtra"
+                             (nzActiveChange)="onActiveChange($event)">
+            <ng-template #commentsHeader>
+              <p>Comments
+                <nz-tag>{{ 0 }}</nz-tag>
+              </p>
+            </ng-template>
+            <ng-template #commentsExtra>
+              <nz-button-group>
+                <button nz-button nzType="text" nzSize="small">
+                  <span (click)="reload()" nz-icon nzType="reload" nzTheme="outline"></span>
+                </button>
+              </nz-button-group>
+            </ng-template>
+            <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+
     </div>
 
-  </div>
-
-}
+  }
+</nz-spin>

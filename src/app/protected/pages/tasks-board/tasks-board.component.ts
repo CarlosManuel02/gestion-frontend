@@ -14,7 +14,7 @@ import {UserDisplayComponent} from "../../components/user-display/user-display.c
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective} from "ng-zorro-antd/modal";
 import {CreateTaskComponent} from "../../projects/components/create-task/create-task.component";
 
 @Component({
@@ -43,7 +43,8 @@ import {CreateTaskComponent} from "../../projects/components/create-task/create-
     NzButtonComponent,
     NzModalComponent,
     CreateTaskComponent,
-    NzModalContentDirective
+    NzModalContentDirective,
+    NzModalFooterDirective
   ],
   styleUrls: ['./tasks-board.component.scss']
 })
@@ -71,7 +72,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.projectId = this.router.url.split('/')[3];
-    console.log(this.projectId);
+    // console.log(this.projectId);
     this.fetchTasks();
   }
 
