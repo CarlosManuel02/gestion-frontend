@@ -1,14 +1,5 @@
 <h4>Create a new Task</h4>
-<form nz-form [formGroup]="taskForm" (ngSubmit)="submitForm()"
->
-  <!--  // task_key: string;-->
-  <!--  // name: string;-->
-  <!--  // description?: string;-->
-  <!--  // status: string;-->
-  <!--  // deadline?: string;-->
-  <!--  // priority: number;-->
-  <!--  // assignment?: string;-->
-  <!--  // project_id?: string;-->
+<form nz-form [formGroup]="taskForm" (ngSubmit)="submitForm()">
 
   <div nz-row>
 
@@ -46,7 +37,7 @@
         <nz-form-label [nzSpan]="8" nzRequired>Priority</nz-form-label>
         <nz-form-control [nzSpan]="16">
           <nz-select class="float-right" [(ngModel)]="taskForm.value.priority" formControlName="priority">
-            <nz-option *ngFor="let status of statuses" [nzLabel]="status.label" [nzValue]="status.value"></nz-option>
+            <nz-option *ngFor="let priority of priorities" [nzLabel]="priority.label" [nzValue]="priority.value"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -79,7 +70,14 @@
     </div>
 
 
-
   </div>
+  <nz-form-item>
+    <nz-form-control class="text-center">
+      <button nz-button nzType="primary"
+              [nzLoading]="loading"
+              [disabled]="!taskForm.valid"
+              type="submit">Create Task</button>
+    </nz-form-control>
+  </nz-form-item>
 
 </form>

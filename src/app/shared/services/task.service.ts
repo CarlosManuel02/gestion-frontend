@@ -9,6 +9,7 @@ import {catchError, map, Observable, tap, throwError} from "rxjs";
 })
 export class TaskService {
   private readonly API_URL = `${environment.ApiEndPoint}tasks/`
+  private readonly ATTACHMENTS_URL = `${environment.ApiEndPoint}attachments/`
   private _tasks: Task[] = [];
   private _task: Task = {} as Task;
 
@@ -68,7 +69,7 @@ export class TaskService {
 
   getAttachments(taskId: string): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
-      this.http.get(`http://localhost:8080/api/attachments/${taskId}`)
+      this.http.get(`${this.ATTACHMENTS_URL}${taskId}`)
         .subscribe((resp: any) => {
           if (resp.status === 200) {
             this._task.attachments = resp.attachments;
@@ -86,7 +87,7 @@ export class TaskService {
     formData.append('task_id', task_id);
 
     return new Promise((resolve, reject) => {
-      this.http.post(`http://localhost:8080/api/attachments`, formData)
+      this.http.post(`${this.ATTACHMENTS_URL}`, formData)
         .subscribe((resp: any) => {
           if (resp.status === 200) {
             resolve({status: resp.status});
@@ -101,7 +102,7 @@ export class TaskService {
   updateTask(taskId: string, data: any): Promise<{ status: number }> {
 
     return new Promise((resolve, reject) => {
-      this.http.patch(`http://localhost:8080/api/tasks/${taskId}`, data)
+      this.http.patch(`${this.API_URL}$${taskId}`, data)
         .subscribe((resp: any) => {
           if (resp.status === 200) {
             resolve({status: resp.status});
@@ -115,7 +116,7 @@ export class TaskService {
 
   updateTaskStatus(id: string, newStatus: string) {
     return new Promise((resolve, reject) => {
-      this.http.patch(`http://localhost:8080/api/tasks/${id}`, {status: newStatus})
+      this.http.patch(`${this.API_URL}$${id}`, {status: newStatus})
         .subscribe((resp: any) => {
           if (resp.status === 200) {
             resolve({status: resp.status});
@@ -124,5 +125,19 @@ export class TaskService {
           }
         });
     })
+  }
+
+  createTask(data: any){
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.API_URL}`, data)
+        .subscribe((resp: any) => {
+          if (resp.status === 201) {
+            resolve({status: resp.status});
+          } else {
+            reject({status: resp.status});
+          }
+        });
+    })
+
   }
 }

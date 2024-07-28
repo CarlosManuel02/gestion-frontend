@@ -129,6 +129,9 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   }
 
   populateTasks() {
+    this.open = [];
+    this.inProgress = [];
+    this.done = [];
     this.tasks.forEach((task: Task) => {
       if (task.task_status === 'open') {
         this.open.push(task);
@@ -203,6 +206,9 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   }
 
   handleTaskCreated($event: any) {
-
+    if ($event) {
+      this.fetchTasks();
+    }
+    this.isModalVisible = false;
   }
 }
