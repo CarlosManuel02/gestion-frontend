@@ -11,7 +11,7 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NzModalComponent, NzModalContentDirective, NzModalService} from "ng-zorro-antd/modal";
-import {SearchMemberComponent} from "../../../../shared/component/search-member/search-member.component";
+import {SearchMemberComponent} from "../../../../shared/components/search-member/search-member.component";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
