@@ -33,6 +33,7 @@ import {Member} from "../../../shared/interfaces";
 import {NzCommentAvatarDirective, NzCommentComponent, NzCommentContentDirective} from "ng-zorro-antd/comment";
 import {UserDisplayComponent} from "../../components/user-display/user-display.component";
 import {CommentsComponent} from "../../../shared/components/comments/comments.component";
+import {NzSpinComponent} from "ng-zorro-antd/spin";
 
 @Component({
   selector: 'app-task-view',
@@ -76,6 +77,7 @@ import {CommentsComponent} from "../../../shared/components/comments/comments.co
     CommentsComponent,
     NgIf,
     RouterLink,
+    NzSpinComponent,
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'

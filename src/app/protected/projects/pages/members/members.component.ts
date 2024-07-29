@@ -14,7 +14,7 @@ import {FormsModule} from "@angular/forms";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
-import {SearchMemberComponent} from "../../../../shared/component/search-member/search-member.component";
+import {SearchMemberComponent} from "../../../../shared/components/search-member/search-member.component";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 
 @Component({

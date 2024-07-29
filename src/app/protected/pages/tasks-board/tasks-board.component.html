@@ -124,11 +124,14 @@
 <nz-modal [(nzVisible)]="isModalVisible"
           [nzTitle]="'Create Task'"
           nzWidth="700px"
-          [nzFooter]="null"
-          (nzOnCancel)="handleCancel()">
+>
+  <ng-template nzModalFooter
+  >
+    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
+  </ng-template>
   <ng-template nzModalContent>
     <app-create-task (taskCreated)="handleTaskCreated($event)"
-                      [projectId]="projectId"
+                     [projectId]="projectId"
     ></app-create-task>
   </ng-template>
 </nz-modal>

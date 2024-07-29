@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
@@ -11,7 +11,7 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NzModalComponent, NzModalContentDirective, NzModalService} from "ng-zorro-antd/modal";
-import {SearchMemberComponent} from "../../../../shared/component/search-member/search-member.component";
+import {SearchMemberComponent} from "../../../../shared/components/search-member/search-member.component";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -62,6 +62,7 @@ export class CreateProjectComponent implements OnInit {
   }
   isVisible: boolean = false;
   projectVisibility: any;
+  @Output() projectCreated = new EventEmitter();
 
 
   ngOnInit() {
@@ -114,7 +115,11 @@ export class CreateProjectComponent implements OnInit {
     console.log(data)
     this.managerService.createProject(data)
       .then((resp: any) => {
-        console.log(resp)
+        if (resp.status === 200) {
+          this.projectCreated.emit('Project created successfully')
+        } else {
+          this.projectCreated.emit('Error creating project')
+        }
       })
 
   }

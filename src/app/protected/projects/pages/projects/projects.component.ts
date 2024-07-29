@@ -20,8 +20,9 @@ import {FormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {UserDisplayComponent} from "../../../components/user-display/user-display.component";
 import {Image, Project} from "../../../../shared/interfaces/project.interface";
-import {NzDrawerService} from "ng-zorro-antd/drawer";
+import {NzDrawerComponent, NzDrawerContentDirective, NzDrawerService} from "ng-zorro-antd/drawer";
 import {CreateProjectComponent} from "../../components/create-project/create-project.component";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-projects',
@@ -47,13 +48,17 @@ import {CreateProjectComponent} from "../../components/create-project/create-pro
     NzInputDirective,
     RouterLink,
     UserDisplayComponent,
-    NzButtonGroupComponent
+    NzButtonGroupComponent,
+    NzDrawerComponent,
+    CreateProjectComponent,
+    NzDrawerContentDirective
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
 export class ProjectsComponent {
-  loading: boolean = false
+  loading: boolean = false;
+  isVisible = false;
 
   get projects() {
     return this.managerService.projects;
@@ -63,7 +68,8 @@ export class ProjectsComponent {
   constructor(
     private managerService: ManagerService,
     public drawer: NzDrawerService,
-    private router: Router
+    private router: Router,
+    private message: NzMessageService
   ) {
   }
 
@@ -74,11 +80,12 @@ export class ProjectsComponent {
   }
 
   createProject() {
-    this.drawer.create({
-      nzTitle: 'Create a new project',
-      nzContent: CreateProjectComponent,
-      nzWidth: 600
-    });
+    this.isVisible = true;
+    // this.drawer.create({
+    //   nzTitle: 'Create a new project',
+    //   nzContent: CreateProjectComponent,
+    //   nzWidth: 600
+    // });
 
   }
 
@@ -86,5 +93,16 @@ export class ProjectsComponent {
     this.managerService.getProject(project.project_id)
     // console.log('setProject', )
     this.router.navigateByUrl(`/main/projects/${project.project_id}`)
+  }
+
+  closeDrawer() {
+    this.isVisible = false;
+  }
+
+  onProjectCreated($event: any) {
+    this.isVisible = false;
+    this.managerService.getProjects();
+    this.message.success($event);
+
   }
 }
