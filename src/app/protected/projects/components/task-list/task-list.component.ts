@@ -123,4 +123,18 @@ export class TaskListComponent implements OnInit {
 
   }
 
+  getStatus(task_status: string | undefined) {
+    switch (task_status) {
+      case 'open':
+        return 'Open';
+      case 'in_progress':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
+      case 'closed':
+        return 'Closed';
+      default:
+        return 'Unknown';
+    }
+  }
 }

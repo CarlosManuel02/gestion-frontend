@@ -2,7 +2,7 @@
 
   @if (task) {
     <div nz-row>
-      <div class="container-fluid mt-3" nz-col nzSpan="18">
+      <div class="container-fluid mt-3" nz-col nzSpan="17">
         <nz-affix [nzOffsetTop]="0">
           <nz-breadcrumb style=" z-index: 1;">
             <nz-breadcrumb-item>Projects</nz-breadcrumb-item>
@@ -76,8 +76,10 @@
                   </nz-list>
                 </cdk-virtual-scroll-viewport>
               </div>
+            } @else {
+              <nz-spin nzTip="Loading...">
 
-
+              </nz-spin>
             }
           </nz-collapse-panel>
         </nz-collapse>
@@ -85,7 +87,7 @@
 
       </div>
 
-      <div nz-col nzSpan="6">
+      <div nz-col nzSpan="7">
         <nz-card nzTitle="Task Details">
           <form nz-form>
             <nz-form-item>

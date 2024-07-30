@@ -34,6 +34,8 @@ import {NzCommentAvatarDirective, NzCommentComponent, NzCommentContentDirective}
 import {UserDisplayComponent} from "../../components/user-display/user-display.component";
 import {CommentsComponent} from "../../../shared/components/comments/comments.component";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
+import {NzAlertComponent} from "ng-zorro-antd/alert";
 
 @Component({
   selector: 'app-task-view',
@@ -78,6 +80,8 @@ import {NzSpinComponent} from "ng-zorro-antd/spin";
     NgIf,
     RouterLink,
     NzSpinComponent,
+    NzEmptyComponent,
+    NzAlertComponent,
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -255,6 +259,9 @@ export class TaskViewComponent implements OnInit {
         } else {
           this.message.error('Error updating task')
         }
+      }, (error) => {
+        this.loading = false;
+        this.message.error('Error updating task')
       });
   }
 

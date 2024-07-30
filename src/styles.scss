@@ -8,3 +8,6 @@
 //*::-webkit-scrollbar {
 //  display: none; /* Safari and Chrome */
 //}
+.ant-table-column-sorters::after{
+  position: relative !important;
+}
