@@ -11,6 +11,7 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {UserDisplayComponent} from "../../../protected/components/user-display/user-display.component";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-search-member',
@@ -45,14 +46,20 @@ export class SearchMemberComponent {
 
   constructor(
     public authService: AuthService,
+    public message: NzMessageService
   ) {
   }
 
   searchUser() {
     this.authService.getUser(this.email)
       .subscribe((res) => {
-        this.user = res;
-        console.log('user', this.user)
+        if (res.status === 200) {
+          this.user = res;
+        } else {
+          this.message.error(res.message);
+        }
+      }, error => {
+        this.message.error('User not found');
       });
   }
 

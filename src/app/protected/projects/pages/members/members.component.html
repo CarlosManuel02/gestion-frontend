@@ -3,6 +3,7 @@
 
 <button nz-button
         nzType="primary"
+        [disabled]="!isOwner"
         (click)="addMember()"
   >Add Member</button>
 <nz-divider nzText="Members"></nz-divider>
@@ -48,9 +49,9 @@
         <button nz-button nzType="text" (click)="editMemberRole(member)">
           <span nz-icon nzType="edit" nzTheme="outline"></span>
         </button>
-        <button nz-button nz-popover nzType="text" nzPopoverTitle="Title" nzPopoverContent="Content">
-          <span nz-icon nzType="info-circle" nzTheme="outline"></span>
-        </button>
+<!--        <button nz-button nz-popover nzType="text" nzPopoverTitle="Title" nzPopoverContent="Content">-->
+<!--          <span nz-icon nzType="info-circle" nzTheme="outline"></span>-->
+<!--        </button>-->
       </nz-button-group>
 
       <nz-button-group nzSize="small" *ngIf="member.isEditing">

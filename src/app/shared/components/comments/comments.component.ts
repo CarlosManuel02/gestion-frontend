@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {
@@ -48,6 +48,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   @Input() taskId: string = '';
   @Input() active: boolean = false;
+  @Output() emitCommentsLength = new EventEmitter<number>();
 
   get user() {
     return this.authService.user;
@@ -104,6 +105,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     console.log(this.taskId);
     try {
       const data = await this.commentService.getComments(this.taskId);
+      this.emitCommentsLength.emit(this.comments.length);
       console.log(data);
     } catch (error) {
       console.error('Error fetching comments:', error);

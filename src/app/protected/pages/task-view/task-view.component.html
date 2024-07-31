@@ -66,9 +66,15 @@
                 <span nz-typography>{{ file.file_name }}
                   <nz-divider nzType="vertical"></nz-divider><code> {{ file.size | fileSize }}</code></span>
                       <nz-button-group>
-                        <button [nzLoading]="loading" nz-button nzType="primary" nzSize="small"
+                        <button [nzLoading]="loading" nz-button nzType="text" nzSize="small"
                                 (click)="download(file)">
-                          Download
+                          <span nz-icon nzType="download" nzTheme="outline"></span>
+                        </button>
+                        <button [nzLoading]="loading" nz-button nzDanger nzSize="small" nzType="text"
+                                nz-popconfirm
+                                nzPopconfirmTitle="Are you sure to delete this file?" nzOkText="Yes" nzCancelText="No"
+                                (nzOnConfirm)="deleteFile(file)">
+                          <span nz-icon nzType="delete" nzTheme="outline"></span>
                         </button>
                       </nz-button-group>
                     </nz-list-item>
@@ -91,7 +97,7 @@
         <nz-card nzTitle="Task Details">
           <form nz-form>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Project</nz-form-label>
+              <nz-form-label nzSpan="6">Project</nz-form-label>
               <nz-form-control>
                 <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.project_name"
                        [ngModelOptions]="{standalone: true}"
@@ -99,7 +105,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Task</nz-form-label>
+              <nz-form-label nzSpan="6">Task</nz-form-label>
               <nz-form-control>
                 <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.task_name"
                        [ngModelOptions]="{standalone: true}"
@@ -161,7 +167,7 @@
 
             @if (!editModeDetails) {
               <nz-button-group>
-                <button nz-button nzType="default" (click)="saveDetails()">Save</button>
+                <button nz-button style="margin-right: 10px" nzType="default" (click)="saveDetails()">Save</button>
                 <button nz-button nzDanger nzType="default" (click)="cancelDetails()">Cancel</button>
               </nz-button-group>
             }
@@ -177,7 +183,7 @@
                              (nzActiveChange)="onActiveChange($event)">
             <ng-template #commentsHeader>
               <p>Comments
-                <nz-tag>{{ 0 }}</nz-tag>
+                <nz-tag>{{ commentsLength }}</nz-tag>
               </p>
             </ng-template>
             <ng-template #commentsExtra>
@@ -187,7 +193,7 @@
                 </button>
               </nz-button-group>
             </ng-template>
-            <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"></app-comments>
+            <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id" (emitCommentsLength)="setCommentsLength($event)"></app-comments>
           </nz-collapse-panel>
         </nz-collapse>
       </div>

@@ -1,43 +1,26 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {AuthService} from "../../../shared/services/auth.service";
-import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
-import {DomSanitizer} from "@angular/platform-browser";
-import {NzAvatarComponent} from "ng-zorro-antd/avatar";
-import {NzCommentAvatarDirective} from "ng-zorro-antd/comment";
-import {User} from "../../../shared/interfaces";
-import {NgIf} from "@angular/common";
+import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from "../../../shared/services/auth.service";
+import { NzAvatarComponent } from "ng-zorro-antd/avatar";
+import { DomSanitizer } from "@angular/platform-browser";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-user-display',
   standalone: true,
   imports: [
-    NzListComponent,
-    NzListItemComponent,
-    NzListItemMetaComponent,
     NzAvatarComponent,
-    NzCommentAvatarDirective,
     NgIf
   ],
   template: `
     <ng-container *ngIf="usr && usr.length > 0; else noUser">
       <ng-container *ngIf="imageOnly; else userDetails">
-        <nz-avatar nz-comment-avatar [nzText]="username" nzSize="default"></nz-avatar>
+        <nz-avatar [nzText]="username" nzSize="default"></nz-avatar>
       </ng-container>
       <ng-template #userDetails>
-        <nz-list nzSize="small">
-          <nz-list-item>
-            <nz-list-item-meta
-              [nzAvatar]="userImage"
-              [nzTitle]="usr[0]?.email"
-            >
-            </nz-list-item-meta>
-          </nz-list-item>
-        </nz-list>
-
-        <ng-template #userImage>
-          <nz-avatar nz-comment-avatar [nzText]="usr[0]?.email.slice(0, 1)?.toUpperCase()"
-                     nzSize="small"></nz-avatar>
-        </ng-template>
+        <div class="user-display">
+          <nz-avatar [nzText]="usr[0]?.email.slice(0, 1)?.toUpperCase()" nzSize="small"></nz-avatar>
+          <span class="user-email">{{ usr[0]?.email }}</span>
+        </div>
       </ng-template>
     </ng-container>
     <ng-template #noUser>
@@ -45,14 +28,20 @@ import {NgIf} from "@angular/common";
     </ng-template>
   `,
   styles: [`
-
-
+    .user-display {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .user-email {
+      margin-left: 8px;
+      vertical-align: middle;
+    }
   `]
 })
 export class UserDisplayComponent implements OnInit {
-  @Input({transform: (value: string | undefined): string => value || ''}) userId: string = '';
+  @Input({ transform: (value: string | undefined): string => value || '' }) userId: string = '';
   usr: any[] = [];
-  userImage: string = '';
   @Input() imageOnly: boolean = false;
   username: string = '';
 

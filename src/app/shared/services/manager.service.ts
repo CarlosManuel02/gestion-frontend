@@ -70,9 +70,9 @@ export class ManagerService {
     });
   }
 
-  upodatemember(member: Member) {
+  upodatemember(member: any) {
     return new Promise((resolve, reject) => {
-      this.http.patch(`${this.API_URL}updateMember`, member).subscribe((resp: any) => {
+      this.http.patch(`${this.API_URL}members/updateMember`, member).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {

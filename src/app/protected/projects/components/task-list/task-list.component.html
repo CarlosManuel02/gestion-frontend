@@ -38,6 +38,8 @@
       <nz-tag *ngIf="task.task_priority === 1" nzColor="green">Low</nz-tag>
       <nz-tag *ngIf="task.task_priority === 2" nzColor="orange">Medium</nz-tag>
       <nz-tag *ngIf="task.task_priority === 3" nzColor="red">High</nz-tag>
+      <nz-tag *ngIf="task.task_priority === 4" nzColor="purple">Urgent</nz-tag>
+
     </td>
     <td>
       <app-user-display [userId]="task.task_assignment"></app-user-display>

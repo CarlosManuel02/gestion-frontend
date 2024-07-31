@@ -135,3 +135,17 @@
     ></app-create-task>
   </ng-template>
 </nz-modal>
+
+<nz-modal [(nzVisible)]="isTaskDetailsVisible"
+          [nzTitle]="'Task Details'"
+          nzWidth="1200px"
+>
+  <ng-template nzModalFooter
+  >
+    <button nz-button nzType="default" (click)="handleTaskDetailsCancel()">Cancel</button>
+  </ng-template>
+  <ng-template nzModalContent>
+    <app-task-view [task_id]="taskId" ></app-task-view>
+  </ng-template>
+</nz-modal>
+

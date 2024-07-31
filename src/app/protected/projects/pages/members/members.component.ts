@@ -145,9 +145,15 @@ export class MembersComponent implements OnInit {
   }
 
   saveMember(member: Member) {
-    this.manager.upodatemember(member)
-      .then((resp) => {
-        if (resp !== 200) {
+    const data = {
+      'project_id': this.projectId,
+      'id': member.member_id,
+      'role': member.member_role
+    }
+    console.log(data);
+    this.manager.upodatemember(data)
+      .then((resp: any) => {
+        if (resp.status !== 200) {
           this.message.error("Something went wrong")
         }
       })

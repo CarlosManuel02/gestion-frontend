@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TaskService} from "../../../shared/services/task.service";
 import {Router, RouterLink} from "@angular/router";
 import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
@@ -36,6 +36,7 @@ import {CommentsComponent} from "../../../shared/components/comments/comments.co
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzAlertComponent} from "ng-zorro-antd/alert";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 
 @Component({
   selector: 'app-task-view',
@@ -82,6 +83,7 @@ import {NzAlertComponent} from "ng-zorro-antd/alert";
     NzSpinComponent,
     NzEmptyComponent,
     NzAlertComponent,
+    NzPopconfirmDirective,
   ],
   templateUrl: './task-view.component.html',
   styleUrl: './task-view.component.scss'
@@ -91,7 +93,9 @@ export class TaskViewComponent implements OnInit {
   loading = false;
   loadingAttachments = false;
   editMode = true;
-  editModeDetails = true
+  editModeDetails = true;
+
+  @Input() task_id: string = '';
 
   priorities = [
     {label: 'Low', value: 1},
@@ -109,6 +113,7 @@ export class TaskViewComponent implements OnInit {
   get user() {
     return this.authService.user
   }
+
   mockTask: Task = {} as Task;
   statuses = [
     {label: 'Open', value: 'open'},
@@ -118,6 +123,7 @@ export class TaskViewComponent implements OnInit {
   ]
   inputValue: any;
   active: boolean = false
+  commentsLength: number = 0
 
   constructor(
     private taskService: TaskService,
@@ -134,7 +140,7 @@ export class TaskViewComponent implements OnInit {
 
 
   private getTask() {
-    const taskId = this.router.url.split('/').pop()
+    const taskId = this.task_id || this.router.url.split('/').pop()
     if (!taskId) {
       return
     }
@@ -282,5 +288,22 @@ export class TaskViewComponent implements OnInit {
   onActiveChange($event: boolean) {
     this.active = $event
 
+  }
+
+  deleteFile(file: Files) {
+    this.taskService.deleteAttachment(file.id)
+      .then((resp) => {
+        if (resp.status === 200) {
+          this.message.success('File deleted successfully')
+          this.getAttachments(this.task.task_id)
+        } else {
+          this.message.error('Error deleting file')
+        }
+      });
+
+  }
+
+  setCommentsLength($event: any) {
+    this.commentsLength = $event;
   }
 }

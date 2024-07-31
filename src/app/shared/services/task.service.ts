@@ -142,4 +142,17 @@ export class TaskService {
     })
 
   }
+
+  deleteAttachment(file_id: any): Promise<{ status: number }> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.ATTACHMENTS_URL}${file_id}`)
+        .subscribe((resp: any) => {
+          if (resp.status === 200) {
+            resolve({status: resp.status});
+          } else {
+            reject({status: resp.status});
+          }
+        });
+    })
+  }
 }

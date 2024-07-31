@@ -16,6 +16,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective} from "ng-zorro-antd/modal";
 import {CreateTaskComponent} from "../../projects/components/create-task/create-task.component";
+import {TaskViewComponent} from "../task-view/task-view.component";
 
 @Component({
   selector: 'app-tasks-board',
@@ -44,7 +45,8 @@ import {CreateTaskComponent} from "../../projects/components/create-task/create-
     NzModalComponent,
     CreateTaskComponent,
     NzModalContentDirective,
-    NzModalFooterDirective
+    NzModalFooterDirective,
+    TaskViewComponent
   ],
   styleUrls: ['./tasks-board.component.scss']
 })
@@ -58,6 +60,8 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   inProgress: Task[] = [];
   open: Task[] = [];
   isModalVisible: boolean = false;
+  isTaskDetailsVisible: boolean = false;
+  taskId: string = '';
 
 
 
@@ -193,8 +197,11 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   }
 
   openTaskDetails(item: Task) {
-    console.log(item);
-    this.router.navigate(['./main/tasks', item.task_id]);
+    // console.log(item);
+    // this.router.navigate(['./main/tasks', item.task_id]);
+    this.taskId = item.task_id;
+    console.log(this.taskId);
+    this.isTaskDetailsVisible = true;
   }
 
   openCreateTaskModal() {
@@ -210,5 +217,9 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
       this.fetchTasks();
     }
     this.isModalVisible = false;
+  }
+
+  handleTaskDetailsCancel() {
+    this.isTaskDetailsVisible = false
   }
 }
