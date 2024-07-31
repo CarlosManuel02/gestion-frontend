@@ -17,6 +17,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective} from "ng-zorro-antd/modal";
 import {CreateTaskComponent} from "../../projects/components/create-task/create-task.component";
 import {TaskViewComponent} from "../task-view/task-view.component";
+import {PriorityTagComponent} from "../../../shared/components/priority-tag/priority-tag.component";
 
 @Component({
   selector: 'app-tasks-board',
@@ -46,7 +47,8 @@ import {TaskViewComponent} from "../task-view/task-view.component";
     CreateTaskComponent,
     NzModalContentDirective,
     NzModalFooterDirective,
-    TaskViewComponent
+    TaskViewComponent,
+    PriorityTagComponent
   ],
   styleUrls: ['./tasks-board.component.scss']
 })
