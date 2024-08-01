@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {Router, RouterOutlet} from "@angular/router";
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {Project} from "../../../../shared/interfaces";
@@ -16,6 +16,8 @@ import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
+import {ThemeService} from "../../../../shared/services/theme.service";
+import {NzMenuDirective, NzMenuItemComponent} from "ng-zorro-antd/menu";
 
 @Component({
   selector: 'app-project-view',
@@ -38,7 +40,11 @@ import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-
     NzListItemComponent,
     NzListItemMetaComponent,
     CdkVirtualForOf,
-    RouterOutlet
+    RouterOutlet,
+    NzMenuDirective,
+    NzMenuItemComponent,
+    NgIf,
+    NgForOf
   ],
   templateUrl: './project-view.component.html',
   styleUrl: './project-view.component.scss'
@@ -51,6 +57,8 @@ export class ProjectViewComponent implements OnInit {
     {title: 'Members', icon: 'team', link: 'members'},
     {title: 'Settings', icon: 'setting', link: 'settings'}
   ]
+  isCollapsed: boolean = false;
+
   get project(): Project {
     return this.managerService.project
   }
@@ -58,6 +66,7 @@ export class ProjectViewComponent implements OnInit {
   constructor(
     public router: Router,
     private managerService: ManagerService,
+    private themeService: ThemeService
   ) {
   }
 
@@ -101,5 +110,13 @@ export class ProjectViewComponent implements OnInit {
   goTo(item: any) {
     this.router.navigate([`/main/projects/${this.projectId}/${item.link}`])
     console.log('go to: /main/projects/' + this.project.project_id + '/' + item.link)
+  }
+
+  getTheme() {
+    if (this.themeService.theme === 'default') {
+      return 'light'
+    } else {
+      return 'dark'
+    }
   }
 }

@@ -1,1 +1,47 @@
-<p>settings works!</p>
+<h2>
+  <span>Project Settings</span>
+</h2>
+
+<button nz-button nzType="primary" (click)="enableEdit()">Edit</button>
+
+<nz-table #settingsTable [nzData]="settings"
+          [nzBordered]="true"
+          [nzSize]="'small'"
+          [nzTableLayout]="'fixed'"
+          [nzShowPagination]="false"
+          [nzScroll]="{ x: 'max-content' }">
+
+  <thead>
+  <tr>
+    <th class="role-name-column">Role Name</th>
+    <th nzWidth="20%">Read</th>
+    <th nzWidth="20%">Create</th>
+    <th nzWidth="20%">Delete</th>
+    <th nzWidth="20%">Update</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let setting of settingsTable.data">
+    <td class="role-name-column">
+      <input nz-input [ngModel]="setting.role_name" [readonly]="canEdit" (ngModelChange)="setting.role_name = $event"></td>
+    <td>
+      <nz-switch [(ngModel)]="setting.permissions[0].value" [nzDisabled]="canEdit"></nz-switch>
+    </td>
+    <td>
+      <nz-switch [(ngModel)]="setting.permissions[1].value" [nzDisabled]="canEdit"></nz-switch>
+    </td>
+    <td>
+      <nz-switch [(ngModel)]="setting.permissions[2].value" [nzDisabled]="canEdit"></nz-switch>
+    </td>
+    <td>
+      <nz-switch [(ngModel)]="setting.permissions[3].value" [nzDisabled]="canEdit"></nz-switch>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<style>
+  .role-name-column {
+    width: 120px; /* Ajusta el ancho de la columna a tu necesidad */
+  }
+</style>

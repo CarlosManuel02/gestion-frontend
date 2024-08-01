@@ -1,37 +1,30 @@
 <nz-layout style="margin-top: 2px">
+  <nz-sider nzWidth="250px" [nzTheme]="getTheme()">
+    <nz-card *ngIf="!isCollapsed">
+      <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="{ size: 'large' }">
+        <nz-card-meta
+          [nzAvatar]="avatarTemplate"
+          [nzTitle]="project.project_name"
+          [nzDescription]="project.project_key"
+        ></nz-card-meta>
+      </nz-skeleton>
+    </nz-card>
+    <ul nz-menu [nzTheme]="getTheme()" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item *ngFor="let item of menuItems" (click)="goTo(item)">
+        <span nz-icon [nzType]="item.icon"></span>
+        <span>{{ item.title }}</span>
+      </li>
+    </ul>
+    <ng-template #avatarTemplate>
+      <nz-avatar [nzText]="project?.project_key?.slice(0, 2)?.toUpperCase()"
+                 style="color:#f56a00; background-color:#fde3cf;"></nz-avatar>
+    </ng-template>
+
+  </nz-sider>
   <nz-layout>
-    <nz-sider nzWidth="250px">
-      <nz-card>
-        <nz-skeleton [nzLoading]="false" [nzActive]="true" [nzAvatar]="{ size: 'large' }">
-          <nz-card-meta
-            [nzAvatar]="avatarTemplate"
-            [nzTitle]="project.project_name"
-            [nzDescription]="project.project_key"
-          ></nz-card-meta>
-          <nz-list [nzDataSource]="menuItems" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-            <ng-template #item let-item>
-              <nz-list-item (click)="goTo(item)">
-                <nz-list-item-meta
-                  style="cursor: pointer"
-                  [nzAvatar]="menuTemplate"
-                  [nzTitle]="item.title"
-                ></nz-list-item-meta>
-              </nz-list-item>
 
-              <ng-template #menuTemplate>
-                <span nz-icon [nzType]="item.icon"></span>
-              </ng-template>
-            </ng-template>
-          </nz-list>
-        </nz-skeleton>
-      </nz-card>
-      <ng-template #avatarTemplate>
-        <nz-avatar [nzText]="project?.project_key?.slice(0, 2)?.toUpperCase()" style="color:#f56a00; background-color:#fde3cf;"></nz-avatar>
-      </ng-template>
 
-    </nz-sider>
-
-    <nz-content style="margin-left: 40px; margin-top: 20px">
+    <nz-content style="margin-left: 20px; margin-top: 20px">
       <router-outlet></router-outlet>
     </nz-content>
   </nz-layout>

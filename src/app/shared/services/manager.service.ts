@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Project} from "../interfaces/project.interface";
@@ -23,7 +23,12 @@ export class ManagerService {
     return {...this._project}
   }
 
-  constructor(private http: HttpClient,private authService: AuthService) { }
+  get projectID() {
+    return this._project.project_id || localStorage.getItem('projectID')
+  }
+
+  constructor(private http: HttpClient, private authService: AuthService) {
+  }
 
 
   getProject(projectId: string) {
@@ -33,6 +38,7 @@ export class ManagerService {
           reject({message: resp.message})
         } else {
           this._project = resp.data[0]
+          localStorage.setItem('projectID', this._project.project_id)
           resolve(resp.status)
         }
       })
@@ -83,8 +89,8 @@ export class ManagerService {
   }
 
   checkMember(param: { project_id: string; id: string }) {
-      return this.http.post(`${this.API_URL}members/check/`, param).pipe(
-        map((resp: any) => {
+    return this.http.post(`${this.API_URL}members/check/`, param).pipe(
+      map((resp: any) => {
           console.log(resp)
           return resp.status == 200;
         }
@@ -96,7 +102,7 @@ export class ManagerService {
     return new Promise((resolve, reject) => {
       this.http.delete(`${this.API_URL}removeMember`,
         {body: data}
-        ).subscribe((resp: any) => {
+      ).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {
@@ -113,6 +119,33 @@ export class ManagerService {
           reject(resp)
         } else {
           resolve(resp.status)
+        }
+      })
+    });
+  }
+
+  getProjectSettings(projectId: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(`${this.API_URL}${projectId}/settings`).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve({
+            status: resp.status,
+            data: resp.data
+          })
+        }
+      })
+    });
+  }
+
+  updateProjectSettings(updatedSettings: any) {
+    return new Promise((resolve, reject) => {
+      this.http.patch(`${this.API_URL}settings/update`, updatedSettings).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp)
         }
       })
     });
