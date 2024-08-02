@@ -1,13 +1,16 @@
 <h2>
-  <span>Task List</span>
-  <span nz-icon nzType="question" nzTheme="outline"></span>
+  <span>Task List
+    <span nz-icon nzType="question"
+          nzTheme="outline"
+          nz-popover [nzPopoverTitle]="'Info'" [nzPopoverContent]="contentTemplate"
+    ></span>
+  </span>
 </h2>
 
 <p></p>
 <button nz-button nzType="primary" (click)="refreshTasks()">Refresh</button>
 
 <nz-table #taskTable [nzData]="tasks"
-
           [nzLoading]="loading"
           [nzBordered]="false" [nzSize]="'small'"
           [nzTableLayout]="'fixed'"
@@ -29,12 +32,22 @@
     <th nzWidth="10%"
         [nzSortFn]="prioritySort"
         [nzSortOrder]="prioritySortOrder"
-        [nzShowSort]="true"
-    >Priority</th>
+        [nzShowSort]="true">
+      Priority
+    </th>
     <th nzWidth="10%">Assignment</th>
   </tr>
   </thead>
   <tbody>
+  <tr *ngIf="!loading && tasks.length === 0">
+    <td colspan="6" style="text-align: center;">
+      <nz-empty
+        nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        [nzNotFoundContent]="contentTpl"
+      >
+      </nz-empty>
+    </td>
+  </tr>
   <tr *ngFor="let task of filteredTasks" style="cursor: pointer"
       (dblclick)="viewTask(task)">
     <td>{{ task.task_name }}</td>
@@ -54,3 +67,14 @@
   </tr>
   </tbody>
 </nz-table>
+
+
+<ng-template #contentTemplate>
+  Here is a list of all the tasks that have been created
+</ng-template>
+
+<ng-template #contentTpl>
+        <span>
+          No task found
+        </span>
+</ng-template>

@@ -23,6 +23,7 @@ import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzCascaderComponent, NzCascaderOption } from 'ng-zorro-antd/cascader';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { PriorityTagComponent } from '../../../../shared/components/priority-tag/priority-tag.component';
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
 
 @Component({
   selector: 'app-task-list',
@@ -48,7 +49,8 @@ import { PriorityTagComponent } from '../../../../shared/components/priority-tag
     NzCascaderComponent,
     NzThAddOnComponent,
     NzTooltipDirective,
-    PriorityTagComponent
+    PriorityTagComponent,
+    NzEmptyComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss']
