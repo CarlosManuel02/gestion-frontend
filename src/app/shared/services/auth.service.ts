@@ -60,7 +60,7 @@ export class AuthService {
     // localStorage.removeItem('token');
   }
 
-  register(data: any){
+  register(data: any) {
     const url = `${this.endpoint}new`;
     return this.http.post<UserResponse>(url, data)
       .pipe(

@@ -52,10 +52,11 @@ import {NzMenuDirective, NzMenuItemComponent} from "ng-zorro-antd/menu";
 export class ProjectViewComponent implements OnInit {
   projectId = '';
   menuItems = [
+    {title: 'Project Overview', icon: 'dashboard', link: 'overview'},
     {title: 'Board', icon: 'table', link: 'board'},
     {title: 'Tasks', icon: 'unordered-list', link: 'tasks'},
     {title: 'Members', icon: 'team', link: 'members'},
-    {title: 'Settings', icon: 'setting', link: 'settings'}
+    // {title: 'Settings', icon: 'setting', link: 'settings'}
   ]
   isCollapsed: boolean = false;
 

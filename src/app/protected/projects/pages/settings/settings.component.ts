@@ -9,6 +9,7 @@ import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -36,11 +37,12 @@ export class SettingsComponent implements OnInit {
   constructor(
     private projectsService: ManagerService,
     private message: NzMessageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
-    const id = this.projectsService.projectID;
+    const id = this.projectsService.projectID || this.router.url.split('/')[3];
     if (!id) {
       console.log('No project ID found');
       return;

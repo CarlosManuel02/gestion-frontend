@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Router } from "@angular/router";
-import { TaskService } from "../../../shared/services/task.service";
+import {AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Router} from "@angular/router";
+import {TaskService} from "../../../shared/services/task.service";
 import {CdkDragDrop, CdkDropList, transferArrayItem, moveItemInArray, CdkDrag} from "@angular/cdk/drag-drop";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
@@ -18,6 +18,10 @@ import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective} from 
 import {CreateTaskComponent} from "../../projects/components/create-task/create-task.component";
 import {TaskViewComponent} from "../task-view/task-view.component";
 import {PriorityTagComponent} from "../../../shared/components/priority-tag/priority-tag.component";
+import {ManagerService} from "../../../shared/services/manager.service";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {RoleSetting} from "../../../shared/interfaces/permission.interface";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-tasks-board',
@@ -64,7 +68,8 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   isModalVisible: boolean = false;
   isTaskDetailsVisible: boolean = false;
   taskId: string = '';
-
+  settings: RoleSetting[] = [];
+  canCreate: boolean = false;
 
 
   get tasks() {
@@ -73,13 +78,19 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
 
   constructor(
     public router: Router,
-    private taskService: TaskService
-  ) {}
+    private taskService: TaskService,
+    private authService: AuthService,
+    private projectsService: ManagerService,
+    public message: NzMessageService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.projectId = this.router.url.split('/')[3];
+    this.projectId = this.projectsService.projectID || this.router.url.split('/')[3];
     // console.log(this.projectId);
     this.fetchTasks();
+    this.getSettings();
+    this.getCurrentUser();
   }
 
   ngAfterViewInit() {
@@ -148,7 +159,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
 
 
   drop(event: CdkDragDrop<Task[], any>) {
@@ -223,5 +233,29 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
 
   handleTaskDetailsCancel() {
     this.isTaskDetailsVisible = false
+  }
+
+  private getSettings() {
+    this.projectsService.getProjectSettings(this.projectId)
+      .then((resp: any) => {
+        if (resp.status !== 200) {
+          this.message.error(resp.message);
+          return;
+        } else {
+          this.settings = resp.data;
+        }
+      });
+  }
+
+  async getCurrentUser() {
+    const user: any = await this.projectsService.getProjecMembers(this.projectId).then(
+      (resp: any) => {
+        resp.forEach((member: any) => {
+          if (member.member_id === this.authService.user.id) {
+            this.canCreate = member.member_role === 'admin' || member.member_role === 'owner';
+          }
+        });
+      }
+    );
   }
 }
