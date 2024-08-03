@@ -50,6 +50,7 @@ export class SettingsComponent implements OnInit {
 
     this.projectsService.getProjectSettings(id)
       .then((resp: any) => {
+        console.log(resp);
         if (resp.status !== 200) {
           this.message.error(resp.message);
           return;

@@ -150,4 +150,16 @@ export class ManagerService {
       })
     });
   }
+
+  deleteProject(projectId: string) {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.API_URL}delete/${projectId}`).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp)
+        }
+      })
+    });
+  }
 }
