@@ -1,0 +1,53 @@
+.project-info {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  color: #f56a00;
+  background-color: #fde3cf;
+  border-radius: 4px;
+  margin: 16px;
+
+  nz-avatar {
+    margin-right: 8px;
+  }
+
+  div {
+    margin: 0 8px;
+  }
+}
+
+.nz-layout {
+  height: 100vh;
+}
+
+nz-sider {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}
+
+nz-layout nz-layout {
+  margin-left: 250px;
+  transition: all 0.2s;
+}
+
+nz-layout nz-layout.collapsed {
+  margin-left: 80px;
+  transition: all 0.2s;
+}
+
+nz-content {
+  margin: 24px 16px 0;
+  overflow: initial;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}

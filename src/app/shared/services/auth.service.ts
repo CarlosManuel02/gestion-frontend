@@ -60,7 +60,7 @@ export class AuthService {
     // localStorage.removeItem('token');
   }
 
-  register(data: any){
+  register(data: any) {
     const url = `${this.endpoint}new`;
     return this.http.post<UserResponse>(url, data)
       .pipe(
@@ -105,14 +105,17 @@ export class AuthService {
     return localStorage.getItem('token') !== null;
   }
 
-  getUser(userId: string): Observable<User> {
+  getUser(userId: string) {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     })
     return this.http.get(`${this.endpoint}${userId}`).pipe(
       tap((resp: any) => {
         if (resp.status === 200) {
-          return resp.user
+          return {
+            user: resp,
+            status: resp.status,
+          }
         } else {
           throw new Error(resp.message);
         }

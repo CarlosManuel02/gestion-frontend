@@ -17,6 +17,10 @@ export class CommentsService {
     return [...this._comments]
   }
 
+  set comments(value: Comments[]) {
+    this._comments = value;
+  }
+
 
   constructor(
     public http: HttpClient

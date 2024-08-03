@@ -33,16 +33,21 @@
       @if (basicTable.data.length > 0) {
         <tr *ngFor="let project of basicTable.data">
           <td class="d-flex align-items-center">
-            <nz-avatar class="me-2" nzSize="default" [nzShape]="'square'" [nzText]="project.project_key"></nz-avatar>
+            <nz-avatar class="me-2" nzSize="default" [nzShape]="'square'"
+                       [nzText]="project.project_key?.slice(0, 2)?.toUpperCase()"></nz-avatar>
             <a (click)="setProject(project)">{{ project.project_name }}</a>
           </td>
-          <td>{{ project.project_status }}</td>
           <td>{{ project.project_key }}</td>
+          <td>
+            <nz-tag *ngIf="project.project_status === 'active'" [nzColor]="'green'">{{ project.project_status }}</nz-tag>
+            <nz-tag  *ngIf="project.project_status === 'paused'" [nzColor]="'orange'">{{ project.project_status }}</nz-tag>
+            <nz-tag *ngIf="project.project_status === 'closed'" [nzColor]="'red'">{{ project.project_status }}</nz-tag>
+          </td>
           <td>
             <app-user-display [imageOnly]="true" [userId]="project.project_owner_id"></app-user-display>
             {{ project.project_owner_email }}
           </td>
-          <td>{{ project.project_start_date }}</td>
+          <td>{{ project.project_start_date | date: 'mediumDate' }}</td>
 
           <td>
           </td>
@@ -66,7 +71,7 @@
   [nzClosable]="false"
   (nzOnClose)="closeDrawer()"
 >
-  <app-create-project  *nzDrawerContent
-    (projectCreated)="onProjectCreated($event)"></app-create-project>
+  <app-create-project *nzDrawerContent
+                      (projectCreated)="onProjectCreated($event)"></app-create-project>
 </nz-drawer>
 

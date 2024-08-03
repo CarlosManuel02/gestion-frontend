@@ -50,31 +50,24 @@ export class MembersComponent implements OnInit {
   projectId = '';
   members: Member[] = []
   isOwner = false;
+  canCreate: boolean = false;
 
   constructor(
-    private manager: ManagerService,
+    private projectsService: ManagerService,
     public router: Router,
     private authService: AuthService,
-    public message: NzMessageService
+    public message: NzMessageService,
   ) {
   }
 
   ngOnInit(): void {
     this.fetchMembers();
+    this.getProject();
+    this.getCurrentUser();
   }
 
   private checkIfOwner() {
-    this.manager.getProject(this.projectId).then((resp: any) => {
-      console.log(resp);
-    }).catch((err: any) => {
-      console.log(err);
-    });
-
-    if (this.user.id === this.project.project_owner_id) {
-      this.isOwner = true;
-    } else {
-      this.isOwner = false;
-    }
+    this.isOwner = this.user.id === this.project.project_owner_id;
   }
 
   editMemberRole(member: Member) {
@@ -91,7 +84,7 @@ export class MembersComponent implements OnInit {
   }
 
   get project() {
-    return this.manager.project;
+    return this.projectsService.project;
   }
 
   protected readonly Date = Date;
@@ -102,7 +95,7 @@ export class MembersComponent implements OnInit {
       project_id: this.projectId,
       id: member.member_id
     }
-    this.manager.removeMember(data)
+    this.projectsService.removeMember(data)
       .then((resp) => {
         if (resp === 200) {
           this.members = this.members.filter(m => m.member_id !== member.member_id);
@@ -131,7 +124,7 @@ export class MembersComponent implements OnInit {
       role: $event[0].role
     }
 
-    this.manager.addMember(data)
+    this.projectsService.addMember(data)
       .then((resp) => {
         if (resp === 200) {
           this.fetchMembers();
@@ -145,9 +138,14 @@ export class MembersComponent implements OnInit {
   }
 
   saveMember(member: Member) {
-    this.manager.upodatemember(member)
-      .then((resp) => {
-        if (resp !== 200) {
+    const data = {
+      'project_id': this.projectId,
+      'id': member.member_id,
+      'role': member.member_role
+    }
+    this.projectsService.upodatemember(data)
+      .then((resp: any) => {
+        if (resp.status !== 200) {
           this.message.error("Something went wrong")
         }
       })
@@ -158,12 +156,29 @@ export class MembersComponent implements OnInit {
   }
 
   private fetchMembers() {
-    this.projectId = this.router.url.split('/')[3];
-    this.checkIfOwner();
-    this.manager.getProjecMembers(this.projectId)
+    this.projectId = this.projectsService.projectID || this.router.url.split('/')[3];
+    this.projectsService.getProjecMembers(this.projectId)
       .then((resp) => {
-        console.log(resp);
         this.members = resp.map(member => ({...member, isEditing: false}));
       });
+  }
+
+  private getProject() {
+    this.projectsService.getProject(this.projectId)
+      .then((resp) => {
+        this.checkIfOwner();
+      });
+  }
+
+  async getCurrentUser() {
+    const user: any = await this.projectsService.getProjecMembers(this.projectId).then(
+      (resp: any) => {
+        resp.forEach((member: any) => {
+          if (member.member_id === this.authService.user.id) {
+            this.canCreate = member.member_role === 'admin' || member.member_role === 'owner';
+          }
+        });
+      }
+    );
   }
 }

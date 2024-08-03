@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { NzDrawerModule } from "ng-zorro-antd/drawer";
 import { NzModalModule, NzModalService } from "ng-zorro-antd/modal";
+import {NzTableModule} from "ng-zorro-antd/table";
 
 @NgModule({
   declarations: [],
@@ -10,7 +11,8 @@ import { NzModalModule, NzModalService } from "ng-zorro-antd/modal";
     CommonModule,
     ProjectsRoutingModule,
     NzDrawerModule,
-    NzModalModule
+    NzModalModule,
+    NzTableModule
   ],
   providers: [NzModalService],  // Add NzModalService here
 })

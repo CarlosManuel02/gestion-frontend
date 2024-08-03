@@ -14,7 +14,7 @@ import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzBadgeComponent} from "ng-zorro-antd/badge";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
-import {NgForOf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {FormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
@@ -23,6 +23,7 @@ import {Image, Project} from "../../../../shared/interfaces/project.interface";
 import {NzDrawerComponent, NzDrawerContentDirective, NzDrawerService} from "ng-zorro-antd/drawer";
 import {CreateProjectComponent} from "../../components/create-project/create-project.component";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzTagComponent} from "ng-zorro-antd/tag";
 
 @Component({
   selector: 'app-projects',
@@ -51,7 +52,10 @@ import {NzMessageService} from "ng-zorro-antd/message";
     NzButtonGroupComponent,
     NzDrawerComponent,
     CreateProjectComponent,
-    NzDrawerContentDirective
+    NzDrawerContentDirective,
+    DatePipe,
+    NzTagComponent,
+    NgIf
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'

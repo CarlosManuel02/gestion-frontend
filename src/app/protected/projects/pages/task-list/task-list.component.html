@@ -1,0 +1,80 @@
+<h2>
+  <span>Task List
+    <span nz-icon nzType="question"
+          nzTheme="outline"
+          nz-popover [nzPopoverTitle]="'Info'" [nzPopoverContent]="contentTemplate"
+    ></span>
+  </span>
+</h2>
+
+<p></p>
+<button nz-button nzType="primary" (click)="refreshTasks()">Refresh</button>
+
+<nz-table #taskTable [nzData]="tasks"
+          [nzLoading]="loading"
+          [nzBordered]="false" [nzSize]="'small'"
+          [nzTableLayout]="'fixed'"
+          [nzShowSizeChanger]="true"
+          [nzFrontPagination]="true"
+          [nzShowPagination]="true"
+          [nzPageSizeOptions]="[5, 10, 20, 50]">
+  <thead>
+  <tr>
+    <th nzWidth="20%">Name</th>
+    <th nzWidth="10%"
+        [nzFilters]="statusFilter"
+        [nzFilterMultiple]="true"
+        (nzFilterChange)="onFilterChange($event)">
+      Status
+    </th>
+    <th nzWidth="10%">Creation Date</th>
+    <th nzWidth="10%">Deadline</th>
+    <th nzWidth="10%"
+        [nzSortFn]="prioritySort"
+        [nzSortOrder]="prioritySortOrder"
+        [nzShowSort]="true">
+      Priority
+    </th>
+    <th nzWidth="10%">Assignment</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngIf="!loading && tasks.length === 0">
+    <td colspan="6" style="text-align: center;">
+      <nz-empty
+        nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        [nzNotFoundContent]="contentTpl"
+      >
+      </nz-empty>
+    </td>
+  </tr>
+  <tr *ngFor="let task of filteredTasks" style="cursor: pointer"
+      (dblclick)="viewTask(task)">
+    <td>{{ task.task_name }}</td>
+    <td>{{ getStatus(task.task_status) }}</td>
+    <td>{{ task.task_creation_date | date: 'dd/MM/yyyy' }}</td>
+    <td>{{ task.task_deadline | date: 'dd/MM/yyyy' }}</td>
+    <td>
+      <app-priority-tag
+        style="margin-right: 8px"
+        nz-tooltip nzTooltipTitle="Priority"
+        [priority]="task.task_priority">
+      </app-priority-tag>
+    </td>
+    <td>
+      <app-user-display [userId]="task.task_assignment"></app-user-display>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+
+<ng-template #contentTemplate>
+  Here is a list of all the tasks that have been created
+</ng-template>
+
+<ng-template #contentTpl>
+        <span>
+          No task found
+        </span>
+</ng-template>

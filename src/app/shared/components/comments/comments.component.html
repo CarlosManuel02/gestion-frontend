@@ -9,7 +9,20 @@
 
         @if (item.user_id === user.id) {
           <nz-comment-action>
-            <a (click)="handleDelete(item.id)">Delete</a>
+            <a
+              nz-popconfirm
+              nzPopconfirmTitle="Are you sure to delete this comment?"
+              nzOkText="Yes"
+              nzCancelText="No"
+              (nzOnConfirm)="handleDelete(item.id)"
+              style="margin-right: 10px;"
+            >
+              <i nz-icon nzType="delete"></i>
+            </a>
+
+            <a (click)="handleEdit(item.id)">
+              <i nz-icon nzType="edit"></i>
+            </a>
           </nz-comment-action>
         }
       </nz-comment>

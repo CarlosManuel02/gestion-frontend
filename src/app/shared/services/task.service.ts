@@ -102,13 +102,15 @@ export class TaskService {
   updateTask(taskId: string, data: any): Promise<{ status: number }> {
 
     return new Promise((resolve, reject) => {
-      this.http.patch(`${this.API_URL}$${taskId}`, data)
+      this.http.patch(`${this.API_URL}${taskId}`, data)
         .subscribe((resp: any) => {
           if (resp.status === 200) {
             resolve({status: resp.status});
           } else {
             reject({status: resp.status});
           }
+        }, (error) => {
+          reject({status: error.status});
         });
     })
 
@@ -139,5 +141,18 @@ export class TaskService {
         });
     })
 
+  }
+
+  deleteAttachment(file_id: any): Promise<{ status: number }> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.ATTACHMENTS_URL}${file_id}`)
+        .subscribe((resp: any) => {
+          if (resp.status === 200) {
+            resolve({status: resp.status});
+          } else {
+            reject({status: resp.status});
+          }
+        });
+    })
   }
 }

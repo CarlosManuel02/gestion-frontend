@@ -3,6 +3,7 @@
 
 <button nz-button
         nzType="primary"
+        [disabled]="!canCreate"
         (click)="addMember()"
   >Add Member</button>
 <nz-divider nzText="Members"></nz-divider>
@@ -41,26 +42,28 @@
           <span nz-icon nzType="delete" nzTheme="outline"></span>
         </button>
 
-      <nz-divider nzType="vertical"></nz-divider>
+      @if (canCreate) {
+        <nz-divider nzType="vertical"></nz-divider>
 
 
-      <nz-button-group nzSize="small" *ngIf="!member.isEditing">
-        <button nz-button nzType="text" (click)="editMemberRole(member)">
-          <span nz-icon nzType="edit" nzTheme="outline"></span>
-        </button>
-        <button nz-button nz-popover nzType="text" nzPopoverTitle="Title" nzPopoverContent="Content">
-          <span nz-icon nzType="info-circle" nzTheme="outline"></span>
-        </button>
-      </nz-button-group>
+        <nz-button-group nzSize="small" *ngIf="!member.isEditing">
+          <button nz-button nzType="text" (click)="editMemberRole(member)">
+            <span nz-icon nzType="edit" nzTheme="outline"></span>
+          </button>
+          <!--        <button nz-button nz-popover nzType="text" nzPopoverTitle="Title" nzPopoverContent="Content">-->
+          <!--          <span nz-icon nzType="info-circle" nzTheme="outline"></span>-->
+          <!--        </button>-->
+        </nz-button-group>
 
-      <nz-button-group nzSize="small" *ngIf="member.isEditing">
-        <button nz-button nzType="text" (click)="saveMember(member)">
-          <span nz-icon nzType="check" nzTheme="outline"></span>
-        </button>
-        <button nz-button nzType="text" (click)="cancelEditMember(member)">
-          <span nz-icon nzType="close" nzTheme="outline"></span>
-        </button>
-      </nz-button-group>
+        <nz-button-group nzSize="small" *ngIf="member.isEditing">
+          <button nz-button nzType="text" (click)="saveMember(member)">
+            <span nz-icon nzType="check" nzTheme="outline"></span>
+          </button>
+          <button nz-button nzType="text" (click)="cancelEditMember(member)">
+            <span nz-icon nzType="close" nzTheme="outline"></span>
+          </button>
+        </nz-button-group>
+      }
     </td>
   </tr>
   </tbody>

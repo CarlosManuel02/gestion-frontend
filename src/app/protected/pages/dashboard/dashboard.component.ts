@@ -20,6 +20,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {Router, RouterLink} from "@angular/router";
 import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
 import {Image, Project} from "../../../shared/interfaces/project.interface";
+import {PriorityTagComponent} from "../../../shared/components/priority-tag/priority-tag.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -49,6 +50,7 @@ import {Image, Project} from "../../../shared/interfaces/project.interface";
     ProjectsComponent,
     NzIconDirective,
     RouterLink,
+    PriorityTagComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

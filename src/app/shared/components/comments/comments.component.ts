@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {
@@ -16,6 +16,7 @@ import {UserDisplayComponent} from "../../../protected/components/user-display/u
 import {AuthService} from "../../services/auth.service";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 
 @Component({
   selector: 'app-comments',
@@ -34,7 +35,8 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
     UserDisplayComponent,
     NzTooltipDirective,
     NzIconDirective,
-    NzCommentActionComponent
+    NzCommentActionComponent,
+    NzPopconfirmDirective
   ],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss'
@@ -46,6 +48,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   @Input() taskId: string = '';
   @Input() active: boolean = false;
+  @Output() emitCommentsLength = new EventEmitter<number>();
 
   get user() {
     return this.authService.user;
@@ -55,9 +58,14 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     return this.commentService.comments;
   }
 
+  set comments(value) {
+    this.commentService.comments = value;
+  }
+
   constructor(private commentService: CommentsService,
               private authService: AuthService
-              ) {}
+  ) {
+  }
 
   ngAfterViewInit(): void {
     // Aquí puedes verificar si el taskId ya está disponible después de la vista se inicializa
@@ -97,6 +105,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     console.log(this.taskId);
     try {
       const data = await this.commentService.getComments(this.taskId);
+      this.emitCommentsLength.emit(this.comments.length);
       console.log(data);
     } catch (error) {
       console.error('Error fetching comments:', error);
@@ -118,10 +127,16 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   handleDelete(id: string) {
     this.commentService.deleteComment(id)
       .then(() => {
-        this.getComments();
+        this.comments = this.comments.filter(comment => comment.id !== id);
       })
       .catch(error => {
         console.error('Error deleting comment:', error);
       });
   }
+
+  handleEdit(id: string) {
+    console.log('Edit comment:', id);
+  }
+
+  protected readonly confirm = confirm;
 }
