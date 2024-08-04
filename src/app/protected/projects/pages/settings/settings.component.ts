@@ -10,6 +10,8 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {Router} from "@angular/router";
+import {Member} from "../../../../shared/interfaces";
+import {AuthService} from "../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-settings',
@@ -34,12 +36,14 @@ export class SettingsComponent implements OnInit {
   settings: RoleSetting[] = [];
   canEdit: boolean = true
   id!: string;
+  hasPermission: boolean = true;
 
   constructor(
     private projectsService: ManagerService,
     private message: NzMessageService,
     private fb: FormBuilder,
-    public router: Router
+    public router: Router,
+    public authService: AuthService
   ) {
   }
 
@@ -49,27 +53,9 @@ export class SettingsComponent implements OnInit {
       console.log('No project ID found');
       return;
     }
-
-    this.projectsService.getProjectSettings(this.id)
-      .then((resp: any) => {
-        console.log('resp', resp);
-        if (resp.status !== 200) {
-          this.message.error(resp.message);
-          return;
-        } else {
-          this.settings = resp.data.map((setting: RoleSetting) => {
-            return {
-              ...setting,
-              dirty: false // Initialize the dirty flag for each setting
-            };
-          });
-        }
-      }, error => {
-        this.message.error('An error occurred while fetching settings');
-        console.log(error);
-      });
-  }
-
+    this.getSettings();
+    this.getCurrentUser();
+    }
 
 
   createRoleSettingGroup(setting: RoleSetting): FormGroup {
@@ -90,9 +76,6 @@ export class SettingsComponent implements OnInit {
       value: [permission.value]
     });
   }
-
-
-
 
 
   save() {
@@ -135,13 +118,57 @@ export class SettingsComponent implements OnInit {
   }
 
 
-
-
   enableEdit() {
     this.canEdit = !this.canEdit;
   }
 
   disableEdit() {
     this.canEdit = !this.canEdit;
+  }
+
+  private getSettings() {
+    this.projectsService.getProjectSettings(this.id)
+      .then((resp: any) => {
+        console.log('resp', resp);
+        if (resp.status !== 200) {
+          this.message.error(resp.message);
+          return;
+        } else {
+          this.settings = resp.data.map((setting: RoleSetting) => {
+            return {
+              ...setting,
+              dirty: false
+            };
+          });
+        }
+      }, error => {
+        this.message.error('An error occurred while fetching settings');
+        console.log(error);
+      });
+  }
+
+  async getCurrentUser() {
+    const user: any = await this.projectsService.getProjecMembers(this.id).then(
+      (resp: any) => {
+        resp.forEach((member: Member) => {
+          if (member.member_id === this.authService.user.id) {
+            this.checkPermission(member.member_role);
+          }
+        });
+      }
+    );
+  }
+
+  checkPermission(role: string) {
+    this.settings.forEach((setting: RoleSetting) => {
+      if (setting.role_name.toLowerCase() === role) {
+        setting.permissions.forEach((permission: any) => {
+          if (permission.permission === 'update') {
+            this.hasPermission = !permission.value;
+            console.log('hasPermission', this.hasPermission);
+          }
+        });
+      }
+    });
   }
 }
