@@ -12,6 +12,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {Router} from "@angular/router";
 import {Member} from "../../../../shared/interfaces";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {PermissionService} from "../../../../shared/services/permission.service";
 
 @Component({
   selector: 'app-settings',
@@ -43,7 +44,8 @@ export class SettingsComponent implements OnInit {
     private message: NzMessageService,
     private fb: FormBuilder,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public permission: PermissionService
   ) {
   }
 
@@ -152,23 +154,14 @@ export class SettingsComponent implements OnInit {
       (resp: any) => {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
-            this.checkPermission(member.member_role);
+            this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
+              this.hasPermission = hasPermission;
+            });
           }
         });
       }
     );
   }
 
-  checkPermission(role: string) {
-    this.settings.forEach((setting: RoleSetting) => {
-      if (setting.role_name.toLowerCase() === role) {
-        setting.permissions.forEach((permission: any) => {
-          if (permission.permission === 'update') {
-            this.hasPermission = !permission.value;
-            console.log('hasPermission', this.hasPermission);
-          }
-        });
-      }
-    });
-  }
+
 }
