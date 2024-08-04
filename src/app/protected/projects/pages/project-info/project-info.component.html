@@ -1,1 +1,24 @@
-<p>project-info works!</p>
+<nz-descriptions nzTitle="Project Info" [nzExtra]="extraTpl" nzBordered [nzSize]="'middle'">
+  <nz-descriptions-item nzTitle="Project Name">{{ project.project_name }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project KEy">{{ project.project_key }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project Lead">{{ project.project_owner_email }}</nz-descriptions-item>
+
+  <nz-descriptions-item [nzSpan]="3" nzTitle="Project Status">{{ project.project_status }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Project Repository" *ngIf="project.project_repository"
+  >{{ project.project_repository }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Active Members">{{ project.members.length }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project Start Date">{{ project.project_start_date | date: 'yyyy-MM-dd' }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project End Date">{{ project.project_end_date | date: 'yyyy-MM-dd' }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project Description">
+    {{ project.project_description }}
+      </nz-descriptions-item>
+</nz-descriptions>
+
+
+<ng-template #extraTpl>
+  <button nz-button nzType="dashed"
+          nzSize="default" (click)="editProject()"
+          [disabled]="canEdit"
+  >Edit</button>
+</ng-template>
