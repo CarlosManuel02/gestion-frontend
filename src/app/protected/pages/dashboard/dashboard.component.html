@@ -10,10 +10,11 @@
         @if (projects.length > 0) {
           @for (project of projects.slice(0, 5); track project.project_id) {
             <nz-card style="margin: 5px; cursor: pointer" nzBordered nz-col nzSpan="4"
+                      nzHoverable
                      (click)="navigateToProject(project)"
             >
               <nz-card-meta
-                [nzTitle]="project.project_name"
+                [nzTitle]="project.project_name + ' - ' + project.project_status"
                 [nzAvatar]="avatarTemplate"
                 [nzDescription]="project.project_key"
               ></nz-card-meta>

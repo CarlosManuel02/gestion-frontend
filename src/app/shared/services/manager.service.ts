@@ -139,9 +139,9 @@ export class ManagerService {
     });
   }
 
-  updateProjectSettings(updatedSettings: any) {
+  updateProjectSettings(id: string, updatedSettings: any) {
     return new Promise((resolve, reject) => {
-      this.http.patch(`${this.API_URL}settings/update`, updatedSettings).subscribe((resp: any) => {
+      this.http.patch(`${this.API_URL}${id}/settings`, updatedSettings).subscribe((resp: any) => {
         if (resp.status !== 200) {
           reject(resp)
         } else {

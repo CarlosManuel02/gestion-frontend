@@ -22,6 +22,7 @@ import {ManagerService} from "../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {RoleSetting} from "../../../shared/interfaces/permission.interface";
 import {AuthService} from "../../../shared/services/auth.service";
+import {Member} from "../../../shared/interfaces";
 
 @Component({
   selector: 'app-tasks-board',
@@ -71,7 +72,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   settings: RoleSetting[] = [];
   canCreate: boolean = false;
 
-
   get tasks() {
     return this.taskService.tasks;
   }
@@ -87,20 +87,16 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.projectId = this.projectsService.projectID || this.router.url.split('/')[3];
-    // console.log(this.projectId);
     this.fetchTasks();
     this.getSettings();
-    this.getCurrentUser();
   }
 
   ngAfterViewInit() {
-    // Dynamically set the connected drop lists after view initialization
     this.connectedTo = this.dropLists.map(dropList => dropList.id);
   }
 
   private fetchTasks() {
     this.taskService.getTasksFromProject(this.projectId).then((resp: any) => {
-      console.log(resp);
       this.populateTasks();
     }).catch((err: any) => {
       console.log(err);
@@ -127,7 +123,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
       );
     }
 
-    // Update task status based on the new container
     const task = currentContainer.data[event.currentIndex];
     if (currentContainer === this.dropLists.toArray()[0]) {
       task.task_status = 'open';
@@ -137,7 +132,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
       task.task_status = 'completed';
     }
 
-    // Optionally, you can call a service method to save the updated task status to a backend
     this.taskService.updateTask(task.task_id, task).then(() => {
       console.log('Task status updated');
     }).catch((err: any) => {
@@ -160,7 +154,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   drop(event: CdkDragDrop<Task[], any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -171,10 +164,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
         event.previousIndex,
         event.currentIndex,
       );
-      // get the task that was moved
       const task = event.container.data[event.currentIndex];
-      console.log(task);
-
       this.updateTaskStatus(task);
     }
   }
@@ -189,15 +179,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     }
 
     const data = {
-      // name: task.task_name,
-      // description: task.task_description,
       status: task.task_status,
-      // creation_date: task.task_creation_date,
-      // deadline: task.task_deadline,
-      // priority: task.task_priority,
-      // assignment: task.task_assignment,
-      // project_id: task.project_id
-
     }
 
     this.taskService.updateTask(task.task_id, data).then((resp: any) => {
@@ -205,19 +187,19 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     }).catch((err: any) => {
       console.log('Error updating task status', err);
     });
-
   }
 
   openTaskDetails(item: Task) {
-    // console.log(item);
-    // this.router.navigate(['./main/tasks', item.task_id]);
     this.taskId = item.task_id;
-    console.log(this.taskId);
     this.isTaskDetailsVisible = true;
   }
 
   openCreateTaskModal() {
-    this.isModalVisible = true;
+    if (this.canCreate) {
+      this.isModalVisible = true;
+    } else {
+      this.message.error("No tienes permisos para crear tareas.");
+    }
   }
 
   handleCancel() {
@@ -232,7 +214,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   }
 
   handleTaskDetailsCancel() {
-    this.isTaskDetailsVisible = false
+    this.isTaskDetailsVisible = false;
   }
 
   private getSettings() {
@@ -243,6 +225,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
           return;
         } else {
           this.settings = resp.data;
+          this.getCurrentUser();
         }
       });
   }
@@ -250,12 +233,25 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
   async getCurrentUser() {
     const user: any = await this.projectsService.getProjecMembers(this.projectId).then(
       (resp: any) => {
-        resp.forEach((member: any) => {
+        resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
-            this.canCreate = member.member_role === 'admin' || member.member_role === 'owner';
+            this.checkPermission(member.member_role);
           }
         });
       }
     );
   }
+
+  checkPermission(role: string) {
+    this.settings.forEach((setting: RoleSetting) => {
+      if (setting.role_name.toLowerCase() === role) {
+        setting.permissions.forEach((permission: any) => {
+          if (permission.permission === 'create') {
+            this.canCreate = permission.value;
+          }
+        });
+      }
+    });
+  }
+
 }

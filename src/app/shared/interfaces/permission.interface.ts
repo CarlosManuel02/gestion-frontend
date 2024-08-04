@@ -9,4 +9,5 @@ export interface RoleSetting {
   role_id: string;
   role_name: string;
   permissions: Permission[];
+  dirty?: boolean;
 }

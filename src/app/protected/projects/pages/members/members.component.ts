@@ -16,6 +16,8 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {SearchMemberComponent} from "../../../../shared/components/search-member/search-member.component";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
+import {RoleSetting} from "../../../../shared/interfaces/permission.interface";
+import {PermissionService} from "../../../../shared/services/permission.service";
 
 @Component({
   selector: 'app-members',
@@ -51,12 +53,16 @@ export class MembersComponent implements OnInit {
   members: Member[] = []
   isOwner = false;
   canCreate: boolean = false;
+  settings: RoleSetting[] = [];
+
 
   constructor(
     private projectsService: ManagerService,
     public router: Router,
     private authService: AuthService,
     public message: NzMessageService,
+    public permission: PermissionService
+
   ) {
   }
 
@@ -64,6 +70,7 @@ export class MembersComponent implements OnInit {
     this.fetchMembers();
     this.getProject();
     this.getCurrentUser();
+    this.getSettings();
   }
 
   private checkIfOwner() {
@@ -173,12 +180,35 @@ export class MembersComponent implements OnInit {
   async getCurrentUser() {
     const user: any = await this.projectsService.getProjecMembers(this.projectId).then(
       (resp: any) => {
-        resp.forEach((member: any) => {
+        resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
-            this.canCreate = member.member_role === 'admin' || member.member_role === 'owner';
+            this.permission.checkPermission(member.member_role, 'create', this.settings, (hasPermission: boolean) => {
+              this.canCreate = hasPermission;
+            });
           }
         });
       }
     );
+  }
+
+  private getSettings() {
+    this.projectsService.getProjectSettings(this.projectId)
+      .then((resp: any) => {
+        console.log('resp', resp);
+        if (resp.status !== 200) {
+          this.message.error(resp.message);
+          return;
+        } else {
+          this.settings = resp.data.map((setting: RoleSetting) => {
+            return {
+              ...setting,
+              dirty: false
+            };
+          });
+        }
+      }, error => {
+        this.message.error('An error occurred while fetching settings');
+        console.log(error);
+      });
   }
 }

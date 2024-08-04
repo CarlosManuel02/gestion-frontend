@@ -51,7 +51,7 @@ export class TaskService {
     });
   }
 
-  getTask(taskId: string): Observable<{ status: number }> {
+  getTask(taskId: string): Observable<{ status: number, task: Task }> {
     return this.http.get(`${this.API_URL}${taskId}`).pipe(
       tap((resp: any) => {
         if (resp.status === 200) {
@@ -60,7 +60,7 @@ export class TaskService {
           throw new Error('Error getting task');
         }
       }),
-      map((resp) => ({status: resp.status})),
+      map((resp) => ({status: resp.status, task: this._task})),
       catchError((err: any) => {
         return throwError(() => new Error(err.message || 'Error getting task'));
       })
