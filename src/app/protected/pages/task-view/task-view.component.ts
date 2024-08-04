@@ -153,10 +153,11 @@ export class TaskViewComponent implements OnInit {
         this.message.error('Error getting task');
       } else {
         this.task = resp.task;
-        this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label;
-        this.task.task_status = this.statuses.find(s => s.value === this.task.task_status)?.label;
+        this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.value;
+        this.task.task_status = this.statuses.find(s => s.value === this.task.task_status)?.value;
+        this.mockTask = { ...this.task };
         this.getAttachments(taskId)
-        this.mockTask = this.task
+        // this.mockTask = this.task
         this.getProjctMembers();
         this.getCurrentUser();
         this.getSettings();
@@ -202,7 +203,10 @@ export class TaskViewComponent implements OnInit {
   }
 
   changeModeDetails() {
-    this.editModeDetails = false
+    if (this.canEdit) {
+      this.editModeDetails = false
+    } else {
+    }
   }
 
 
@@ -242,16 +246,6 @@ export class TaskViewComponent implements OnInit {
   }
 
   saveDetails() {
-
-    // task_id?: string;
-    // name: string;
-    // description?: string;
-    // status: string;
-    // creation_date: string;
-    // deadline?: string;
-    // priority: number;
-    // assignment?: string;
-    // project_id?: string;
     const data = {
       task_id: this.mockTask.task_id,
       name: this.mockTask.task_name,
