@@ -183,7 +183,7 @@ export class MembersComponent implements OnInit {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
             this.permission.checkPermission(member.member_role, 'create', this.settings, (hasPermission: boolean) => {
-              this.canCreate = !hasPermission;
+              this.canCreate = hasPermission;
             });
           }
         });

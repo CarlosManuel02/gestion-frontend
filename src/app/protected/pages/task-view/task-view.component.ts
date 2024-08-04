@@ -195,7 +195,10 @@ export class TaskViewComponent implements OnInit {
   }
 
   changeMode() {
-    this.editMode = false
+    if (this.canEdit) {
+      this.editMode = false
+    } else {
+    }
   }
 
   changeModeDetails() {

@@ -155,7 +155,7 @@ export class SettingsComponent implements OnInit {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
             this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
-              this.hasPermission = hasPermission;
+              this.hasPermission = !hasPermission;
             });
           }
         });

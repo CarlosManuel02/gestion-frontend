@@ -20,7 +20,7 @@ export class PermissionService {
       if (setting.role_name.toLowerCase() === role) {
         setting.permissions.forEach((permission: any) => {
           if (permission.permission === value) {
-            hasPermission = !permission.value;
+            hasPermission = permission.value;
             console.log('hasPermission', hasPermission);
           }
         });
