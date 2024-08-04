@@ -1,24 +1,121 @@
 <nz-descriptions nzTitle="Project Info" [nzExtra]="extraTpl" nzBordered [nzSize]="'middle'">
   <nz-descriptions-item nzTitle="Project Name">{{ project.project_name }}</nz-descriptions-item>
-  <nz-descriptions-item nzTitle="Project KEy">{{ project.project_key }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project Key">{{ project.project_key }}</nz-descriptions-item>
   <nz-descriptions-item nzTitle="Project Lead">{{ project.project_owner_email }}</nz-descriptions-item>
 
   <nz-descriptions-item [nzSpan]="3" nzTitle="Project Status">{{ project.project_status }}</nz-descriptions-item>
 
   <nz-descriptions-item nzTitle="Project Repository" *ngIf="project.project_repository"
-  >{{ project.project_repository }}</nz-descriptions-item>
+                        [nzSpan]="3"
+  >
+    <a [href]="project.project_repository" target="_blank">{{ project.project_repository }}</a>
+  </nz-descriptions-item>
   <nz-descriptions-item nzTitle="Active Members">{{ project.members.length }}</nz-descriptions-item>
-  <nz-descriptions-item nzTitle="Project Start Date">{{ project.project_start_date | date: 'yyyy-MM-dd' }}</nz-descriptions-item>
-  <nz-descriptions-item nzTitle="Project End Date">{{ project.project_end_date | date: 'yyyy-MM-dd' }}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project Start Date">{{ project.project_start_date | date: 'yyyy-MM-dd' }}
+  </nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Project End Date">{{ project.project_end_date | date: 'yyyy-MM-dd' }}
+  </nz-descriptions-item>
   <nz-descriptions-item nzTitle="Project Description">
     {{ project.project_description }}
-      </nz-descriptions-item>
+  </nz-descriptions-item>
 </nz-descriptions>
-
 
 <ng-template #extraTpl>
   <button nz-button nzType="dashed"
           nzSize="default" (click)="editProject()"
           [disabled]="canEdit"
-  >Edit</button>
+  >Edit
+  </button>
 </ng-template>
+
+<nz-modal [(nzVisible)]="showEditModal"
+          nzTitle="Edit Project" nzWidth="800px"
+          (nzOnCancel)="handleCancel()">
+
+  <ng-template nzModalContent>
+    <form nz-form [formGroup]="form"
+          nzLayout="inline"
+    >
+      <div nz-row>
+
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="14" nzRequired>Project Name</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="name" placeholder="Project Name">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12">
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzRequired>Project Key</nz-form-label>
+            <nz-form-control [nzSpan]="10">
+              <input nz-input formControlName="project_key" placeholder="Project Key">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+
+        <div nz-col nzSpan="24" class="mt-3">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="10">Project URL</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="repository_url" placeholder="Project URL">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" class="mt-3">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="10">Project Start Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="start_date" nzFormat="yyyy-MM-dd"
+                              nzPlaceHolder="Select Date"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" class="mt-3">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="10">Project End Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="end_date" nzFormat="yyyy-MM-dd"
+                              nzPlaceHolder="Select Date"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item class="mt-3">
+            <nz-form-label [nzSpan]="10">Project Description</nz-form-label>
+            <nz-form-control>
+              <nz-textarea-count [nzMaxCharacterCount]="1000">
+
+              <textarea nz-input
+                        formControlName="description"
+                        placeholder="Description"
+                        rows="6"
+              ></textarea>
+              </nz-textarea-count>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template nzModalFooter>
+
+    <button nz-button
+            nzType="primary"
+            nzSize="default"
+            [disabled]="!form.valid"
+            (click)="saveProject()"
+    >Save
+    </button>
+    <button nz-button nzSize="default" (click)="handleCancel()">Cancel</button>
+  </ng-template>
+</nz-modal>
