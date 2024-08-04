@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {TaskService} from "../../../shared/services/task.service";
 import {Router, RouterLink} from "@angular/router";
 import {DatePipe, JsonPipe, NgForOf, NgIf} from "@angular/common";
@@ -37,6 +37,8 @@ import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {NzEmptyComponent} from "ng-zorro-antd/empty";
 import {NzAlertComponent} from "ng-zorro-antd/alert";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
+import {PermissionService} from "../../../shared/services/permission.service";
+import {RoleSetting} from "../../../shared/interfaces/permission.interface";
 
 @Component({
   selector: 'app-task-view',
@@ -94,7 +96,7 @@ export class TaskViewComponent implements OnInit {
   loadingAttachments = false;
   editMode = true;
   editModeDetails = true;
-
+  settings: RoleSetting[] = [];
   @Input() task_id: string = '';
 
   priorities = [
@@ -106,9 +108,7 @@ export class TaskViewComponent implements OnInit {
 
   projectMembers: Member[] = []
 
-  get task() {
-    return this.taskService.task
-  }
+  task: Task = {} as Task;
 
   get user() {
     return this.authService.user
@@ -123,6 +123,7 @@ export class TaskViewComponent implements OnInit {
   ]
   inputValue: any;
   active: boolean = false
+  canEdit: boolean = false;
   commentsLength: number = 0
 
   constructor(
@@ -131,6 +132,8 @@ export class TaskViewComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     public message: NzMessageService,
+    public permission: PermissionService
+
   ) {
   }
 
@@ -147,13 +150,16 @@ export class TaskViewComponent implements OnInit {
     // console.log(taskId)
     this.taskService.getTask(taskId).subscribe((resp) => {
       if (resp.status !== 200) {
-        console.error('Error getting task')
+        this.message.error('Error getting task');
       } else {
+        this.task = resp.task;
         this.task.task_priority = this.priorities.find(p => p.value === this.task.task_priority)?.label;
         this.task.task_status = this.statuses.find(s => s.value === this.task.task_status)?.label;
         this.getAttachments(taskId)
         this.mockTask = this.task
         this.getProjctMembers();
+        this.getCurrentUser();
+        this.getSettings();
       }
     })
   }
@@ -214,7 +220,7 @@ export class TaskViewComponent implements OnInit {
       }
       this.taskService.uploadAttachment(file, this.task.task_id)
         .then((resp: any) => {
-          console.log(resp)
+          // console.log(resp)
           this.loadingAttachments = false
           if (resp.status === 200) {
             this.getAttachments(this.task.task_id)
@@ -306,4 +312,42 @@ export class TaskViewComponent implements OnInit {
   setCommentsLength($event: any) {
     this.commentsLength = $event;
   }
+
+  private getSettings() {
+    this.managerService.getProjectSettings(this.task.project_id)
+      .then((resp: any) => {
+        console.log('resp', resp);
+        if (resp.status !== 200) {
+          this.message.error(resp.message);
+          return;
+        } else {
+          this.settings = resp.data.map((setting: RoleSetting) => {
+            return {
+              ...setting,
+              dirty: false
+            };
+          });
+        }
+      }, error => {
+        this.message.error('An error occurred while fetching settings');
+        console.log(error);
+      });
+  }
+
+
+  async getCurrentUser() {
+    const user: any = await this.managerService.getProjecMembers(this.task.project_id).then(
+      (resp: any) => {
+        resp.forEach((member: Member) => {
+          if (member.member_id === this.authService.user.id) {
+            this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
+              this.canEdit = hasPermission;
+              // console.log('canEdit', this.canEdit);
+            });
+          }
+        });
+      }
+    );
+  }
+
 }
