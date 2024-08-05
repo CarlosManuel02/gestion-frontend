@@ -13,6 +13,7 @@ import {Task} from "../../../shared/interfaces/task.interface";
 import {TaskService} from "../../../shared/services/task.service";
 import {AuthService} from "../../../shared/services/auth.service";
 import {Router} from "@angular/router";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-task-list',
@@ -45,6 +46,7 @@ export class TaskListComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private authService: AuthService,
+    public message: NzMessageService
   ) {
   }
 
@@ -64,9 +66,8 @@ export class TaskListComponent implements OnInit {
         this.loading = false;
         if (resp.status === 200) {
           this.tasks = resp.tasks;
-          // console.log('tasks', this.tasks)
         } else {
-          console.log('Error getting tasks')
+          this.message.error('Error getting tasks');
           this.loading = false;
         }
       })
@@ -81,7 +82,7 @@ export class TaskListComponent implements OnInit {
         if (resp.status === 200) {
           this.tasks = resp.tasks;
         } else {
-          console.log('Error getting tasks')
+          this.message.error('Error getting tasks');
           this.loading = false;
         }
       })

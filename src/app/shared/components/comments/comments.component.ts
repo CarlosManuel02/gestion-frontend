@@ -102,11 +102,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   private async getComments() {
     this.loading = true;
-    console.log(this.taskId);
     try {
       const data = await this.commentService.getComments(this.taskId);
       this.emitCommentsLength.emit(this.comments.length);
-      console.log(data);
     } catch (error) {
       console.error('Error fetching comments:', error);
     } finally {

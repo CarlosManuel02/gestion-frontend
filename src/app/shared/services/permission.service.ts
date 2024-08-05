@@ -21,7 +21,6 @@ export class PermissionService {
         setting.permissions.forEach((permission: any) => {
           if (permission.permission === value) {
             hasPermission = permission.value;
-            console.log('hasPermission', hasPermission);
           }
         });
       }

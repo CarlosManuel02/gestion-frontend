@@ -133,9 +133,9 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     }
 
     this.taskService.updateTask(task.task_id, task).then(() => {
-      console.log('Task status updated');
     }).catch((err: any) => {
       console.log('Error updating task status', err);
+      this.message.error('Error updating task status');
     });
   }
 
@@ -183,7 +183,6 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     }
 
     this.taskService.updateTask(task.task_id, data).then((resp: any) => {
-      console.log(resp);
     }).catch((err: any) => {
       console.log('Error updating task status', err);
     });
