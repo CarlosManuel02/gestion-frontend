@@ -80,7 +80,7 @@ export class ProjectViewComponent implements OnInit {
 
   private fetchProject() {
     this.managerService.getProject(this.projectId).then((resp: any) => {
-      if (resp.status !== 200) {
+      if (resp !== 200) {
         console.error(resp)
         this.message.error('Failed to fetch project')
         return;
