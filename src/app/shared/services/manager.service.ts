@@ -162,4 +162,16 @@ export class ManagerService {
       })
     });
   }
+
+  updateProject(projectId: string, editedProject: any) {
+    return new Promise((resolve, reject) => {
+      this.http.patch(`${this.API_URL}update/${projectId}`, editedProject).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp)
+        } else {
+          resolve(resp)
+        }
+      })
+    });
+  }
 }
