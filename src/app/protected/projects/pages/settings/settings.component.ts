@@ -97,7 +97,6 @@ export class SettingsComponent implements OnInit {
           })
         };
 
-        console.log('updatedSetting', updatedSetting);
         this.projectsService.updateProjectSettings(this.id, updatedSetting)
           .then((resp: any) => {
             this.canEdit = true;
@@ -111,7 +110,7 @@ export class SettingsComponent implements OnInit {
           })
           .catch(error => {
             this.message.error('An error occurred while updating settings');
-            console.log(error);
+            console.error(error);
           });
       });
     } else {
@@ -131,7 +130,6 @@ export class SettingsComponent implements OnInit {
   private getSettings() {
     this.projectsService.getProjectSettings(this.id)
       .then((resp: any) => {
-        console.log('resp', resp);
         if (resp.status !== 200) {
           this.message.error(resp.message);
           return;
@@ -145,7 +143,7 @@ export class SettingsComponent implements OnInit {
         }
       }, error => {
         this.message.error('An error occurred while fetching settings');
-        console.log(error);
+        console.error(error);
       });
   }
 

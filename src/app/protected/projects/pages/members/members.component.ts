@@ -140,7 +140,6 @@ export class MembersComponent implements OnInit {
         }
       });
 
-    // console.log(data);
 
   }
 
@@ -194,7 +193,6 @@ export class MembersComponent implements OnInit {
   private getSettings() {
     this.projectsService.getProjectSettings(this.projectId)
       .then((resp: any) => {
-        console.log('resp', resp);
         if (resp.status !== 200) {
           this.message.error(resp.message);
           return;

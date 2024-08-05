@@ -18,6 +18,7 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} fr
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from "ng-zorro-antd/list";
 import {ThemeService} from "../../../../shared/services/theme.service";
 import {NzMenuDirective, NzMenuItemComponent} from "ng-zorro-antd/menu";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-project-view',
@@ -67,7 +68,8 @@ export class ProjectViewComponent implements OnInit {
   constructor(
     public router: Router,
     private managerService: ManagerService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private message: NzMessageService
   ) {
   }
 
@@ -78,9 +80,13 @@ export class ProjectViewComponent implements OnInit {
 
   private fetchProject() {
     this.managerService.getProject(this.projectId).then((resp: any) => {
-      console.log(resp)
+      if (resp.status !== 200) {
+        console.error(resp)
+        this.message.error('Failed to fetch project')
+        return;
+      }
     }).catch((err: any) => {
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -110,7 +116,6 @@ export class ProjectViewComponent implements OnInit {
 
   goTo(item: any) {
     this.router.navigate([`/main/projects/${this.projectId}/${item.link}`])
-    console.log('go to: /main/projects/' + this.project.project_id + '/' + item.link)
   }
 
   getTheme() {

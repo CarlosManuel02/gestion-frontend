@@ -24,7 +24,6 @@ export class NotificationsService {
 
 
   getAllMotifications() {
-    console.log(this.authService.user.id)
     return this.http.get<NotificationResponse>(`${this.endpoint}all/${this.authService.user.id}`).pipe(
       tap((resp) => {
         if (resp.status !== 200) {
@@ -40,7 +39,6 @@ export class NotificationsService {
   markAllAsRead(notification: string) {
     return this.http.post<NotificationResponse>(`${this.endpoint}read/${notification}`, {}).pipe(
       tap((resp) => {
-          console.log(notification)
         if (resp.status !== 200) {
           throw new Error(resp.message);
         }

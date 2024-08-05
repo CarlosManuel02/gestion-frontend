@@ -40,7 +40,6 @@ export class AuthService {
             email: resp.user?.email,
             username: resp.user?.username
           }
-          console.log(this._user)
           localStorage.setItem('token', resp.token);
           return {status: resp.status, message: resp.message}
         }
@@ -92,7 +91,6 @@ export class AuthService {
             username: resp.user?.username,
             image: resp.user?.image
           }
-          // console.log(this._user)
           localStorage.setItem('token', resp.token);
           return resp.status == 200;
         }),

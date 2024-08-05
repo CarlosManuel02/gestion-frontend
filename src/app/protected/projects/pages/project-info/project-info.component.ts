@@ -166,7 +166,6 @@ export class ProjectInfoComponent implements OnInit {
 
     }
 
-    console.log(data);
     this.projectService.updateProject(this.projectId, data).then((resp: any) => {
       if (resp.status === 200) {
         this.message.success('Project updated successfully');

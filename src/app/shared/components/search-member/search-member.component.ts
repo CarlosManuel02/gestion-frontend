@@ -53,12 +53,11 @@ export class SearchMemberComponent {
   searchUser() {
     this.authService.getUser(this.email)
       .subscribe((res) => {
-        console.log(res);
         if (res) {
           this.user = res;
         } else {
           this.message.error(res.message);
-          console.log(res);
+          console.error(res);
         }
       }, error => {
         this.message.error('User not found');

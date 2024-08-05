@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NzTypographyComponent} from "ng-zorro-antd/typography";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
@@ -36,6 +36,7 @@ import {AuthService} from "../../../shared/services/auth.service";
     NzRowDirective,
     NavbarComponent,
     NgIf,
+    FormsModule,
 
   ],
   templateUrl: './login.component.html',
@@ -47,12 +48,19 @@ export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   passwordVisible = false;
   loading: boolean = false;
+  remember: boolean = false;
 
   login() {
+
+    console.log(this.remember)
+
+    if (!this.remember) {
+      localStorage.setItem('email', this.validateForm.value.email);
+    }
+
     console.log(this.validateForm.value)
     this.loading = true;
     const {email, password} = this.validateForm.value;
-    console.log(email, password)
     if (email != null && password != null) {
       this.authservice.login(email, password)
         .subscribe(resp => {
@@ -62,7 +70,7 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('/todos/dashboard');
           } else {
             this.loading = false;
-            this.message.error(resp.message);
+            this.message.error('Login failed');
           }
         }, (e) => {
           console.log(e)
@@ -80,9 +88,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      email: [null, [Validators.required,Validators.minLength(3)]],
-      password: [null, [Validators.required,Validators.minLength(3),Validators.maxLength(16)]],
-    });
+    const email = localStorage.getItem('email');
+    if (email != null) {
+      this.remember = true;
+      this.validateForm = this.fb.group({
+        email: [email, [Validators.required, Validators.minLength(3)]],
+        password: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      });
+    } else {
+      this.validateForm = this.fb.group({
+        email: [null, [Validators.required, Validators.minLength(3)]],
+        password: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      });
+    }
   }
 }

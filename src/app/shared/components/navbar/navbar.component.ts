@@ -131,7 +131,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   toggleTheme(): void {
     this.themeService.toggleTheme().then(() => {
       this.theme = this.themeService.theme;
-      console.log(this.theme);
     });
   }
 
@@ -146,7 +145,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private getUserImage(data: Data | undefined) {
     if (!data) {
       this.userImage = 'assets/images/user.png';
-      console.log(this.user);
       return;
     }
 

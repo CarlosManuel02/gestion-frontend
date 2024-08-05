@@ -313,7 +313,6 @@ export class TaskViewComponent implements OnInit {
   private getSettings() {
     this.managerService.getProjectSettings(this.task.project_id)
       .then((resp: any) => {
-        console.log('resp', resp);
         if (resp.status !== 200) {
           this.message.error(resp.message);
           return;
