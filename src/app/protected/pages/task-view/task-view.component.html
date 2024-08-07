@@ -97,7 +97,7 @@
         <nz-card nzTitle="Task Details" [nzExtra]="extraTemplate">
           <form nz-form>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Project</nz-form-label>
+              <nz-form-label nzSpan="6">Project</nz-form-label>
               <nz-form-control>
                 <input [nzBorderless]="true" class="float-right" nz-input [(ngModel)]="mockTask.project_name"
                        [ngModelOptions]="{standalone: true}"
@@ -105,7 +105,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Task</nz-form-label>
+              <nz-form-label nzSpan="6">Task</nz-form-label>
               <nz-form-control>
                 <input [nzBorderless]="editModeDetails" class="float-right" nz-input [(ngModel)]="mockTask.task_name"
                        [ngModelOptions]="{standalone: true}"
@@ -113,7 +113,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Status</nz-form-label>
+              <nz-form-label nzSpan="6">Status</nz-form-label>
               <nz-form-control>
                 <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_status"
                            (ngModelChange)="saveDetails()"
@@ -124,7 +124,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Priority</nz-form-label>
+              <nz-form-label nzSpan="6">Priority</nz-form-label>
               <nz-form-control>
                 <nz-select [nzBorderless]="editModeDetails" class="float-right" [(ngModel)]="mockTask.task_priority"
                            [disabled]="editModeDetails"
@@ -135,7 +135,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">Start Date</nz-form-label>
+              <nz-form-label nzSpan="6">Start Date</nz-form-label>
               <nz-form-control>
                 <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
                                 [(ngModel)]="mockTask.task_creation_date" [nzInputReadOnly]="editModeDetails"
@@ -144,7 +144,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzSpan="8">End Date</nz-form-label>
+              <nz-form-label nzSpan="6">End Date</nz-form-label>
               <nz-form-control>
                 <nz-date-picker [nzBorderless]="editModeDetails" class="float-right"
                                 [(ngModel)]="mockTask.task_deadline" [nzInputReadOnly]="editModeDetails"
