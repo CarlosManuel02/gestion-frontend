@@ -56,8 +56,15 @@ export class RegistroComponent implements OnInit {
     this.validateForm = this.fb.group({
       username: [null, [Validators.required, Validators.minLength(3)]],
       email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(16)]]
-    });
+      password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]],
+      confirmPassword: [null, [Validators.required, Validators.minLength(6)]]
+    }, { validator: this.checkPasswords });
+  }
+
+  checkPasswords(group: FormGroup) {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { notMatch: true };
   }
 
 

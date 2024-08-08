@@ -41,7 +41,7 @@
             </nz-form-item>
             <nz-form-item>
               <nz-form-control [nzErrorTip]="passwordErrorTp">
-                <nz-form-label [nzSpan]="5">Contraseña</nz-form-label>
+                <nz-form-label [nzSpan]="5">Password</nz-form-label>
                 <nz-input-group nzPrefixIcon="lock" [nzSuffix]="passw">
                   <input [type]="passwordVisible ? 'text' : 'password'" maxlength="16" nz-input formControlName="password" autocomplete="off" />
                   <ng-template #passwordErrorTp let-control>
@@ -54,9 +54,26 @@
                 </ng-template>
               </nz-form-control>
             </nz-form-item>
+            <nz-form-item>
+              <nz-form-control [nzErrorTip]="confirmPasswordErrorTp">
+                <nz-form-label [nzSpan]="8">Confirm Password</nz-form-label>
+                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="confirmPassw">
+                  <input [type]="passwordVisible ? 'text' : 'password'" maxlength="16" nz-input formControlName="confirmPassword" autocomplete="off" />
+                  <ng-template #confirmPasswordErrorTp let-control>
+                    <ng-container *ngIf="control.hasError('required')">Please confirm your password</ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')">Should be at least 6 characters</ng-container>
+                    <ng-container *ngIf="control.hasError('notMatch')">Passwords do not match!</ng-container>
+                  </ng-template>
+                </nz-input-group>
+                <ng-template #confirmPassw>
+                  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+
             <div nz-row class="login-form-margin">
               <div nz-col [nzSpan]="null">
-                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid" >
+                <button [nzLoading]="loading" nz-button nzType="primary" [disabled]="!validateForm.valid">
                   Register
                 </button>
               </div>

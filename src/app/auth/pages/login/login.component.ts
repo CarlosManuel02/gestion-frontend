@@ -65,7 +65,6 @@ export class LoginComponent implements OnInit {
       this.authservice.login(email, password)
         .subscribe(resp => {
           if (resp.status == 200) {
-            console.log(resp)
             this.loading = false;
             this.message.success('Login successful');
             this.router.navigateByUrl('/todos/dashboard');
