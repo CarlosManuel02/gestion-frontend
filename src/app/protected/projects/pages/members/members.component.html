@@ -73,12 +73,13 @@
 <nz-modal
   [(nzVisible)]="isVisible"
   nzTitle="Search Members"
-  [nzWidth]="800"
+  [nzWidth]="500"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
 >
   <ng-template nzModalContent>
-    <app-search-member (selectedMembers)="getSelectedMembers($event)"></app-search-member>
+    <app-search-member [projectId]="projectId"
+      (selectedMembers)="getSelectedMembers($event)"></app-search-member>
   </ng-template>
 </nz-modal>
 
