@@ -12,7 +12,6 @@ export interface Project {
   project_end_date:    Date;
   project_status:      string;
   project_repository:  string;
-  image:               Image;
   members:             Member[];
 }
 

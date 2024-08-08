@@ -4,18 +4,7 @@ export interface User{
   email?: string;
   password?: string;
   role?: string;
-  image?:    Image;
+  created_at?: Date;
 }
 
-export interface Image {
-  image_id:        string;
-  user_id:   string;
-  data:      Data;
-  mime_type: string;
-}
-
-export interface Data {
-  type: string;
-  data: number[];
-}
 

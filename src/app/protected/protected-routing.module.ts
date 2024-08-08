@@ -5,6 +5,7 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {ValidarTokenGuard} from "../shared/guards/validar-token.guard";
 import {TaskViewComponent} from "./pages/task-view/task-view.component";
+import {PorfileComponent} from "../shared/components/porfile/porfile.component";
 
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'tasks', component: TasksComponent},
       {path: 'tasks/:id', component: TaskViewComponent},
+      {path: 'profile/:id', component: PorfileComponent},
       {path: '**', redirectTo: 'dashboard'}
     ]
   }

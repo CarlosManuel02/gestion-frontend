@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <!-- User Information Card -->
+  <nz-card nzTitle="User Information" class="user-info-card" [nzExtra]="extraTemplate">
+    <nz-descriptions nzBordered [nzSize]="'small'" [nzColumn]="1">
+      <nz-descriptions-item nzTitle="Username">
+        {{ user.username }}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Email">
+        {{ user.email }}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Created At">
+        {{ user.created_at | date: 'dd/MM/yyyy' }}
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+
+  <nz-divider nzText="Projects"></nz-divider>
+
+  <app-projects [isPorfile]="true" [userID]="userId"></app-projects>
+
+</div>
+
+
+<ng-template #extraTemplate >
+  <button  *ngIf="isCurrentUser" nz-button nzType="text" nzSize="small" (click)="editProfile()">Edit Profile</button>
+</ng-template>

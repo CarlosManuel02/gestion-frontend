@@ -1,19 +1,21 @@
 <div class="container-fluid mt-3">
 
-  <div class="d-flex justify-content-between">
-    <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
-      <input type="text" nz-input placeholder="input search text">
-    </nz-input-group>
+  @if (!isPorfile){
+    <div class="d-flex justify-content-between">
+      <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
+        <input type="text" nz-input placeholder="input search text">
+      </nz-input-group>
 
-    <button
-      nz-button
-      nzType="primary"
-      nzSize="default"
-      (click)="createProject()"
-      class="mt-2 mb-1"
-    >Create Project
-    </button>
-  </div>
+      <button
+        nz-button
+        nzType="primary"
+        nzSize="default"
+        (click)="createProject()"
+        class="mt-2 mb-1"
+      >Create Project
+      </button>
+    </div>
+  }
 
 
   <nz-table #basicTable
@@ -23,7 +25,8 @@
     <thead>
     <tr>
       <th>Project Name</th>
-      <th>Project Key</th>
+      <th *ngIf="!isPorfile"
+      >Project Key</th>
       <th>Status</th>
       <th>Owner</th>
       <th>Start Date</th>
@@ -37,7 +40,8 @@
                        [nzText]="project.project_key?.slice(0, 2)?.toUpperCase()"></nz-avatar>
             <a (click)="setProject(project)">{{ project.project_name }}</a>
           </td>
-          <td>{{ project.project_key }}</td>
+          <td *ngIf="!isPorfile"
+          >{{ project.project_key }}</td>
           <td>
             <nz-tag *ngIf="project.project_status === 'active'" [nzColor]="'green'">{{ project.project_status }}</nz-tag>
             <nz-tag  *ngIf="project.project_status === 'paused'" [nzColor]="'orange'">{{ project.project_status }}</nz-tag>

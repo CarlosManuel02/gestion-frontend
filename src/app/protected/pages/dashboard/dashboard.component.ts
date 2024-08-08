@@ -21,6 +21,8 @@ import {Router, RouterLink} from "@angular/router";
 import {NzTransitionPatchDirective} from "ng-zorro-antd/core/transition-patch/transition-patch.directive";
 import {Image, Project} from "../../../shared/interfaces/project.interface";
 import {PriorityTagComponent} from "../../../shared/components/priority-tag/priority-tag.component";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -57,6 +59,7 @@ import {PriorityTagComponent} from "../../../shared/components/priority-tag/prio
 })
 export class DashboardComponent {
   array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  userID!:string;
 
   get projects() {
     return this.managerService.projects;
@@ -65,12 +68,15 @@ export class DashboardComponent {
 
   constructor(
     private managerService: ManagerService,
-    private router: Router
+    private router: Router,
+    private message: NzMessageService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit() {
-    this.managerService.getProjects();
+    this.userID = this.authService.user.id;
+    this.getProjects()
   }
 
   getImage(data: Image) {
@@ -89,5 +95,14 @@ export class DashboardComponent {
   navigateToProject(project: Project) {
     this.managerService.getProject(project.project_id);
     this.router.navigateByUrl(`/main/projects/${ project.project_id }`)
+  }
+
+  private getProjects() {
+
+    this.managerService.getProjects(this.userID).then((resp: any) => {
+      if (resp !== 200) {
+        this.message.error('An error occurred while fetching projects')
+      }
+    })
   }
 }

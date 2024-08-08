@@ -35,10 +35,10 @@ export class AuthService {
           throw new Error("Incorrect email or password");
         } else {
           this._user = {
-            image: resp.user?.image,
             id: String(resp.user?.id),
             email: resp.user?.email,
-            username: resp.user?.username
+            username: resp.user?.username,
+            created_at: resp.user?.created_at,
           }
           localStorage.setItem('token', resp.token);
           return {status: resp.status, message: resp.message}
@@ -68,7 +68,7 @@ export class AuthService {
             id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
-            image: resp.user?.image
+            created_at: resp.user?.created_at
           }
           localStorage.setItem('token', resp.token);
         }),
@@ -89,9 +89,10 @@ export class AuthService {
             id: String(resp.user?.id),
             email: resp.user?.email,
             username: resp.user?.username,
-            image: resp.user?.image
+            created_at: resp.user?.created_at
           }
           localStorage.setItem('token', resp.token);
+          console.log(resp);
           return resp.status == 200;
         }),
         catchError(() => of(false))
@@ -109,16 +110,21 @@ export class AuthService {
     })
     return this.http.get(`${this.endpoint}${userId}`).pipe(
       tap((resp: any) => {
-        if (resp.status === 200) {
-          return {
-            user: resp,
-            status: resp.status,
+          if (resp.status === 200) {
+            return {
+              user: resp,
+              status: resp.status,
+            }
+          } else {
+            throw new Error(resp.message);
           }
-        } else {
-          throw new Error(resp.message);
         }
-      }
-    ), map((resp: any) => resp.user),
+      ), map((resp: any) => {
+        return {
+          status: resp.status,
+          user: resp.user
+        }
+      }),
       catchError((err: any) => {
         return of(err.message);
       })

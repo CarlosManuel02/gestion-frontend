@@ -1,7 +1,14 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Router} from "@angular/router";
 import {TaskService} from "../../../shared/services/task.service";
-import {CdkDragDrop, CdkDropList, transferArrayItem, moveItemInArray, CdkDrag} from "@angular/cdk/drag-drop";
+import {
+  CdkDragDrop,
+  CdkDropList,
+  transferArrayItem,
+  moveItemInArray,
+  CdkDrag,
+  CdkDragHandle
+} from "@angular/cdk/drag-drop";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {NzListComponent} from "ng-zorro-antd/list";
@@ -23,6 +30,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {RoleSetting} from "../../../shared/interfaces/permission.interface";
 import {AuthService} from "../../../shared/services/auth.service";
 import {Member} from "../../../shared/interfaces";
+import {PermissionService} from "../../../shared/services/permission.service";
 
 @Component({
   selector: 'app-tasks-board',
@@ -53,7 +61,8 @@ import {Member} from "../../../shared/interfaces";
     NzModalContentDirective,
     NzModalFooterDirective,
     TaskViewComponent,
-    PriorityTagComponent
+    PriorityTagComponent,
+    CdkDragHandle
   ],
   styleUrls: ['./tasks-board.component.scss']
 })
@@ -81,7 +90,8 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     private taskService: TaskService,
     private authService: AuthService,
     private projectsService: ManagerService,
-    public message: NzMessageService
+    public message: NzMessageService,
+    public permission: PermissionService
   ) {
   }
 
@@ -234,23 +244,13 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
       (resp: any) => {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
-            this.checkPermission(member.member_role);
+            this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
+              this.canCreate = hasPermission;
+            });
           }
         });
       }
     );
-  }
-
-  checkPermission(role: string) {
-    this.settings.forEach((setting: RoleSetting) => {
-      if (setting.role_name.toLowerCase() === role) {
-        setting.permissions.forEach((permission: any) => {
-          if (permission.permission === 'create') {
-            this.canCreate = permission.value;
-          }
-        });
-      }
-    });
   }
 
 }

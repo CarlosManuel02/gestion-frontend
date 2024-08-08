@@ -26,7 +26,6 @@ import {Task} from "../../../shared/interfaces/task.interface";
 import {FileSizePipe} from "../../../shared/pipes/file-size.pipe";
 import {NzTypographyComponent} from "ng-zorro-antd/typography";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
-import {Data} from "../../../shared/interfaces/user.interface";
 import {NzCollapseComponent, NzCollapsePanelComponent} from "ng-zorro-antd/collapse";
 import {ManagerService} from "../../../shared/services/manager.service";
 import {Member} from "../../../shared/interfaces";

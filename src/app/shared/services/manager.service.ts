@@ -45,11 +45,17 @@ export class ManagerService {
     });
   }
 
-  getProjects() {
-    return this.http.get<Project[]>(`${this.API_URL}all/${this.authService.user.id}`)
-      .subscribe((projects: Project[]) => {
-        this._projects = projects;
-      });
+  getProjects(userID: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get<Project[]>(`${this.API_URL}all/${userID}`).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          reject(resp.status)
+        } else {
+          this._projects = resp.data
+          resolve(resp.status)
+        }
+      })
+    });
   }
 
   getProjecMembers(projectId: string): Promise<Member[]> {
@@ -91,6 +97,7 @@ export class ManagerService {
   checkMember(param: { project_id: string; id: string }) {
     return this.http.post(`${this.API_URL}members/check/`, param).pipe(
       map((resp: any) => {
+        console.log(resp)
           return resp.status == 200;
         }
       ), catchError((err: any) => of(false)));

@@ -80,7 +80,7 @@ export class ProjectViewComponent implements OnInit {
 
   private fetchProject() {
     this.managerService.getProject(this.projectId).then((resp: any) => {
-      if (resp.status !== 200) {
+      if (resp !== 200) {
         console.error(resp)
         this.message.error('Failed to fetch project')
         return;
@@ -98,19 +98,6 @@ export class ProjectViewComponent implements OnInit {
   private init() {
     this.fetchProject()
     this.fetchProjectTasks()
-  }
-
-  getImage() {
-    const data = this.project.image;
-    if (!data) {
-      return;
-    }
-
-    // Create a data URL from the image data
-    const byteArray = new Uint8Array(data.data);
-    const blob = new Blob([byteArray], {type: data.mime_type});
-    const url = URL.createObjectURL(blob);
-    return 'url';
   }
 
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {FormsModule} from "@angular/forms";
 import {NzButtonComponent, NzButtonGroupComponent} from "ng-zorro-antd/button";
@@ -12,6 +12,7 @@ import {UserDisplayComponent} from "../../../protected/components/user-display/u
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {ManagerService} from "../../services/manager.service";
 
 @Component({
   selector: 'app-search-member',
@@ -39,14 +40,17 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class SearchMemberComponent {
   @Output() selectedMembers = new EventEmitter();
   email = '';
-  user!: User;
+  user: User = null as any;
   users: any[] = [];
   role!: string;
+  isInProject = false;
+  @Input() projectId!: string;
 
 
   constructor(
     public authService: AuthService,
-    public message: NzMessageService
+    public message: NzMessageService,
+    private projectService: ManagerService
   ) {
   }
 
@@ -55,6 +59,7 @@ export class SearchMemberComponent {
       .subscribe((res) => {
         if (res) {
           this.user = res;
+          this.userInProject();
         } else {
           this.message.error(res.message);
           console.error(res);
@@ -77,6 +82,23 @@ export class SearchMemberComponent {
   }
 
   clear() {
-    this.user = {} as User;
+    this.user = null as any;
+    this.email = '';
+  }
+
+  private userInProject() {
+    const id = this.user.id;
+    this.projectService.getProjecMembers(this.projectId).then((res) => {
+      if (res) {
+        const user = res.find((user: any) => user.member_id === id);
+        console.log(user);
+        if (user) {
+          this.message.error('User already in project');
+          this.isInProject = true;
+        } else {
+          this.message.success('User added to project');}
+      }
+    });
+
   }
 }

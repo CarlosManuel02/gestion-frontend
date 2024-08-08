@@ -18,7 +18,6 @@ import {
   NzListItemMetaTitleComponent
 } from "ng-zorro-antd/list";
 import {AuthService} from "../../services/auth.service";
-import {Data} from "../../interfaces/user.interface";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {HttpClient} from "@angular/common/http";
 import {Notification} from '../../interfaces/notification.interface';
@@ -115,7 +114,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.themeChanged$ = this.themeService.getThemeChanged();
     this.theme = this.themeService.theme;
-    this.getUserImage(this.user?.image?.data);
     if (!this.eventSource) { // Verifica si eventSource ya está inicializado
       this.getAllNotifications();
       this.initNotifications();
@@ -142,17 +140,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.themeService.theme === ThemeType.Dark;
   }
 
-  private getUserImage(data: Data | undefined) {
-    if (!data) {
-      this.userImage = 'assets/images/user.png';
-      return;
-    }
-
-    const byteArray = new Uint8Array(data.data);
-    const blob = new Blob([byteArray], {type: data.type});
-    const url = URL.createObjectURL(blob);
-    this.userImage = url;
-  }
 
   private initNotifications() {
     const endpoint = environment.ApiEndPoint + 'notifications/notify';
@@ -192,5 +179,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onNotifyChanges($event: Notification[]) {
     this.notifications = $event;
+  }
+
+  viewProfile() {
+    this.router.navigate(['/main/profile', this.user?.id]);
   }
 }
