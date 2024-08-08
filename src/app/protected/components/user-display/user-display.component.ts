@@ -53,7 +53,7 @@ export class UserDisplayComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUser(this.userId)
       .subscribe((resp: any) => {
-        this.usr = resp;
+        this.usr = resp.user;
         if (this.usr && this.usr.length > 0) {
           this.username = this.usr[0].email.charAt(0).toUpperCase();
         }

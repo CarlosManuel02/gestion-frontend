@@ -100,19 +100,6 @@ export class ProjectViewComponent implements OnInit {
     this.fetchProjectTasks()
   }
 
-  getImage() {
-    const data = this.project.image;
-    if (!data) {
-      return;
-    }
-
-    // Create a data URL from the image data
-    const byteArray = new Uint8Array(data.data);
-    const blob = new Blob([byteArray], {type: data.mime_type});
-    const url = URL.createObjectURL(blob);
-    return 'url';
-  }
-
 
   goTo(item: any) {
     this.router.navigate([`/main/projects/${this.projectId}/${item.link}`])

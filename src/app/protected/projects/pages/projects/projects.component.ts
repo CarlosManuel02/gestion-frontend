@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzCardComponent, NzCardMetaComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
@@ -63,6 +63,8 @@ import {NzTagComponent} from "ng-zorro-antd/tag";
 export class ProjectsComponent {
   loading: boolean = false;
   isVisible = false;
+  @Input() userID!: string;
+  @Input() isPorfile: boolean = false;
 
   get projects() {
     return this.managerService.projects;
@@ -79,7 +81,7 @@ export class ProjectsComponent {
 
   ngOnInit() {
     this.loading = true;
-    this.managerService.getProjects();
+    this.getProjects()
     this.loading = false;
   }
 
@@ -105,8 +107,16 @@ export class ProjectsComponent {
 
   onProjectCreated($event: any) {
     this.isVisible = false;
-    this.managerService.getProjects();
+    this.getProjects();
     this.message.success($event);
 
+  }
+
+  private getProjects() {
+    this.managerService.getProjects(this.userID).then((resp: any) => {
+      if (resp !== 200) {
+        this.message.error('An error occurred while fetching projects')
+      }
+    })
   }
 }
