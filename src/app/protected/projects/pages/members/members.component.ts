@@ -209,4 +209,8 @@ export class MembersComponent implements OnInit {
         console.log(error);
       });
   }
+
+  goToUser(member_id: string) {
+    this.router.navigate(['/main/profile', member_id]);
+  }
 }

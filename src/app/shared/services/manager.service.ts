@@ -97,6 +97,7 @@ export class ManagerService {
   checkMember(param: { project_id: string; id: string }) {
     return this.http.post(`${this.API_URL}members/check/`, param).pipe(
       map((resp: any) => {
+        console.log(resp)
           return resp.status == 200;
         }
       ), catchError((err: any) => of(false)));

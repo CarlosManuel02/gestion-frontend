@@ -16,7 +16,9 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let member of members; trackBy: trackByMemberId">
+  <tr *ngFor="let member of members; trackBy: trackByMemberId"
+      (dblclick)="goToUser(member.member_id)"
+  >
     <td><app-user-display [userId]="member.member_id" [imageOnly]="false"></app-user-display></td>
     <td>
       <nz-select *ngIf="member.isEditing" style="width: 100px" nzShowSearch nzAllowClear [(ngModel)]="member.member_role">

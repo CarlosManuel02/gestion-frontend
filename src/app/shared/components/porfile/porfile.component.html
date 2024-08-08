@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <!-- User Information Card -->
-  <nz-card nzTitle="User Information" class="user-info-card">
+  <nz-card nzTitle="User Information" class="user-info-card" [nzExtra]="extraTemplate">
     <nz-descriptions nzBordered [nzSize]="'small'" [nzColumn]="1">
       <nz-descriptions-item nzTitle="Username">
         {{ user.username }}
@@ -19,3 +19,8 @@
   <app-projects [isPorfile]="true" [userID]="userId"></app-projects>
 
 </div>
+
+
+<ng-template #extraTemplate >
+  <button  *ngIf="isCurrentUser" nz-button nzType="text" nzSize="small" (click)="editProfile()">Edit Profile</button>
+</ng-template>

@@ -15,13 +15,12 @@ export class ProjectValidatorGuard {
     private managerService: ManagerService,
     private router: Router,
     private message: NzMessageService,
-
   ) {
   }
 
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    const projectId = this.managerService.project.project_id;
+    const projectId = localStorage.getItem('projectID') || this.managerService.project.project_id
     const user = this.authService.user.id;
     // console.log('ProjectValidatorGuard', projectId, user);
 
@@ -30,12 +29,12 @@ export class ProjectValidatorGuard {
       id: user,
     }).pipe(
       tap((valid) => {
-        if (!valid) {
-          this.router.navigateByUrl('/dashboard');
-          this.message.error('No tienes permisos para acceder a este proyecto.');
+          if (!valid) {
+            this.router.navigateByUrl('/dashboard');
+            this.message.error('No tienes permisos para acceder a este proyecto.');
+          }
         }
-      }
-    ));
+      ));
   }
 
-  }
+}

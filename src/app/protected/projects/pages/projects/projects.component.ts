@@ -24,6 +24,7 @@ import {NzDrawerComponent, NzDrawerContentDirective, NzDrawerService} from "ng-z
 import {CreateProjectComponent} from "../../components/create-project/create-project.component";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzTagComponent} from "ng-zorro-antd/tag";
+import {AuthService} from "../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-projects',
@@ -75,11 +76,13 @@ export class ProjectsComponent {
     private managerService: ManagerService,
     public drawer: NzDrawerService,
     private router: Router,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit() {
+    this.userID = this.authService.user.id;
     this.loading = true;
     this.getProjects()
     this.loading = false;
