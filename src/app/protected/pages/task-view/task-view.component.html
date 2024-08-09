@@ -10,7 +10,7 @@
               <a>{{ mockTask.project_name }}</a>
             </nz-breadcrumb-item>
             <nz-breadcrumb-item>
-              <a>{{ mockTask.task_name }}</a>
+              <a>{{ mockTask.task_key + '-' + mockTask.task_name }}</a>
             </nz-breadcrumb-item>
           </nz-breadcrumb>
         </nz-affix>
@@ -195,7 +195,8 @@
                 </button>
               </nz-button-group>
             </ng-template>
-            <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id" (emitCommentsLength)="setCommentsLength($event)"></app-comments>
+            <app-comments *ngIf="task" [active]="active" [taskId]="task.task_id"
+                          (emitCommentsLength)="setCommentsLength($event)"></app-comments>
           </nz-collapse-panel>
         </nz-collapse>
       </div>

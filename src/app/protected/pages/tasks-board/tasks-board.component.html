@@ -105,7 +105,7 @@
                      [nzActions]="[extraTemplate]"
             >
               <nz-card-meta
-                [nzTitle]="item.task_name"
+                [nzTitle]="item.task_key + ' - ' + item.task_name"
               ></nz-card-meta>
             </nz-card>
 
@@ -131,6 +131,7 @@
 <nz-modal [(nzVisible)]="isModalVisible"
           [nzTitle]="'Create Task'"
           nzWidth="700px"
+          (nzOnCancel)="handleCancel()"
 >
   <ng-template nzModalFooter
   >
