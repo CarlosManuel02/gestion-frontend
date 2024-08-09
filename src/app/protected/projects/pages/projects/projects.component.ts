@@ -56,7 +56,8 @@ import {AuthService} from "../../../../shared/services/auth.service";
     NzDrawerContentDirective,
     DatePipe,
     NzTagComponent,
-    NgIf
+    NgIf,
+    NzIconDirective
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
@@ -66,6 +67,7 @@ export class ProjectsComponent {
   isVisible = false;
   @Input() userID!: string;
   @Input() isPorfile: boolean = false;
+  searchText: string = '';
 
   get projects() {
     return this.managerService.projects;
@@ -115,11 +117,21 @@ export class ProjectsComponent {
 
   }
 
-  private getProjects() {
-    this.managerService.getProjects(this.userID).then((resp: any) => {
+  private getProjects(search: string = '') {  // Ahora acepta un parámetro opcional para la búsqueda
+    this.managerService.getProjects(this.userID, search).then((resp: any) => {
+      console.log('resp', resp)
       if (resp !== 200) {
         this.message.error('An error occurred while fetching projects')
       }
-    })
+    });
+  }
+
+  searchProjects() {
+    this.getProjects(this.searchText);
+  }
+
+  resetSearch() {
+    this.searchText = '';
+    this.getProjects();
   }
 }

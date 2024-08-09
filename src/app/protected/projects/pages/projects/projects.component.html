@@ -1,10 +1,27 @@
 <div class="container-fluid mt-3">
 
-  @if (!isPorfile){
+  @if (!isPorfile) {
     <div class="d-flex justify-content-between">
-      <nz-input-group [nzSize]="'default'" [nzAddOnBefore]="'Search'" style="width: fit-content; margin: 10px;">
-        <input type="text" nz-input placeholder="input search text">
+
+      <nz-input-group [nzSize]="'default'" nzSearch [nzAddOnAfter]="suffixIconButton"
+                      style="width: fit-content; margin: 10px;">
+        <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchText">
       </nz-input-group>
+      <ng-template #suffixIconButton>
+        <nz-button-group>
+          <button nz-button
+                  nzType="primary"
+                  nzSearch
+                  (click)="searchProjects()"
+          ><span nz-icon nzType="search"></span></button>
+          <button nz-button
+                  nzType="default"
+                  nzSearch
+                  (click)="resetSearch()"
+          ><span nz-icon nzType="close-circle"></span>
+          </button>
+        </nz-button-group>
+      </ng-template>
 
       <button
         nz-button
@@ -26,7 +43,8 @@
     <tr>
       <th>Project Name</th>
       <th *ngIf="!isPorfile"
-      >Project Key</th>
+      >Project Key
+      </th>
       <th>Status</th>
       <th>Owner</th>
       <th>Start Date</th>
@@ -41,10 +59,13 @@
             <a (click)="setProject(project)">{{ project.project_name }}</a>
           </td>
           <td *ngIf="!isPorfile"
-          >{{ project.project_key }}</td>
+          >{{ project.project_key }}
+          </td>
           <td>
-            <nz-tag *ngIf="project.project_status === 'active'" [nzColor]="'green'">{{ project.project_status }}</nz-tag>
-            <nz-tag  *ngIf="project.project_status === 'paused'" [nzColor]="'orange'">{{ project.project_status }}</nz-tag>
+            <nz-tag *ngIf="project.project_status === 'active'" [nzColor]="'green'">{{ project.project_status }}
+            </nz-tag>
+            <nz-tag *ngIf="project.project_status === 'paused'" [nzColor]="'orange'">{{ project.project_status }}
+            </nz-tag>
             <nz-tag *ngIf="project.project_status === 'closed'" [nzColor]="'red'">{{ project.project_status }}</nz-tag>
           </td>
           <td>

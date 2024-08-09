@@ -18,6 +18,10 @@ export class ManagerService {
     return [...this._projects]
   }
 
+  set projects(projects: Project[]) {
+    this._projects = projects
+  }
+
   private _project: Project = {} as Project;
   get project() {
     return {...this._project}
@@ -31,30 +35,33 @@ export class ManagerService {
   }
 
 
-  getProject(projectId: string) {
+  getProject(projectId: string, search?: string) {
     return new Promise((resolve, reject) => {
-      this.http.get(`${this.API_URL}${projectId}`).subscribe((resp: any) => {
+      const url = search ? `${this.API_URL}${projectId}?search=${search}` : `${this.API_URL}${projectId}`;
+      this.http.get(url).subscribe((resp: any) => {
         if (resp.status !== 200) {
-          reject({message: resp.message})
+          reject({message: resp.message});
         } else {
-          this._project = resp.data[0]
-          localStorage.setItem('projectID', this._project.project_id)
-          resolve(resp.status)
+          this._project = resp.data[0];
+          localStorage.setItem('projectID', this._project.project_id);
+          resolve({status: resp.status, data: resp.data});
         }
-      })
+      });
     });
   }
 
-  getProjects(userID: string) {
+  getProjects(userID: string, search: string = '') {
     return new Promise((resolve, reject) => {
-      this.http.get<Project[]>(`${this.API_URL}all/${userID}`).subscribe((resp: any) => {
+      const url = search ? `${this.API_URL}all/${userID}?search=${search}` : `${this.API_URL}all/${userID}`;
+      this.http.get<Project[]>(url).subscribe((resp: any) => {
+        console.log('resp', resp)
         if (resp.status !== 200) {
-          reject(resp.status)
+          reject(resp.status);
         } else {
-          this._projects = resp.data
-          resolve(resp.status)
+          this._projects = resp.data;
+          resolve(resp.status);
         }
-      })
+      });
     });
   }
 

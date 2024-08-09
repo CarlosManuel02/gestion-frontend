@@ -3,7 +3,10 @@
   <nz-card nzTitle="User Information" class="user-info-card" [nzExtra]="extraTemplate">
     <nz-descriptions nzBordered [nzSize]="'small'" [nzColumn]="1">
       <nz-descriptions-item nzTitle="Username">
-        {{ user.username }}
+        <input nz-input
+               [nzBorderless]="!canEdit"
+               [(ngModel)]="user.username"
+               [readonly]="isCurrentUser && !canEdit"/>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Email">
         {{ user.email }}
@@ -21,6 +24,15 @@
 </div>
 
 
-<ng-template #extraTemplate >
-  <button  *ngIf="isCurrentUser" nz-button nzType="text" nzSize="small" (click)="editProfile()">Edit Profile</button>
+<ng-template #extraTemplate>
+  <button *ngIf="isCurrentUser && !canEdit"
+          nz-button nzType="text" nzSize="small" (click)="editProfile()">Edit Profile
+  </button>
+
+  <nz-button-group *ngIf="isCurrentUser && canEdit"
+                   style="display: flex; justify-content: flex-end;">
+    <button nz-button nzType="text" nzDanger nzSize="small" (click)="cancelEdit()">Cancel</button>
+    <button nz-button nzType="primary" nzSize="small" (click)="saveProfile()">Save</button>
+  </nz-button-group>
+
 </ng-template>

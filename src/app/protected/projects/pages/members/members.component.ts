@@ -173,7 +173,11 @@ export class MembersComponent implements OnInit {
 
   private getProject() {
     this.projectsService.getProject(this.projectId)
-      .then((resp) => {
+      .then((resp:any) => {
+        if (resp.status !== 200) {
+          this.message.error(resp.message);
+          return;
+        }
         this.checkIfOwner();
       });
   }

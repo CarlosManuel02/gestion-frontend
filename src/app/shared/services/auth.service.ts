@@ -141,4 +141,31 @@ export class AuthService {
       }
     });
   }
+
+  updateUser(data: any, userId: string) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    })
+    return this.http.patch(`${this.endpoint}update/${userId}`, data, {headers}).pipe(
+      tap((resp: any) => {
+        if (resp.status === 200) {
+          return {
+            user: resp,
+            status: resp.status,
+          }
+        } else {
+          throw new Error(resp.message);
+        }
+      }),
+      map((resp: any) => {
+        return {
+          status: resp.status,
+          user: resp.user
+        }
+      }),
+      catchError((err: any) => {
+        return of(err.message);
+      })
+    )
+  }
 }

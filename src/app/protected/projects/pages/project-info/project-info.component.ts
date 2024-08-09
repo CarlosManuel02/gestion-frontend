@@ -94,7 +94,7 @@ export class ProjectInfoComponent implements OnInit {
     this.loading = true;
     this.projectService.getProject(this.projectId).then((resp: any) => {
       this.loading = false;
-      if (resp !== 200) {
+      if (resp.status!== 200) {
         this.message.error('Error al obtener la información del proyecto');
         return;
       }
