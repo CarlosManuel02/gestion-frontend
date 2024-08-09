@@ -8,6 +8,7 @@ export interface TaskResponse {
 export interface Task {
   task_id:            string;
   task_name:          string;
+  task_key:           string;
   task_description:   string;
   task_status:        string | undefined;
   task_creation_date: Date;

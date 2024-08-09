@@ -18,6 +18,7 @@ import {SearchMemberComponent} from "../../../../shared/components/search-member
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {RoleSetting} from "../../../../shared/interfaces/permission.interface";
 import {PermissionService} from "../../../../shared/services/permission.service";
+import {NzFlexDirective} from "ng-zorro-antd/flex";
 
 @Component({
   selector: 'app-members',
@@ -42,7 +43,8 @@ import {PermissionService} from "../../../../shared/services/permission.service"
     NzModalComponent,
     NzModalContentDirective,
     SearchMemberComponent,
-    NzPopconfirmDirective
+    NzPopconfirmDirective,
+    NzFlexDirective
   ],
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
@@ -212,5 +214,21 @@ export class MembersComponent implements OnInit {
 
   goToUser(member_id: string) {
     this.router.navigate(['/main/profile', member_id]);
+  }
+
+  leaveProject() {
+    const data = {
+      project_id: this.projectId,
+      id: this.user.id
+    }
+    this.projectsService.leaveProject(data)
+      .then((resp) => {
+        if (resp === 200) {
+          this.router.navigate(['/main/projects']);
+        } else {
+          this.message.error("Something went wrong");
+        }
+      });
+
   }
 }

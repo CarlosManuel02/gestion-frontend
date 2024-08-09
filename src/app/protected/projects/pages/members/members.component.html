@@ -71,6 +71,17 @@
   </tbody>
 </nz-table>
 
+<button nz-button
+        nzType="primary"
+        nzDanger
+        *ngIf="!isOwner"
+        nz-popconfirm
+        nzPopconfirmTitle="Are you sure to leave this project?"
+        nzCancelText="No"
+        nzOkText="Yes"
+        (nzOnConfirm)="leaveProject()"
+>Leave Project</button>
+
 
 <nz-modal
   [(nzVisible)]="isVisible"
