@@ -58,7 +58,8 @@ export class SearchMemberComponent {
     this.authService.getUser(this.email)
       .subscribe((res) => {
         if (res) {
-          this.user = res;
+          console.log(res);
+          this.user = res.user;
           this.userInProject();
         } else {
           this.message.error(res.message);
@@ -95,8 +96,7 @@ export class SearchMemberComponent {
         if (user) {
           this.message.error('User already in project');
           this.isInProject = true;
-        } else {
-          this.message.success('User added to project');}
+        }
       }
     });
 
