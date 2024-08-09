@@ -8,7 +8,7 @@
 >Create Task</button>
 <div nz-row>
   <div nz-col nzSpan="8">
-    <h4 [ngStyle]="{ 'margin-bottom.px': 16 }">Open</h4>
+    <h4 [ngStyle]="{ 'margin-bottom.px': 25 }">Open</h4>
     <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
       <nz-list nzItemLayout="horizontal">
         <div
@@ -20,8 +20,8 @@
           (cdkDropListDropped)="drop($event)">
           @for (item of open; track item) {
             <nz-card cdkDrag
-                     (click)="openTaskDetails(item)"
-                     style="margin-bottom: 8px; cursor: move; background-color: #434343"
+                     (dblclick)="openTaskDetails(item)"
+                     style="margin-bottom: 8px; cursor: move;"
                      [nzActions]="[extraTemplate]"
             >
               <nz-card-meta
@@ -47,7 +47,7 @@
   </div>
 
   <div nz-col nzSpan="8">
-    <h4 [ngStyle]="{ 'margin-bottom.px': 16 }">In Progress</h4>
+    <h4 [ngStyle]="{ 'margin-bottom.px': 25 }">In Progress</h4>
     <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
       <nz-list nzItemLayout="horizontal">
         <div
@@ -60,8 +60,8 @@
           (cdkDropListDropped)="drop($event)">
           @for (item of inProgress; track item) {
             <nz-card cdkDrag
-                     (click)="openTaskDetails(item)"
-                     style="margin-bottom: 8px; cursor: move; background-color: #434343"
+                     (dblclick)="openTaskDetails(item)"
+                     style="margin-bottom: 8px; cursor: move;"
                      [nzActions]="[extraTemplate]"
             >
               <nz-card-meta
@@ -87,7 +87,7 @@
   </div>
 
   <div nz-col nzSpan="8">
-    <h4 [ngStyle]="{ 'margin-bottom.px': 16 }">Completed</h4>
+    <h4 [ngStyle]="{ 'margin-bottom.px': 25 }">Completed</h4>
     <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
       <nz-list nzItemLayout="horizontal">
         <div
@@ -100,8 +100,8 @@
           (cdkDropListDropped)="drop($event)">
           @for (item of done; track item) {
             <nz-card cdkDrag
-                     (click)="openTaskDetails(item)"
-                     style="margin-bottom: 8px; cursor: pointer; background-color: #434343"
+                     (dblclick)="openTaskDetails(item)"
+                     style="margin-bottom: 8px; cursor: pointer;"
                      [nzActions]="[extraTemplate]"
             >
               <nz-card-meta

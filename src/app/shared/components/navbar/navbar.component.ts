@@ -88,8 +88,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public themeChanged$!: BehaviorSubject<ThemeType>;
   tabs: Tabs[] = [
     {name: 'Dashboard', link: 'dashboard', icon: 'dashboard', disabled: false},
-    {name: 'Mis tareas', link: 'tasks', icon: 'file-search', disabled: false},
-    {name: 'Mis proyectos', link: 'projects', icon: 'project', disabled: false}
+    {name: 'Tasks', link: 'tasks', icon: 'file-search', disabled: false},
+    {name: 'Projects', link: 'projects', icon: 'project', disabled: false}
   ];
   selectedTab: Tabs = this.tabs[0];
   userImage!: string;
