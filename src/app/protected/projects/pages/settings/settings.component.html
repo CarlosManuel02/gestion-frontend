@@ -2,21 +2,19 @@
   <span>Project Settings</span>
 </h2>
 
+<button *ngIf="canEdit" nz-button nzType="primary"
+        [disabled]="!hasPermission"
+        (click)="enableEdit()">Edit
+</button>
 
-@if (canEdit) {
-  <button nz-button nzType="primary"
-          [disabled]="hasPermission"
-          (click)="enableEdit()">Edit
-  </button>
-}
-@if (!canEdit) {
+<div *ngIf="!canEdit">
   <button nz-button nzType="primary"
           nzDanger
           style="margin-right: 8px;"
           (click)="disableEdit()">Cancel
   </button>
   <button nz-button nzType="primary" (click)="save()">Save</button>
-}
+</div>
 
 <nz-table #settingsTable [nzData]="settings"
           [nzBordered]="true"
@@ -38,23 +36,25 @@
   <tr *ngFor="let setting of settingsTable.data">
     <td class="role-name-column">
       <input nz-input nzBorderless [ngModel]="setting.role_name" [readonly]="canEdit"
-             (ngModelChange)="setting.role_name = $event; setting.dirty = true"></td>
+             (ngModelChange)="setting.role_name = $event; setting.dirty = true">
+    </td>
     <td>
       <nz-switch [(ngModel)]="setting.permissions[0].value" [nzDisabled]="canEdit"
                  (ngModelChange)="setting.dirty = true"></nz-switch>
     </td>
     <td>
       <nz-switch [(ngModel)]="setting.permissions[1].value" [nzDisabled]="canEdit"
-                 (ngModelChange)="setting.dirty = !setting.dirty"></nz-switch>
+                 (ngModelChange)="setting.dirty = true"></nz-switch>
     </td>
     <td>
       <nz-switch [(ngModel)]="setting.permissions[2].value" [nzDisabled]="canEdit"
-                 (ngModelChange)="setting.dirty = !setting.dirty"></nz-switch>
+                 (ngModelChange)="setting.dirty = true"></nz-switch>
     </td>
     <td>
       <nz-switch [(ngModel)]="setting.permissions[3].value" [nzDisabled]="canEdit"
-                 (ngModelChange)="setting.dirty = !setting.dirty"></nz-switch>
+                 (ngModelChange)="setting.dirty = true"></nz-switch>
     </td>
+
   </tr>
   </tbody>
 </nz-table>

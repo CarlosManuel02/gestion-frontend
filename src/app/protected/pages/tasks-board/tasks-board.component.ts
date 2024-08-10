@@ -233,11 +233,25 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
           this.message.error(resp.message);
           return;
         } else {
-          this.settings = resp.data;
-          this.getCurrentUser();
+          this.settings = resp.data.map((setting: any) => {
+            return {
+              ...setting,
+              permissions: [
+                { permission: 'read', value: setting.permissions.read },
+                { permission: 'create', value: setting.permissions.create },
+                { permission: 'delete', value: setting.permissions.delete },
+                { permission: 'update', value: setting.permissions.update }
+              ],
+              dirty: false
+            };
+          });
         }
+      }, error => {
+        this.message.error('An error occurred while fetching settings');
+        console.error(error);
       });
   }
+
 
   async getCurrentUser() {
     const user: any = await this.projectsService.getProjecMembers(this.projectId).then(

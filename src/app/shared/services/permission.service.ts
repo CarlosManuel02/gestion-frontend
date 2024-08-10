@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {ManagerService} from "./manager.service";
-import {AuthService} from "./auth.service";
-import {RoleSetting} from "../interfaces/permission.interface";
+import { ManagerService } from "./manager.service";
+import { AuthService } from "./auth.service";
+import { RoleSetting, Permission } from "../interfaces/permission.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +13,17 @@ export class PermissionService {
     private authService: AuthService
   ) {}
 
+  checkPermission(role: string, value: string, settings: RoleSetting[], callback: (hasPermission: boolean) => void) {
+    let hasPermission = false; // Por defecto a `false`, cambiará a `true` si encuentra un permiso válido.
 
-  checkPermission(role: string, value:string, settings: RoleSetting[], callback: (hasPermission: boolean) => void) {
-    let hasPermission = true;
-    settings.forEach((setting: RoleSetting) => {
-      if (setting.role_name.toLowerCase() === role) {
-        setting.permissions.forEach((permission: any) => {
-          if (permission.permission === value) {
-            hasPermission = permission.value;
-          }
-        });
-      }
-    });
+    const roleSetting = settings.find(setting => setting.role_name.toLowerCase() === role.toLowerCase());
+
+    if (roleSetting) {
+      hasPermission = roleSetting.permissions.some((permission: Permission) =>
+        permission.permission === value && permission.value
+      );
+    }
+
     callback(hasPermission);
   }
 }

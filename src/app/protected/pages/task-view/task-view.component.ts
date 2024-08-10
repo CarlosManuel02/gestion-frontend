@@ -127,7 +127,7 @@ export class TaskViewComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private managerService: ManagerService,
+    private projectsService: ManagerService,
     private authService: AuthService,
     private router: Router,
     public message: NzMessageService,
@@ -280,7 +280,7 @@ export class TaskViewComponent implements OnInit {
 
   private getProjctMembers() {
     // console.log(this.task)
-    this.managerService.getProjecMembers(this.task.project_id)
+    this.projectsService.getProjecMembers(this.task.project_id)
       .then((resp: any) => {
         this.projectMembers = resp
         // console.log(this.projectMembers)
@@ -310,28 +310,35 @@ export class TaskViewComponent implements OnInit {
   }
 
   private getSettings() {
-    this.managerService.getProjectSettings(this.task.project_id)
+    this.projectsService.getProjectSettings(this.task.project_id)
       .then((resp: any) => {
         if (resp.status !== 200) {
           this.message.error(resp.message);
           return;
         } else {
-          this.settings = resp.data.map((setting: RoleSetting) => {
+          this.settings = resp.data.map((setting: any) => {
             return {
               ...setting,
+              permissions: [
+                { permission: 'read', value: setting.permissions.read },
+                { permission: 'create', value: setting.permissions.create },
+                { permission: 'delete', value: setting.permissions.delete },
+                { permission: 'update', value: setting.permissions.update }
+              ],
               dirty: false
             };
           });
         }
       }, error => {
         this.message.error('An error occurred while fetching settings');
-        console.log(error);
+        console.error(error);
       });
   }
 
 
+
   async getCurrentUser() {
-    const user: any = await this.managerService.getProjecMembers(this.task.project_id).then(
+    const user: any = await this.projectsService.getProjecMembers(this.task.project_id).then(
       (resp: any) => {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {

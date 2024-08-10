@@ -1,14 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ManagerService } from '../../../../shared/services/manager.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { RoleSetting } from '../../../../shared/interfaces/permission.interface';
+import {Component, Input, OnInit} from '@angular/core';
+import {ManagerService} from '../../../../shared/services/manager.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {RoleSetting} from '../../../../shared/interfaces/permission.interface';
 import {Member, Project} from '../../../../shared/interfaces';
-import { AuthService } from '../../../../shared/services/auth.service';
-import { PermissionService } from '../../../../shared/services/permission.service';
-import { NzDescriptionsComponent, NzDescriptionsItemComponent } from 'ng-zorro-antd/descriptions';
-import { NzBadgeComponent } from 'ng-zorro-antd/badge';
+import {AuthService} from '../../../../shared/services/auth.service';
+import {PermissionService} from '../../../../shared/services/permission.service';
+import {NzDescriptionsComponent, NzDescriptionsItemComponent} from 'ng-zorro-antd/descriptions';
+import {NzBadgeComponent} from 'ng-zorro-antd/badge';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
-import { NzButtonComponent } from 'ng-zorro-antd/button';
+import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzModalService} from 'ng-zorro-antd/modal';
 import {NzInputDirective, NzTextareaCountComponent} from "ng-zorro-antd/input";
@@ -18,6 +18,7 @@ import {NzDividerComponent} from "ng-zorro-antd/divider";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-project-info',
@@ -48,7 +49,9 @@ import {NzTableComponent, NzThMeasureDirective} from "ng-zorro-antd/table";
     NzThMeasureDirective,
     ReactiveFormsModule,
     NzModalFooterDirective,
-    NzTextareaCountComponent
+    NzTextareaCountComponent,
+    NzSelectComponent,
+    NzOptionComponent
   ],
   templateUrl: './project-info.component.html',
   styleUrl: './project-info.component.less'
@@ -76,7 +79,8 @@ export class ProjectInfoComponent implements OnInit {
     private permission: PermissionService,
     private modal: NzModalService,
     private fb: FormBuilder,
-  ) {}
+  ) {
+  }
 
   get project() {
     return this.projectService.project;
@@ -87,14 +91,14 @@ export class ProjectInfoComponent implements OnInit {
     this.getSettings();
     this.getCurrentUser();
 
-    }
+  }
 
 
   private getProjectInfo() {
     this.loading = true;
     this.projectService.getProject(this.projectId).then((resp: any) => {
       this.loading = false;
-      if (resp.status!== 200) {
+      if (resp.status !== 200) {
         this.message.error('Error al obtener la información del proyecto');
         return;
       }
@@ -123,16 +127,25 @@ export class ProjectInfoComponent implements OnInit {
           this.message.error(resp.message);
           return;
         } else {
-          this.settings = resp.data.map((setting: RoleSetting) => ({
-            ...setting,
-            dirty: false
-          }));
+          this.settings = resp.data.map((setting: any) => {
+            return {
+              ...setting,
+              permissions: [
+                { permission: 'read', value: setting.permissions.read },
+                { permission: 'create', value: setting.permissions.create },
+                { permission: 'delete', value: setting.permissions.delete },
+                { permission: 'update', value: setting.permissions.update }
+              ],
+              dirty: false
+            };
+          });
         }
-      }).catch((error: any) => {
-      this.message.error('An error occurred while fetching settings');
-      console.log(error);
-    });
+      }, error => {
+        this.message.error('An error occurred while fetching settings');
+        console.error(error);
+      });
   }
+
 
   async getCurrentUser() {
     await this.projectService.getProjecMembers(this.projectId).then((resp: any) => {

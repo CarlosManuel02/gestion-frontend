@@ -68,7 +68,7 @@
           </nz-form-item>
         </div>
 
-        <div nz-col nzSpan="12" class="mt-3">
+        <div nz-col nzSpan="13" class="mt-3">
           <nz-form-item>
             <nz-form-label [nzSpan]="10">Project Start Date</nz-form-label>
             <nz-form-control>
@@ -78,12 +78,26 @@
           </nz-form-item>
         </div>
 
-        <div nz-col nzSpan="12" class="mt-3">
+        <div nz-col nzSpan="13" class="mt-3">
           <nz-form-item>
             <nz-form-label [nzSpan]="10">Project End Date</nz-form-label>
             <nz-form-control>
               <nz-date-picker formControlName="end_date" nzFormat="yyyy-MM-dd"
                               nzPlaceHolder="Select Date"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="13" class="mt-3">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="10">Project Status</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="status" nzPlaceHolder="Select Status">
+                <nz-option nzValue="Active" nzLabel="Active"></nz-option>
+                <nz-option nzValue="Inactive" nzLabel="Inactive"></nz-option>
+                <nz-option nzValue="Completed" nzLabel="Completed"></nz-option>
+                <nz-option nzValue="On Hold" nzLabel="On Hold"></nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>

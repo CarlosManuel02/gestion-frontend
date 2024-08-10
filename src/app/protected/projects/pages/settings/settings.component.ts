@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormArray, ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {ManagerService} from "../../../../shared/services/manager.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {JsonPipe, NgForOf} from "@angular/common";
-import {Permission, RoleSetting} from "../../../../shared/interfaces/permission.interface";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
+import {RoleSetting} from "../../../../shared/interfaces/permission.interface";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -27,7 +27,8 @@ import {PermissionService} from "../../../../shared/services/permission.service"
     NzTableComponent,
     NzIconDirective,
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.less']
@@ -35,7 +36,7 @@ import {PermissionService} from "../../../../shared/services/permission.service"
 export class SettingsComponent implements OnInit {
 
   settings: RoleSetting[] = [];
-  canEdit: boolean = true
+  canEdit: boolean = true;
   id!: string;
   hasPermission: boolean = true;
 
@@ -57,28 +58,7 @@ export class SettingsComponent implements OnInit {
     }
     this.getSettings();
     this.getCurrentUser();
-    }
-
-
-  createRoleSettingGroup(setting: RoleSetting): FormGroup {
-    return this.fb.group({
-      id: [setting.id],
-      project_id: [setting.project_id],
-      role_id: [setting.role_id],
-      role_name: [setting.role_name],
-      permissions: this.fb.array(setting.permissions.map(permission => this.createPermissionGroup(permission))),
-      dirty: [false] // Initialize the dirty flag
-    });
   }
-
-
-  createPermissionGroup(permission: Permission): FormGroup {
-    return this.fb.group({
-      permission: [permission.permission],
-      value: [permission.value]
-    });
-  }
-
 
   save() {
     const modifiedSettings = this.settings.filter(setting => setting.dirty);
@@ -87,14 +67,10 @@ export class SettingsComponent implements OnInit {
       modifiedSettings.forEach(setting => {
         const updatedSetting = {
           id: setting.id,
-          project_id: setting.project_id.toString(), // Ensure this is a string
-          role_id: setting.role_id.toString(), // Ensure this is a string
-          permissions: setting.permissions.map(permission => {
-            return {
-              permission: permission.permission,
-              value: permission.value
-            };
-          })
+          project_id: setting.project_id.toString(),
+          role_id: setting.role_id.toString(),
+          role_name: setting.role_name,
+          permissions: setting.permissions // No need to map as it's already in the correct format
         };
 
         this.projectsService.updateProjectSettings(this.id, updatedSetting)
@@ -103,7 +79,7 @@ export class SettingsComponent implements OnInit {
 
             if (resp.status === 200) {
               this.message.success('Settings updated successfully');
-              setting.dirty = false; // Reset the dirty flag after successful update
+              setting.dirty = false;
             } else {
               this.message.error('Error updating settings');
             }
@@ -117,7 +93,6 @@ export class SettingsComponent implements OnInit {
       this.message.error('No changes to save');
     }
   }
-
 
   enableEdit() {
     this.canEdit = !this.canEdit;
@@ -134,9 +109,15 @@ export class SettingsComponent implements OnInit {
           this.message.error(resp.message);
           return;
         } else {
-          this.settings = resp.data.map((setting: RoleSetting) => {
+          this.settings = resp.data.map((setting: any) => {
             return {
               ...setting,
+              permissions: [
+                { permission: 'read', value: setting.permissions.read },
+                { permission: 'create', value: setting.permissions.create },
+                { permission: 'delete', value: setting.permissions.delete },
+                { permission: 'update', value: setting.permissions.update }
+              ],
               dirty: false
             };
           });
@@ -147,13 +128,14 @@ export class SettingsComponent implements OnInit {
       });
   }
 
+
   async getCurrentUser() {
     const user: any = await this.projectsService.getProjecMembers(this.id).then(
       (resp: any) => {
         resp.forEach((member: Member) => {
           if (member.member_id === this.authService.user.id) {
             this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
-              this.hasPermission = !hasPermission;
+              this.hasPermission = hasPermission;
             });
           }
         });

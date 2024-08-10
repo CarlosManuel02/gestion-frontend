@@ -130,4 +130,8 @@ export class TaskListComponent implements OnInit {
         return 'Open';
     }
   }
+
+  getDate(task_deadline: Date) {
+    return new Date(task_deadline).toLocaleDateString();
+  }
 }

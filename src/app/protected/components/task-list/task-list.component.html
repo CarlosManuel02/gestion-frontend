@@ -3,7 +3,7 @@
     <nz-list-item style="cursor: pointer;" (click)="taskClick(task)">
       <nz-list-item-meta
         [nzTitle]="task.task_name"
-        [nzDescription]="task.task_description"
+        [nzDescription]="getDate(task.task_deadline)"
         [nzAvatar]="avatarTemplate"
       ></nz-list-item-meta>
       <nz-list-item-extra>

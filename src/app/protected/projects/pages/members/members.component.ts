@@ -203,18 +203,25 @@ export class MembersComponent implements OnInit {
           this.message.error(resp.message);
           return;
         } else {
-          this.settings = resp.data.map((setting: RoleSetting) => {
+          this.settings = resp.data.map((setting: any) => {
             return {
               ...setting,
+              permissions: [
+                { permission: 'read', value: setting.permissions.read },
+                { permission: 'create', value: setting.permissions.create },
+                { permission: 'delete', value: setting.permissions.delete },
+                { permission: 'update', value: setting.permissions.update }
+              ],
               dirty: false
             };
           });
         }
       }, error => {
         this.message.error('An error occurred while fetching settings');
-        console.log(error);
+        console.error(error);
       });
   }
+
 
   goToUser(member_id: string) {
     this.router.navigate(['/main/profile', member_id]);
