@@ -99,6 +99,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
     this.projectId = this.projectsService.projectID || this.router.url.split('/')[3];
     this.fetchTasks();
     this.getSettings();
+    this.getCurrentUser();
   }
 
   ngAfterViewInit() {
@@ -237,10 +238,10 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
             return {
               ...setting,
               permissions: [
-                { permission: 'read', value: setting.permissions.read },
-                { permission: 'create', value: setting.permissions.create },
-                { permission: 'delete', value: setting.permissions.delete },
-                { permission: 'update', value: setting.permissions.update }
+                {permission: 'read', value: setting.permissions.read},
+                {permission: 'create', value: setting.permissions.create},
+                {permission: 'delete', value: setting.permissions.delete},
+                {permission: 'update', value: setting.permissions.update}
               ],
               dirty: false
             };
@@ -260,6 +261,7 @@ export class TasksBoardComponent implements OnInit, AfterViewInit {
           if (member.member_id === this.authService.user.id) {
             this.permission.checkPermission(member.member_role, 'update', this.settings, (hasPermission: boolean) => {
               this.canCreate = hasPermission;
+              console.log('Can create', this.canCreate);
             });
           }
         });

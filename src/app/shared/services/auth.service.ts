@@ -92,7 +92,7 @@ export class AuthService {
             created_at: resp.user?.created_at
           }
           localStorage.setItem('token', resp.token);
-          console.log(resp);
+          console.log('Token renewed');
           return resp.status == 200;
         }),
         catchError(() => of(false))
