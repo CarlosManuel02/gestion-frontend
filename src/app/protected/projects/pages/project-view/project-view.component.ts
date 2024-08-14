@@ -57,6 +57,8 @@ export class ProjectViewComponent implements OnInit {
     {title: 'Board', icon: 'table', link: 'board'},
     {title: 'Tasks', icon: 'unordered-list', link: 'tasks'},
     {title: 'Members', icon: 'team', link: 'members'},
+    {title: 'Files', icon: 'file', link: 'files'},
+    {title: 'Graphs', icon: 'line-chart', link: 'graphs'},
     // {title: 'Settings', icon: 'setting', link: 'settings'}
   ]
   isCollapsed: boolean = false;
